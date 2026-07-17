@@ -1,0 +1,502 @@
+{
+  "source": "CTU Prague Relational Dataset Repository",
+  "dataset": "Financial — PKDD’99 Financial Dataset",
+  "url": "https://relational.fel.cvut.cz/dataset/Financial",
+  "retrieved_at_utc": "2026-07-17T05:45:37.075352+00:00",
+  "database": "financial",
+  "host": "relational.fel.cvut.cz",
+  "null_marker": "\\N",
+  "schema_file": "schema_mariadb.sql",
+  "schema_sha256": "ba5ea18fe037f77ccb97ef98a0cb91d5ca50838c44375d283e9af9189f5ed486",
+  "tables": {
+    "account": {
+      "file": "account.csv",
+      "source_row_count": 4500,
+      "columns": [
+        {
+          "name": "account_id",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "district_id",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "frequency",
+          "data_type": "varchar",
+          "column_type": "varchar(18)",
+          "nullable": false
+        },
+        {
+          "name": "date",
+          "data_type": "date",
+          "column_type": "date",
+          "nullable": false
+        }
+      ],
+      "primary_key": [
+        "account_id"
+      ],
+      "foreign_keys": [
+        {
+          "constraint": "account_ibfk_1",
+          "column": "district_id",
+          "ordinal_position": 1,
+          "referenced_table": "district",
+          "referenced_column": "district_id"
+        }
+      ],
+      "exported_row_count": 4500,
+      "sha256": "85f32d56dcb3eafc464b34f67a3b61edf79447d5e95ad9724e058b6d2082f06a"
+    },
+    "card": {
+      "file": "card.csv",
+      "source_row_count": 892,
+      "columns": [
+        {
+          "name": "card_id",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "disp_id",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "type",
+          "data_type": "varchar",
+          "column_type": "varchar(7)",
+          "nullable": false
+        },
+        {
+          "name": "issued",
+          "data_type": "date",
+          "column_type": "date",
+          "nullable": false
+        }
+      ],
+      "primary_key": [
+        "card_id"
+      ],
+      "foreign_keys": [
+        {
+          "constraint": "card_ibfk_1",
+          "column": "disp_id",
+          "ordinal_position": 1,
+          "referenced_table": "disp",
+          "referenced_column": "disp_id"
+        }
+      ],
+      "exported_row_count": 892,
+      "sha256": "634810e9427f8ec2bb07eef2b09174a0a912e40aba3db45c83e9fdbf7a1eb7f2"
+    },
+    "client": {
+      "file": "client.csv",
+      "source_row_count": 5369,
+      "columns": [
+        {
+          "name": "client_id",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "gender",
+          "data_type": "varchar",
+          "column_type": "varchar(1)",
+          "nullable": false
+        },
+        {
+          "name": "birth_date",
+          "data_type": "date",
+          "column_type": "date",
+          "nullable": false
+        },
+        {
+          "name": "district_id",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        }
+      ],
+      "primary_key": [
+        "client_id"
+      ],
+      "foreign_keys": [
+        {
+          "constraint": "client_ibfk_1",
+          "column": "district_id",
+          "ordinal_position": 1,
+          "referenced_table": "district",
+          "referenced_column": "district_id"
+        }
+      ],
+      "exported_row_count": 5369,
+      "sha256": "ed3d28aa8c6828e0e917f80dc550ca6f45c94539b6488480c57d62e20c19c683"
+    },
+    "disp": {
+      "file": "disp.csv",
+      "source_row_count": 5369,
+      "columns": [
+        {
+          "name": "disp_id",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "client_id",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "account_id",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "type",
+          "data_type": "varchar",
+          "column_type": "varchar(9)",
+          "nullable": false
+        }
+      ],
+      "primary_key": [
+        "disp_id"
+      ],
+      "foreign_keys": [
+        {
+          "constraint": "disp_ibfk_1",
+          "column": "account_id",
+          "ordinal_position": 1,
+          "referenced_table": "account",
+          "referenced_column": "account_id"
+        },
+        {
+          "constraint": "disp_ibfk_2",
+          "column": "client_id",
+          "ordinal_position": 1,
+          "referenced_table": "client",
+          "referenced_column": "client_id"
+        }
+      ],
+      "exported_row_count": 5369,
+      "sha256": "19353276ccd26d87f096497cb0c98786f753c885fe2cfb547b954db4ceff29f6"
+    },
+    "district": {
+      "file": "district.csv",
+      "source_row_count": 77,
+      "columns": [
+        {
+          "name": "district_id",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "A2",
+          "data_type": "varchar",
+          "column_type": "varchar(19)",
+          "nullable": false
+        },
+        {
+          "name": "A3",
+          "data_type": "varchar",
+          "column_type": "varchar(15)",
+          "nullable": false
+        },
+        {
+          "name": "A4",
+          "data_type": "int",
+          "column_type": "int(20)",
+          "nullable": false
+        },
+        {
+          "name": "A5",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "A6",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "A7",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "A8",
+          "data_type": "int",
+          "column_type": "int(6)",
+          "nullable": false
+        },
+        {
+          "name": "A9",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "A10",
+          "data_type": "decimal",
+          "column_type": "decimal(4,1)",
+          "nullable": false
+        },
+        {
+          "name": "A11",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "A12",
+          "data_type": "decimal",
+          "column_type": "decimal(4,1)",
+          "nullable": true
+        },
+        {
+          "name": "A13",
+          "data_type": "decimal",
+          "column_type": "decimal(3,2)",
+          "nullable": false
+        },
+        {
+          "name": "A14",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "A15",
+          "data_type": "int",
+          "column_type": "int(5)",
+          "nullable": true
+        },
+        {
+          "name": "A16",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        }
+      ],
+      "primary_key": [
+        "district_id"
+      ],
+      "foreign_keys": [],
+      "exported_row_count": 77,
+      "sha256": "4ee7231a1e086f9ad5e8732e881e0566eb949723db1bb218830d7644198f79bc"
+    },
+    "loan": {
+      "file": "loan.csv",
+      "source_row_count": 682,
+      "columns": [
+        {
+          "name": "loan_id",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "account_id",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "date",
+          "data_type": "date",
+          "column_type": "date",
+          "nullable": false
+        },
+        {
+          "name": "amount",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "duration",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "payments",
+          "data_type": "decimal",
+          "column_type": "decimal(6,2)",
+          "nullable": false
+        },
+        {
+          "name": "status",
+          "data_type": "varchar",
+          "column_type": "varchar(1)",
+          "nullable": false
+        }
+      ],
+      "primary_key": [
+        "loan_id"
+      ],
+      "foreign_keys": [
+        {
+          "constraint": "loan_ibfk_1",
+          "column": "account_id",
+          "ordinal_position": 1,
+          "referenced_table": "account",
+          "referenced_column": "account_id"
+        }
+      ],
+      "exported_row_count": 682,
+      "sha256": "fce4163d3b38967e2bbffa8623e4c7ed7155d5c8ad14e6e313d7dc089cc7baf3"
+    },
+    "order": {
+      "file": "order.csv",
+      "source_row_count": 6471,
+      "columns": [
+        {
+          "name": "order_id",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "account_id",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "bank_to",
+          "data_type": "varchar",
+          "column_type": "varchar(2)",
+          "nullable": false
+        },
+        {
+          "name": "account_to",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "amount",
+          "data_type": "decimal",
+          "column_type": "decimal(6,1)",
+          "nullable": false
+        },
+        {
+          "name": "k_symbol",
+          "data_type": "varchar",
+          "column_type": "varchar(8)",
+          "nullable": false
+        }
+      ],
+      "primary_key": [
+        "order_id"
+      ],
+      "foreign_keys": [
+        {
+          "constraint": "order_ibfk_1",
+          "column": "account_id",
+          "ordinal_position": 1,
+          "referenced_table": "account",
+          "referenced_column": "account_id"
+        }
+      ],
+      "exported_row_count": 6471,
+      "sha256": "ddfacf0cf10a465ca6c94582dd984f4451401d5f706db0b349c3e96a148e0564"
+    },
+    "trans": {
+      "file": "trans.csv",
+      "source_row_count": 1056320,
+      "columns": [
+        {
+          "name": "trans_id",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "account_id",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "date",
+          "data_type": "date",
+          "column_type": "date",
+          "nullable": false
+        },
+        {
+          "name": "type",
+          "data_type": "varchar",
+          "column_type": "varchar(6)",
+          "nullable": false
+        },
+        {
+          "name": "operation",
+          "data_type": "varchar",
+          "column_type": "varchar(14)",
+          "nullable": true
+        },
+        {
+          "name": "amount",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "balance",
+          "data_type": "int",
+          "column_type": "int(11)",
+          "nullable": false
+        },
+        {
+          "name": "k_symbol",
+          "data_type": "varchar",
+          "column_type": "varchar(11)",
+          "nullable": true
+        },
+        {
+          "name": "bank",
+          "data_type": "varchar",
+          "column_type": "varchar(2)",
+          "nullable": true
+        },
+        {
+          "name": "account",
+          "data_type": "int",
+          "column_type": "int(11) unsigned",
+          "nullable": true
+        }
+      ],
+      "primary_key": [
+        "trans_id"
+      ],
+      "foreign_keys": [
+        {
+          "constraint": "trans_ibfk_1",
+          "column": "account_id",
+          "ordinal_position": 1,
+          "referenced_table": "account",
+          "referenced_column": "account_id"
+        }
+      ],
+      "exported_row_count": 1056320,
+      "sha256": "eb609408ef3f0ea77b83f15d1a30c40032bbf655f7d03e2807d769aed5e6ec32"
+    }
+  }
+}
