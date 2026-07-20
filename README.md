@@ -8,7 +8,8 @@ prediction.
 
 ## Project status
 
-Initial project scaffold.
+Notebooks 1 and 2 are complete: the reproducible data foundation, behavioral features,
+temporal analysis, aggregate forecast, and service-association hypotheses are established.
 
 ## Structure
 
