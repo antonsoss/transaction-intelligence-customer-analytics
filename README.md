@@ -8,8 +8,8 @@ prediction.
 
 ## Project status
 
-Notebooks 1 and 2 are complete: the reproducible data foundation, behavioral features,
-temporal analysis, aggregate forecast, and service-association hypotheses are established.
+Notebooks 1 through 3 are complete: the reproducible data foundation, behavioral and
+temporal analysis, customer segmentation, and behavioral-outlier workflow are established.
 
 ## Structure
 
