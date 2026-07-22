@@ -8,8 +8,9 @@ prediction.
 
 ## Project status
 
-Notebooks 1 through 3 are complete: the reproducible data foundation, behavioral and
-temporal analysis, customer segmentation, and behavioral-outlier workflow are established.
+All four planned notebooks are complete: the reproducible data foundation, behavioral and
+temporal analysis, customer segmentation, behavioral-outlier workflow, supervised-learning
+case study, data-centric validation, and final synthesis are established.
 
 ## Structure
 
