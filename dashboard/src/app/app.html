@@ -11,7 +11,11 @@
     <p class="nav-eyebrow">Analysis workspace</p>
     <nav class="primary-nav" aria-label="Main navigation">
       @for (item of navigation; track item.path) {
-        <a [routerLink]="item.path" routerLinkActive="active">
+        <a
+          [routerLink]="item.path"
+          routerLinkActive="active"
+          ariaCurrentWhenActive="page"
+        >
           <span>{{ item.number }}</span>
           {{ item.label }}
         </a>
@@ -46,6 +50,7 @@
           <a
             [routerLink]="item.path"
             routerLinkActive="active"
+            ariaCurrentWhenActive="page"
             [attr.aria-label]="item.label"
             [attr.title]="item.label"
           >{{ item.number }}</a>

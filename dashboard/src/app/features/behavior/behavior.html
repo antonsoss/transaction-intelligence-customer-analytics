@@ -103,9 +103,21 @@
           but one test window is not enough for production model selection.
         </p>
         <div class="forecast-comparison">
-          <span><i style="width: 59%"></i> SARIMA · 2,321</span>
-          <span><i style="width: 98%"></i> Last value · 3,858</span>
-          <span><i style="width: 100%"></i> Seasonal naive · 3,942</span>
+          <div>
+            <span>SARIMA</span>
+            <progress max="4000" value="2321" aria-label="SARIMA MAE: 2,321"></progress>
+            <strong>2,321</strong>
+          </div>
+          <div>
+            <span>Last value</span>
+            <progress max="4000" value="3858" aria-label="Last-value MAE: 3,858"></progress>
+            <strong>3,858</strong>
+          </div>
+          <div>
+            <span>Seasonal naive</span>
+            <progress max="4000" value="3942" aria-label="Seasonal-naive MAE: 3,942"></progress>
+            <strong>3,942</strong>
+          </div>
         </div>
       </article>
     </div>

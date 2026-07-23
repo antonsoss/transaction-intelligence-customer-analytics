@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@angular/core';
 
 import { ValidationOverview } from '../../core/models/dashboard.models';
 import { DashboardApi } from '../../core/services/dashboard-api';
@@ -9,6 +9,7 @@ import { DashboardApi } from '../../core/services/dashboard-api';
   imports: [CommonModule],
   templateUrl: './validation.html',
   styleUrl: './validation.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Validation implements OnInit {
   private readonly api = inject(DashboardApi);

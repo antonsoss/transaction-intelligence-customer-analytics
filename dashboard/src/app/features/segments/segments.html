@@ -43,11 +43,10 @@
 
     @if (activeTab() === 'profiles') {
       <div class="segment-picker">
-        @for (segment of segments(); track segment.segment_id; let index = $index) {
+        @for (segment of segments(); track segment.segment_id) {
           <button
             type="button"
             [class.active]="selectedSegmentId() === segment.segment_id"
-            [style.--segment-color]="colors[index]"
             (click)="chooseSegment(segment.segment_id)"
           >
             <i></i>
@@ -98,17 +97,21 @@
             <p class="eyebrow">Service use</p>
             <div class="rate">
               <span>Standing order</span>
-              <i><b [style.width.%]="segment.rate_has_standing_order * 100"></b></i>
+              <progress
+                max="1"
+                [value]="segment.rate_has_standing_order"
+                aria-label="Standing-order use"
+              ></progress>
               <strong>{{ segment.rate_has_standing_order | percent: '1.0-0' }}</strong>
             </div>
             <div class="rate">
               <span>Card</span>
-              <i><b [style.width.%]="segment.rate_has_card * 100"></b></i>
+              <progress max="1" [value]="segment.rate_has_card" aria-label="Card use"></progress>
               <strong>{{ segment.rate_has_card | percent: '1.0-0' }}</strong>
             </div>
             <div class="rate">
               <span>Loan</span>
-              <i><b [style.width.%]="segment.rate_has_loan * 100"></b></i>
+              <progress max="1" [value]="segment.rate_has_loan" aria-label="Loan use"></progress>
               <strong>{{ segment.rate_has_loan | percent: '1.0-0' }}</strong>
             </div>
             <p>{{ segment.banking_service_usage }}</p>

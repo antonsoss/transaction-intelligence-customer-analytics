@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import type { EChartsCoreOption } from 'echarts/core';
 import { forkJoin } from 'rxjs';
@@ -17,6 +24,7 @@ import { Chart } from '../../shared/chart/chart';
   imports: [CommonModule, RouterLink, Chart],
   templateUrl: './overview.html',
   styleUrl: './overview.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Overview implements OnInit {
   private readonly api = inject(DashboardApi);

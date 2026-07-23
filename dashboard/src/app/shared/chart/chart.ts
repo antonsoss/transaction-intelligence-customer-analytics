@@ -1,12 +1,12 @@
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   Component,
   ElementRef,
-  Input,
-  OnChanges,
   OnDestroy,
-  SimpleChanges,
-  ViewChild,
+  effect,
+  input,
+  viewChild,
 } from '@angular/core';
 import { BarChart, LineChart, ScatterChart } from 'echarts/charts';
 import {
@@ -34,39 +34,33 @@ echarts.use([
 
 @Component({
   selector: 'ti-chart',
-  template: '<div #chartHost class="chart-host" role="img" [attr.aria-label]="ariaLabel"></div>',
-  styles: [
-    `
-      :host,
-      .chart-host {
-        display: block;
-        height: 100%;
-        min-height: inherit;
-        width: 100%;
-      }
-    `,
-  ],
+  template: '<div #chartHost class="chart-host" role="img" [attr.aria-label]="ariaLabel()"></div>',
+  styleUrl: './chart.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Chart implements AfterViewInit, OnChanges, OnDestroy {
-  @ViewChild('chartHost', { static: true }) private chartHost!: ElementRef<HTMLDivElement>;
-  @Input({ required: true }) option!: EChartsCoreOption;
-  @Input() ariaLabel = 'Analytical chart';
+export class Chart implements AfterViewInit, OnDestroy {
+  readonly option = input.required<EChartsCoreOption>();
+  readonly ariaLabel = input('Analytical chart');
 
+  private readonly chartHost = viewChild.required<ElementRef<HTMLDivElement>>('chartHost');
   private chart?: EChartsType;
   private resizeObserver?: ResizeObserver;
 
-  ngAfterViewInit(): void {
-    this.chart = echarts.init(this.chartHost.nativeElement, undefined, { renderer: 'canvas' });
-    this.chart.setOption(this.option);
-    if (typeof ResizeObserver !== 'undefined') {
-      this.resizeObserver = new ResizeObserver(() => this.chart?.resize());
-      this.resizeObserver.observe(this.chartHost.nativeElement);
-    }
+  constructor() {
+    effect(() => {
+      const option = this.option();
+      this.chart?.setOption(option, true);
+    });
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes['option'] && this.chart) {
-      this.chart.setOption(this.option, true);
+  ngAfterViewInit(): void {
+    const host = this.chartHost().nativeElement;
+    this.chart = echarts.init(host, undefined, { renderer: 'canvas' });
+    this.chart.setOption(this.option());
+
+    if (typeof ResizeObserver !== 'undefined') {
+      this.resizeObserver = new ResizeObserver(() => this.chart?.resize());
+      this.resizeObserver.observe(host);
     }
   }
 

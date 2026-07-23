@@ -1,5 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, computed, inject, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  OnInit,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
 import type { EChartsCoreOption } from 'echarts/core';
 import { forkJoin } from 'rxjs';
 
@@ -19,6 +26,7 @@ type ActivityMetric =
   imports: [CommonModule, Chart],
   templateUrl: './behavior.html',
   styleUrl: './behavior.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Behavior implements OnInit {
   private readonly api = inject(DashboardApi);

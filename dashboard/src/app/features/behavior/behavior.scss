@@ -53,17 +53,46 @@
   margin-top: 1.4rem;
 }
 
-.forecast-comparison span {
+.forecast-comparison > div {
+  align-items: center;
+  display: grid;
+  gap: 0.65rem;
+  grid-template-columns: 88px minmax(90px, 1fr) 44px;
+}
+
+.forecast-comparison span,
+.forecast-comparison strong {
   color: #a9b7b4;
   font-size: 0.7rem;
 }
 
-.forecast-comparison i {
+.forecast-comparison strong {
+  color: #dce8e5;
+  text-align: right;
+}
+
+.forecast-comparison progress {
+  appearance: none;
+  background: #263947;
+  border: 0;
+  border-radius: 99px;
+  height: 0.4rem;
+  overflow: hidden;
+  width: 100%;
+}
+
+.forecast-comparison progress::-webkit-progress-bar {
+  background: #263947;
+}
+
+.forecast-comparison progress::-webkit-progress-value {
   background: #28ae9f;
   border-radius: 99px;
-  display: inline-block;
-  height: 0.4rem;
-  margin-right: 0.55rem;
+}
+
+.forecast-comparison progress::-moz-progress-bar {
+  background: #28ae9f;
+  border-radius: 99px;
 }
 
 .rule-arrow {

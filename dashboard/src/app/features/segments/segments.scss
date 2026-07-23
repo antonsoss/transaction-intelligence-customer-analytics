@@ -41,6 +41,8 @@
 }
 
 .segment-picker button {
+  --segment-color: #2aa99a;
+
   background: rgb(255 254 250 / 75%);
   border: 1px solid #d8dcd6;
   border-radius: 0.8rem;
@@ -51,6 +53,22 @@
   min-height: 112px;
   padding: 0.85rem;
   text-align: left;
+}
+
+.segment-picker button:nth-child(2) {
+  --segment-color: #577590;
+}
+
+.segment-picker button:nth-child(3) {
+  --segment-color: #d6a438;
+}
+
+.segment-picker button:nth-child(4) {
+  --segment-color: #e26450;
+}
+
+.segment-picker button:nth-child(5) {
+  --segment-color: #8d6cab;
 }
 
 .segment-picker button.active {
@@ -187,18 +205,28 @@ dd {
   font-size: 0.68rem;
 }
 
-.rate i {
+.rate progress {
+  appearance: none;
   background: #e5e8e4;
+  border: 0;
   border-radius: 99px;
   height: 0.45rem;
   overflow: hidden;
+  width: 100%;
 }
 
-.rate b {
+.rate progress::-webkit-progress-bar {
+  background: #e5e8e4;
+}
+
+.rate progress::-webkit-progress-value {
   background: #229f91;
-  border-radius: inherit;
-  display: block;
-  height: 100%;
+  border-radius: 99px;
+}
+
+.rate progress::-moz-progress-bar {
+  background: #229f91;
+  border-radius: 99px;
 }
 
 .service-panel > p:last-child,
