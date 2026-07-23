@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: transaction-intelligence-customer-analytics
+    runtime: docker
+    plan: free
+    region: ohio
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /api/v1/health
+    autoDeployTrigger: commit

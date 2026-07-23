@@ -68,6 +68,35 @@ def test_health_reports_missing_outputs_without_exposing_files(tmp_path: Path) -
     assert "dashboard_summary.parquet" in response.json()["missing_datasets"]
 
 
+def test_segment_points_are_read_from_anonymous_dashboard_data(tmp_path: Path) -> None:
+    write_parquet(
+        tmp_path / "dashboard_segment_points.parquet",
+        """
+        SELECT
+            'Point 0001'::VARCHAR AS point_id,
+            2::INTEGER AS segment_id,
+            'Established household users'::VARCHAR AS segment_name,
+            0.25::DOUBLE AS pca_component_1,
+            -1.5::DOUBLE AS pca_component_2
+        """,
+    )
+    repository = DashboardRepository(processed_dir=tmp_path, figures_dir=tmp_path)
+
+    response = get(create_app(repository), "/api/v1/segments/points")
+
+    assert response.status_code == 200
+    assert response.json() == [
+        {
+            "point_id": "Point 0001",
+            "segment_id": 2,
+            "segment_name": "Established household users",
+            "pca_component_1": 0.25,
+            "pca_component_2": -1.5,
+        }
+    ]
+    assert "account_id" not in response.text
+
+
 def test_unknown_figure_is_not_served(tmp_path: Path) -> None:
     repository = DashboardRepository(processed_dir=tmp_path, figures_dir=tmp_path)
 

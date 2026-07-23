@@ -1,0 +1,3 @@
+duckdb>=1.1
+fastapi[standard]>=0.139.2
+pandas>=2.2

@@ -24,7 +24,7 @@ class DashboardRepository:
         "dashboard_segments.parquet",
         "dashboard_outliers.parquet",
         "monthly_banking_activity.parquet",
-        "customer_segments.parquet",
+        "dashboard_segment_points.parquet",
         "service_association_rules.parquet",
     )
 
@@ -138,20 +138,16 @@ class DashboardRepository:
 
     def segment_points(self) -> list[dict[str, Any]]:
         return self._records(
-            "customer_segments.parquet",
+            "dashboard_segment_points.parquet",
             """
             SELECT
-                'Point ' || LPAD(
-                    CAST(ROW_NUMBER() OVER (ORDER BY account_id) AS VARCHAR),
-                    4,
-                    '0'
-                ) AS point_id,
+                point_id,
                 segment_id,
                 segment_name,
                 pca_component_1,
                 pca_component_2
             FROM {source}
-            ORDER BY account_id
+            ORDER BY point_id
             """,
         )
 
@@ -169,20 +165,6 @@ class DashboardRepository:
         return self._records(
             "dashboard_outliers.parquet",
             f"""
-            WITH named_cases AS (
-                SELECT
-                    'Case ' || LPAD(
-                        CAST(
-                            ROW_NUMBER() OVER (
-                                ORDER BY outlier_signal_count DESC, composite_outlier_percentile DESC
-                            ) AS VARCHAR
-                        ),
-                        2,
-                        '0'
-                    ) AS case_id,
-                    *
-                FROM {{source}}
-            )
             SELECT
                 case_id,
                 segment_id,
@@ -206,7 +188,7 @@ class DashboardRepository:
                 has_card,
                 has_loan,
                 has_standing_order
-            FROM named_cases
+            FROM {{source}}
             WHERE {where_clause}
             ORDER BY outlier_signal_count DESC, composite_outlier_percentile DESC
             """,

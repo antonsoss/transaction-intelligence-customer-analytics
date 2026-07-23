@@ -15,6 +15,12 @@ data/processed/*
 !data/raw/schema_mariadb.sql
 !data/interim/.gitkeep
 !data/processed/.gitkeep
+!data/processed/dashboard_summary.parquet
+!data/processed/dashboard_segments.parquet
+!data/processed/dashboard_outliers.parquet
+!data/processed/dashboard_segment_points.parquet
+!data/processed/monthly_banking_activity.parquet
+!data/processed/service_association_rules.parquet
 
 models/*
 !models/.gitkeep

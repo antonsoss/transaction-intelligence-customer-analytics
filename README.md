@@ -43,7 +43,7 @@ flowchart LR
 | Source | External to the repository | Public CTU MariaDB database | Not applicable |
 | Bronze | `data/raw/` | Immutable source CSV files, MariaDB DDL, provenance, and checksums | CSV data ignored; schema and manifest committed |
 | Silver | `data/interim/` | Validated DuckDB database and cleaned Parquet tables | Generated data ignored |
-| Gold | `data/processed/` | Customer features, segments, outliers, forecasts, and dashboard-ready tables | Generated data ignored |
+| Gold | `data/processed/` | Customer features, segments, outliers, forecasts, and dashboard-ready tables | Full generated data ignored; six anonymous or aggregate dashboard files committed for deployment |
 | API | `src/transaction_intelligence/api/` | Read-only endpoints over selected Gold tables and report figures | Application code committed |
 | Presentation | `dashboard/` and `reports/` | Angular views, selected figures, and final course deliverables | Source and intended report figures committed; builds ignored |
 
@@ -178,6 +178,35 @@ uvicorn transaction_intelligence.api.main:app --host 127.0.0.1 --port 8000
 
 Open `http://localhost:8000`. Run all notebooks before starting the dashboard so the required
 Gold datasets and validation figures exist.
+
+### Render deployment
+
+The repository includes a multi-stage `Dockerfile` that builds Angular and serves the compiled
+application and read-only API from one FastAPI process. The deployed image contains only six
+small dashboard-ready Parquet files and five intended report figures. Raw Berka data, the local
+DuckDB database, full account-level analytical tables, notebooks, and trained models are not
+copied into the image. `requirements-api.txt` keeps the container limited to packages needed to
+serve these results; the complete analytical environment remains defined in `pyproject.toml`.
+
+Test the production image locally:
+
+```bash
+docker build -t transaction-intelligence .
+docker run --rm -p 10000:10000 -e PORT=10000 transaction-intelligence
+```
+
+Then open `http://localhost:10000`, verify `/api/v1/health`, and review the API documentation at
+`/docs`.
+
+To deploy the free service:
+
+1. Push the deployment files and the six selected dashboard outputs to GitHub.
+2. In Render, choose **New → Blueprint** and connect this repository.
+3. Render reads `render.yaml`, builds the Docker image, and checks `/api/v1/health`.
+4. Open the generated `onrender.com` URL after the deployment becomes live.
+
+Every later commit to `main` triggers a new deployment. A free Render service sleeps after a
+period without traffic, so the first request after inactivity can take longer.
 
 ### Verification
 
