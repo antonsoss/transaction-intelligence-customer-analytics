@@ -10,16 +10,18 @@ prediction.
 
 All four planned notebooks are complete: the reproducible data foundation, behavioral and
 temporal analysis, customer segmentation, behavioral-outlier workflow, supervised-learning
-case study, data-centric validation, and final synthesis are established.
+case study, data-centric validation, and final synthesis are established. A read-only FastAPI
+service and Angular dashboard present the prepared results without exposing the source tables.
 
 ## Structure
 
 ```text
 data/       Raw, interim, and processed datasets
+dashboard/  Angular dashboard with four analytical views
 notebooks/  Reproducible analytical workflow
 reports/    Figures and final deliverables
-src/        Reusable Python package
-tests/      Automated checks for data and feature logic
+src/        Reusable Python package and FastAPI service
+tests/      Automated checks for data, feature logic, and API behavior
 ```
 
 ## Data architecture
@@ -30,9 +32,10 @@ flowchart LR
     B["Bronze<br/>data/raw/<br/>CSV, DDL, manifest, checksums"]
     C["Silver<br/>data/interim/<br/>Validated DuckDB and clean Parquet"]
     D["Gold<br/>data/processed/<br/>Features, segments, and analytical outputs"]
-    E["Presentation<br/>reports/<br/>Figures and final deliverables"]
+    E["Read-only API<br/>src/transaction_intelligence/api/<br/>Curated dashboard endpoints"]
+    F["Presentation<br/>dashboard/ and reports/<br/>Interactive views and figures"]
 
-    A --> B --> C --> D --> E
+    A --> B --> C --> D --> E --> F
 ```
 
 | Layer | Repository location | Contents | Git policy |
@@ -41,7 +44,8 @@ flowchart LR
 | Bronze | `data/raw/` | Immutable source CSV files, MariaDB DDL, provenance, and checksums | CSV data ignored; schema and manifest committed |
 | Silver | `data/interim/` | Validated DuckDB database and cleaned Parquet tables | Generated data ignored |
 | Gold | `data/processed/` | Customer features, segments, outliers, forecasts, and dashboard-ready tables | Generated data ignored |
-| Presentation | `reports/` | Selected figures and final course deliverables | Committed when intended for reporting |
+| API | `src/transaction_intelligence/api/` | Read-only endpoints over selected Gold tables and report figures | Application code committed |
+| Presentation | `dashboard/` and `reports/` | Angular views, selected figures, and final course deliverables | Source and intended report figures committed; builds ignored |
 
 ## Data
 
@@ -111,12 +115,77 @@ python scripts/build_local_database.py --overwrite
 
 ## Setup
 
-Requires Python 3.11 or newer.
+The analytical workflow and API require Python 3.11 or newer.
 
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -e '.[dev]'
+```
+
+The dashboard also requires a Node.js version supported by Angular 21 and pnpm 11:
+
+```bash
+cd dashboard
+corepack enable
+pnpm install
+cd ..
+```
+
+## Dashboard application
+
+The application has five views built from the notebook outputs and project documentation:
+
+1. **Overview** — portfolio measures, monthly activity, segment sizes, and the data journey.
+2. **Banking activity over time** — monthly series, cash movement, forecasting results, and service associations.
+3. **Customer segmentation** — segment profiles, PCA visualization, and anonymized behavioral-outlier cases.
+4. **Validation and insights** — supervised-learning results, stability checks, limitations, and responsible-use guidance.
+5. **About the project** — course information, data source, system architecture, project boundaries, and AI-assistance disclosure.
+
+The API only reads the six prepared Parquet datasets needed by these views. It does not accept
+arbitrary SQL, expose raw account identifiers, or make lending or fraud decisions.
+
+### Development
+
+Run the API from the repository root:
+
+```bash
+source .venv/bin/activate
+uvicorn transaction_intelligence.api.main:app --reload --port 8000
+```
+
+In a second terminal, run the Angular development server:
+
+```bash
+cd dashboard
+pnpm start
+```
+
+Open `http://localhost:4200`. The Angular development server sends `/api` requests to the local
+FastAPI service. Interactive API documentation is available at `http://localhost:8000/docs`.
+
+### Single-server build
+
+For a production-style local run, build Angular and let FastAPI serve both the frontend and API:
+
+```bash
+cd dashboard
+pnpm build
+cd ..
+source .venv/bin/activate
+uvicorn transaction_intelligence.api.main:app --host 127.0.0.1 --port 8000
+```
+
+Open `http://localhost:8000`. Run all notebooks before starting the dashboard so the required
+Gold datasets and validation figures exist.
+
+### Verification
+
+```bash
+pytest -q
+cd dashboard
+pnpm test
+pnpm build
 ```
 
 ## AI assistance disclosure

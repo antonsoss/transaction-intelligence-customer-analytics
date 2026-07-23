@@ -1,0 +1,81 @@
+:host {
+  display: block;
+}
+
+.chart-note {
+  border-top: 1px solid #e3e5e0;
+  color: #66736f;
+  font-size: 0.75rem;
+  margin: 0.4rem 0 0;
+  padding-top: 0.9rem;
+}
+
+.forecast {
+  background:
+    linear-gradient(145deg, rgb(37 183 167 / 12%), transparent 60%),
+    #111e2b;
+  border-color: #293d4d;
+  color: #eef5f3;
+}
+
+.forecast h2 {
+  max-width: 400px;
+}
+
+.forecast > p:not(.eyebrow) {
+  color: #a3b3af;
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+
+.forecast-score {
+  align-items: baseline;
+  display: flex;
+  gap: 0.7rem;
+  margin: 2rem 0 1rem;
+}
+
+.forecast-score strong {
+  color: #50d4c3;
+  font-size: 3.2rem;
+  letter-spacing: -0.06em;
+}
+
+.forecast-score span {
+  color: #849995;
+  font-size: 0.7rem;
+  max-width: 100px;
+}
+
+.forecast-comparison {
+  display: grid;
+  gap: 0.65rem;
+  margin-top: 1.4rem;
+}
+
+.forecast-comparison span {
+  color: #a9b7b4;
+  font-size: 0.7rem;
+}
+
+.forecast-comparison i {
+  background: #28ae9f;
+  border-radius: 99px;
+  display: inline-block;
+  height: 0.4rem;
+  margin-right: 0.55rem;
+}
+
+.rule-arrow {
+  color: #17998c;
+  font-weight: 900;
+  margin: 0 0.35rem;
+}
+
+.lift {
+  background: #e2f1ec;
+  border-radius: 99px;
+  color: #176f66;
+  font-weight: 800;
+  padding: 0.3rem 0.5rem;
+}

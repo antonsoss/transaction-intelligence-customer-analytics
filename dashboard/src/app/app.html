@@ -1,0 +1,57 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <a class="brand" routerLink="/overview" aria-label="Transaction Intelligence home">
+      <span class="brand-mark">TI</span>
+      <span>
+        <strong>Transaction</strong>
+        <small>Intelligence</small>
+      </span>
+    </a>
+
+    <p class="nav-eyebrow">Analysis workspace</p>
+    <nav class="primary-nav" aria-label="Main navigation">
+      @for (item of navigation; track item.path) {
+        <a [routerLink]="item.path" routerLinkActive="active">
+          <span>{{ item.number }}</span>
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+
+    <div class="sidebar-note">
+      <span class="status-dot" [class.partial]="apiStatus() === 'partial'"></span>
+      <div>
+        <strong>
+          @switch (apiStatus()) {
+            @case ('online') { API connected }
+            @case ('partial') { Data unavailable }
+            @default { Checking API }
+          }
+        </strong>
+        <small>Read-only analytical data</small>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <span>MIA 5126</span>
+      <p>Financial — PKDD'99 Financial Dataset (Berka)</p>
+    </div>
+  </aside>
+
+  <main class="main-content">
+    <header class="mobile-header">
+      <a class="mobile-brand" routerLink="/overview">TI</a>
+      <nav aria-label="Mobile navigation">
+        @for (item of navigation; track item.path) {
+          <a
+            [routerLink]="item.path"
+            routerLinkActive="active"
+            [attr.aria-label]="item.label"
+            [attr.title]="item.label"
+          >{{ item.number }}</a>
+        }
+      </nav>
+    </header>
+    <router-outlet />
+  </main>
+</div>

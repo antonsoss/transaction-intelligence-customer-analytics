@@ -1,0 +1,127 @@
+<section class="page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Validation and insights</p>
+      <h1>Model results, data checks, and limitations.</h1>
+      <p class="page-intro">
+        The final notebook checks the supervised-learning demonstration, data coverage,
+        historical differences, cluster stability, and the limits of every conclusion.
+      </p>
+    </div>
+    <aside class="course-alignment" aria-label="Course topics covered by Notebook 4">
+      <strong>Notebook 4</strong>
+      <code>04_validation_and_insights.ipynb</code>
+      <span><b>Week 9</b> · Supervised learning</span>
+      <span><b>Week 10</b> · Data-centric AI</span>
+    </aside>
+  </header>
+
+  @if (loading()) {
+    <div class="card state">Loading validation results…</div>
+  } @else if (error()) {
+    <div class="card state error">{{ error() }}</div>
+  } @else if (validation(); as result) {
+    <div class="metric-grid">
+      <article class="card metric-card">
+        <p class="metric-label">Completed loans</p>
+        <strong>{{ result.completed_loans }}</strong>
+        <small>Loans with a known final status</small>
+      </article>
+      <article class="card metric-card">
+        <p class="metric-label">Recorded problem loans</p>
+        <strong>{{ result.recorded_problem_loans }}</strong>
+        <small>{{ result.recorded_problem_loans / result.completed_loans | percent: '1.1-1' }} of cohort</small>
+      </article>
+      <article class="card metric-card accent">
+        <p class="metric-label">Logistic-regression F1</p>
+        <strong>{{ result.f1 | number: '1.2-2' }}</strong>
+        <small>Balances precision and recall</small>
+      </article>
+      <article class="card metric-card accent">
+        <p class="metric-label">Logistic-regression PR-AUC</p>
+        <strong>{{ result.pr_auc | number: '1.2-2' }}</strong>
+        <small>Useful with an uncommon target</small>
+      </article>
+    </div>
+
+    <article class="model-story card">
+      <div>
+        <p class="eyebrow">Course-method demonstration</p>
+        <h2>{{ result.selected_model }} was kept for clarity</h2>
+        <p>
+          The model uses only information available before each loan began. It is easier to
+          explain than the challengers and achieved the best overall balance in the fixed test
+          comparison.
+        </p>
+      </div>
+      <div class="model-boundary">
+        <strong>Not a credit score</strong>
+        <span>No approval, rejection, or customer-treatment decisions.</span>
+      </div>
+    </article>
+
+    <section class="figure-grid section-gap">
+      @for (figure of result.figures; track figure.url) {
+        <article class="card figure-card">
+          <div>
+            <p class="eyebrow">Validation view</p>
+            <h2>{{ figure.title }}</h2>
+            <p>{{ figure.description }}</p>
+          </div>
+          <img [src]="figure.url" [alt]="figure.title" loading="lazy" />
+        </article>
+      }
+    </section>
+
+    <div class="grid two section-gap">
+      <article class="card panel definitions">
+        <p class="eyebrow">How to read the measures</p>
+        <dl>
+          <div>
+            <dt>Precision</dt>
+            <dd>When the model flags a problem, how often is it correct?</dd>
+          </div>
+          <div>
+            <dt>Recall</dt>
+            <dd>Of the recorded problem loans, how many does the model find?</dd>
+          </div>
+          <div>
+            <dt>F1</dt>
+            <dd>One measure that balances precision and recall.</dd>
+          </div>
+          <div>
+            <dt>PR-AUC</dt>
+            <dd>A summary of precision and recall across many cutoffs.</dd>
+          </div>
+        </dl>
+      </article>
+
+      <article class="card panel limitations">
+        <p class="eyebrow">Limits that travel with the result</p>
+        <ul>
+          @for (limitation of result.limitations; track limitation) {
+            <li>{{ limitation }}</li>
+          }
+        </ul>
+      </article>
+    </div>
+
+    <section class="responsibility section-gap">
+      <div>
+        <span>01</span>
+        <strong>Protect the cutoff</strong>
+        <p>Transactions after the loan date never enter the model.</p>
+      </div>
+      <div>
+        <span>02</span>
+        <strong>Keep context visible</strong>
+        <p>Historical, regional, and coverage limits remain beside the scores.</p>
+      </div>
+      <div>
+        <span>03</span>
+        <strong>Explain each method</strong>
+        <p>Profiles, loadings, deviations, and coefficients serve different needs.</p>
+      </div>
+    </section>
+  }
+</section>

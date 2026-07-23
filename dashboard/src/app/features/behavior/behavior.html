@@ -1,0 +1,166 @@
+<section class="page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Banking activity over time</p>
+      <h1>Banking activity over time.</h1>
+      <p class="page-intro">
+        Explore monthly portfolio activity and service combinations. Totals reflect both
+        behavior and the rapid growth of observed accounts.
+      </p>
+    </div>
+    <aside class="course-alignment" aria-label="Course topics covered by Notebook 2">
+      <strong>Notebook 2</strong>
+      <code>02_behavioral_and_temporal_analysis.ipynb</code>
+      <span><b>Week 2</b> · EDA and visualization</span>
+      <span><b>Week 6</b> · Time-series analysis and forecasting</span>
+      <span><b>Week 7</b> · Recommendation systems</span>
+    </aside>
+  </header>
+
+  @if (loading()) {
+    <div class="card state">Loading behavioral history…</div>
+  } @else if (error()) {
+    <div class="card state error">{{ error() }}</div>
+  } @else {
+    <div class="metric-grid">
+      <article class="card metric-card">
+        <p class="metric-label">Observed months</p>
+        <strong>{{ activity().length }}</strong>
+        <small>January 1993 through December 1998</small>
+      </article>
+      <article class="card metric-card">
+        <p class="metric-label">Total transactions</p>
+        <strong>{{ totalTransactions() | number }}</strong>
+        <small>Across the full clean snapshot</small>
+      </article>
+      <article class="card metric-card">
+        <p class="metric-label">Latest active accounts</p>
+        <strong>{{ latestAccounts() | number }}</strong>
+        <small>Accounts active in the final month</small>
+      </article>
+      <article class="card metric-card">
+        <p class="metric-label">Retained service rules</p>
+        <strong>{{ rules().length }}</strong>
+        <small>Filtered recommendation hypotheses</small>
+      </article>
+    </div>
+
+    <article class="card panel">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Monthly series</p>
+          <h2>{{ selectedMetricLabel() }}</h2>
+          <p>The dashed line is a simple three-month moving average.</p>
+        </div>
+        <div class="control">
+          <label for="activity-metric">Measure</label>
+          <select id="activity-metric" [value]="selectedMetric()" (change)="setMetric($event)">
+            @for (option of metricOptions; track option.value) {
+              <option [value]="option.value">{{ option.label }}</option>
+            }
+          </select>
+        </div>
+      </div>
+      <ti-chart
+        class="chart tall"
+        [option]="activityOption()"
+        [ariaLabel]="selectedMetricLabel() + ' by month with three-month average'"
+      />
+      @if (peakMonth(); as peak) {
+        <p class="chart-note">
+          Highest observed {{ selectedMetricLabel().toLowerCase() }}:
+          <strong>{{ peak.month | date: 'MMMM yyyy' }}</strong>.
+          This is a description, not an explanation of cause.
+        </p>
+      }
+    </article>
+
+    <div class="grid two section-gap">
+      <article class="card panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Cash movement</p>
+            <h2>Inflow and outflow</h2>
+            <p>Monthly amounts across all observed accounts.</p>
+          </div>
+        </div>
+        <ti-chart
+          class="chart"
+          [option]="cashFlowOption()"
+          ariaLabel="Monthly total inflow and outflow"
+        />
+      </article>
+
+      <article class="card panel forecast">
+        <p class="eyebrow">Forecast exercise</p>
+        <h2>SARIMA led the declared comparison</h2>
+        <div class="forecast-score">
+          <strong>2,321</strong>
+          <span>MAE in monthly transactions</span>
+        </div>
+        <p>
+          The model was tested on the final 12 months. It improved on both naive comparisons,
+          but one test window is not enough for production model selection.
+        </p>
+        <div class="forecast-comparison">
+          <span><i style="width: 59%"></i> SARIMA · 2,321</span>
+          <span><i style="width: 98%"></i> Last value · 3,858</span>
+          <span><i style="width: 100%"></i> Seasonal naive · 3,942</span>
+        </div>
+      </article>
+    </div>
+
+    <article class="card panel section-gap">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Service associations</p>
+          <h2>Patterns worth investigating</h2>
+          <p>Lift above 1 means the combination appears more often than independence suggests.</p>
+        </div>
+        <div class="control">
+          <label for="minimum-lift">Minimum lift</label>
+          <select id="minimum-lift" [value]="minimumLift()" (change)="setMinimumLift($event)">
+            <option value="1">1.0</option>
+            <option value="1.2">1.2</option>
+            <option value="1.5">1.5</option>
+            <option value="2">2.0</option>
+            <option value="3">3.0</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Observed pattern</th>
+              <th>Support</th>
+              <th>Confidence</th>
+              <th>Lift</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (rule of filteredRules(); track rule.rule) {
+              <tr>
+                <td>
+                  <strong>{{ rule.antecedents }}</strong>
+                  <span class="rule-arrow">→</span>
+                  {{ rule.consequents }}
+                </td>
+                <td>{{ rule.support | percent: '1.1-1' }}</td>
+                <td>{{ rule.confidence | percent: '1.1-1' }}</td>
+                <td><span class="lift">{{ rule.lift | number: '1.2-2' }}×</span></td>
+              </tr>
+            } @empty {
+              <tr><td colspan="4">No rules meet this lift threshold.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <div class="callout warning section-gap">
+      These service patterns are hypotheses, not personalized recommendations. They do not
+      establish suitability, interest, or cause.
+    </div>
+  }
+</section>

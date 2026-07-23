@@ -1,0 +1,267 @@
+<section class="page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Customer segmentation</p>
+      <h1>Five customer behavior segments.</h1>
+      <p class="page-intro">
+        Compare the selected customer segments in their original units, then review the
+        small set of accounts that differ strongly from their segment.
+      </p>
+    </div>
+    <aside class="course-alignment" aria-label="Course topics covered by Notebook 3">
+      <strong>Notebook 3</strong>
+      <code>03_customer_segmentation.ipynb</code>
+      <span><b>Week 8</b> · Clustering and dimensionality reduction</span>
+    </aside>
+  </header>
+
+  @if (loading()) {
+    <div class="card state">Loading segment profiles…</div>
+  } @else if (error()) {
+    <div class="card state error">{{ error() }}</div>
+  } @else {
+    <div class="tab-bar" role="tablist" aria-label="Customer segmentation views">
+      <button
+        type="button"
+        role="tab"
+        [class.active]="activeTab() === 'profiles'"
+        [attr.aria-selected]="activeTab() === 'profiles'"
+        (click)="activeTab.set('profiles')"
+      >
+        Segment profiles
+      </button>
+      <button
+        type="button"
+        role="tab"
+        [class.active]="activeTab() === 'outliers'"
+        [attr.aria-selected]="activeTab() === 'outliers'"
+        (click)="activeTab.set('outliers')"
+      >
+        Outlier cases <span>{{ outliers().length }}</span>
+      </button>
+    </div>
+
+    @if (activeTab() === 'profiles') {
+      <div class="segment-picker">
+        @for (segment of segments(); track segment.segment_id; let index = $index) {
+          <button
+            type="button"
+            [class.active]="selectedSegmentId() === segment.segment_id"
+            [style.--segment-color]="colors[index]"
+            (click)="chooseSegment(segment.segment_id)"
+          >
+            <i></i>
+            <span>{{ segment.segment_name }}</span>
+            <strong>{{ segment.population_share | percent: '1.0-0' }}</strong>
+          </button>
+        }
+      </div>
+
+      @if (selectedSegment(); as segment) {
+        <article class="segment-hero card">
+          <div>
+            <span class="segment-number">Segment {{ segment.segment_id + 1 }}</span>
+            <h2>{{ segment.segment_name }}</h2>
+            <p>{{ segment.defining_features }}</p>
+          </div>
+          <div class="segment-size">
+            <strong>{{ segment.population_size | number }}</strong>
+            <span>accounts</span>
+            <small>{{ segment.population_share | percent: '1.1-1' }} of portfolio</small>
+          </div>
+        </article>
+
+        <div class="profile-grid section-gap">
+          <article class="card panel">
+            <p class="eyebrow">Typical activity</p>
+            <dl>
+              <div>
+                <dt>Transactions / month</dt>
+                <dd>{{ segment.median_transactions_per_observed_month | number: '1.1-1' }}</dd>
+              </div>
+              <div>
+                <dt>Average inflow</dt>
+                <dd>{{ segment.median_average_inflow | number: '1.0-0' }}</dd>
+              </div>
+              <div>
+                <dt>Average outflow</dt>
+                <dd>{{ segment.median_average_outflow | number: '1.0-0' }}</dd>
+              </div>
+              <div>
+                <dt>Average balance</dt>
+                <dd>{{ segment.median_average_balance | number: '1.0-0' }}</dd>
+              </div>
+            </dl>
+          </article>
+
+          <article class="card panel service-panel">
+            <p class="eyebrow">Service use</p>
+            <div class="rate">
+              <span>Standing order</span>
+              <i><b [style.width.%]="segment.rate_has_standing_order * 100"></b></i>
+              <strong>{{ segment.rate_has_standing_order | percent: '1.0-0' }}</strong>
+            </div>
+            <div class="rate">
+              <span>Card</span>
+              <i><b [style.width.%]="segment.rate_has_card * 100"></b></i>
+              <strong>{{ segment.rate_has_card | percent: '1.0-0' }}</strong>
+            </div>
+            <div class="rate">
+              <span>Loan</span>
+              <i><b [style.width.%]="segment.rate_has_loan * 100"></b></i>
+              <strong>{{ segment.rate_has_loan | percent: '1.0-0' }}</strong>
+            </div>
+            <p>{{ segment.banking_service_usage }}</p>
+          </article>
+
+          <article class="card panel story-panel">
+            <p class="eyebrow">Plain-language profile</p>
+            <div>
+              <strong>Transactions</strong>
+              <p>{{ segment.transaction_patterns }}</p>
+            </div>
+            <div>
+              <strong>Balances</strong>
+              <p>{{ segment.balance_characteristics }}</p>
+            </div>
+          </article>
+        </div>
+
+        <div class="segment-charts section-gap">
+          <article class="card panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Segment population</p>
+                <h2>Relative size</h2>
+              </div>
+            </div>
+            <ti-chart
+              class="chart segment-population-chart"
+              [option]="populationOption()"
+              ariaLabel="Population size for each of five customer segments"
+            />
+          </article>
+          <article class="card panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">PCA view</p>
+                <h2>Behavioral space</h2>
+                <p>Each point is an account; distance is descriptive, not a risk score.</p>
+              </div>
+            </div>
+            <ti-chart
+              class="chart tall segment-space-chart"
+              [option]="scatterOption()"
+              ariaLabel="PCA scatter plot colored by selected customer segment"
+            />
+          </article>
+        </div>
+
+        <div class="grid two section-gap">
+          <div class="callout">
+            <strong>Possible use:</strong> {{ segment.possible_business_relevance }}
+          </div>
+          <div class="callout warning">
+            <strong>Important limit:</strong> {{ segment.limitations }}
+          </div>
+        </div>
+      }
+    } @else {
+      <div class="callout warning outlier-warning">
+        <strong>Behavioral outlier does not mean fraud.</strong>
+        These cases differ from their segment using at least two independent signals.
+      </div>
+
+      <div class="outlier-layout section-gap">
+        <article class="card panel outlier-list">
+          <div class="panel-header">
+            <div>
+              <p class="eyebrow">Selected cases</p>
+              <h2>{{ filteredOutliers().length }} accounts</h2>
+            </div>
+            <div class="control">
+              <label for="outlier-segment">Segment</label>
+              <select id="outlier-segment" (change)="setOutlierFilter($event)">
+                <option value="all">All segments</option>
+                @for (segment of segments(); track segment.segment_id) {
+                  <option [value]="segment.segment_id">{{ segment.segment_name }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          <div class="case-list">
+            @for (item of filteredOutliers(); track item.case_id) {
+              <button
+                type="button"
+                [class.active]="selectedOutlier()?.case_id === item.case_id"
+                (click)="chooseOutlier(item)"
+              >
+                <span>
+                  <strong>{{ item.case_id }}</strong>
+                  <small>{{ item.segment_name }}</small>
+                </span>
+                <em>{{ item.outlier_signal_count }} signals</em>
+              </button>
+            }
+          </div>
+        </article>
+
+        @if (selectedOutlier(); as item) {
+          <article class="card panel case-detail">
+            <div class="case-heading">
+              <div>
+                <p class="eyebrow">Transparent case study</p>
+                <h2>{{ item.case_id }}</h2>
+                <span class="chip">{{ item.segment_name }}</span>
+              </div>
+              <div class="signal-count">
+                <strong>{{ item.outlier_signal_count }}</strong>
+                <span>agreeing signals</span>
+              </div>
+            </div>
+
+            <div class="comparison">
+              <p>Largest within-segment difference</p>
+              <h3>{{ readableFeature(item.top_robust_deviation_feature) }}</h3>
+              <div>
+                <span>
+                  <small>Case value</small>
+                  <strong>{{ item.top_robust_feature_value | number: '1.2-2' }}</strong>
+                </span>
+                <i>versus</i>
+                <span>
+                  <small>Segment median</small>
+                  <strong>{{ item.top_robust_feature_segment_median | number: '1.2-2' }}</strong>
+                </span>
+              </div>
+            </div>
+
+            <dl class="case-metrics">
+              <div>
+                <dt>Distance percentile</dt>
+                <dd>{{ item.centroid_distance_percentile_within_segment | percent: '1.1-1' }}</dd>
+              </div>
+              <div>
+                <dt>GMM membership</dt>
+                <dd>{{ item.gmm_max_membership_probability | percent: '1.1-1' }}</dd>
+              </div>
+              <div>
+                <dt>Transactions / month</dt>
+                <dd>{{ item.transactions_per_observed_month | number: '1.1-1' }}</dd>
+              </div>
+              <div>
+                <dt>Average balance</dt>
+                <dd>{{ item.average_balance | number: '1.0-0' }}</dd>
+              </div>
+            </dl>
+
+            <p class="case-limit">
+              This comparison shows why the account is unusual relative to its segment. It
+              does not establish the reason and should not trigger automatic treatment.
+            </p>
+          </article>
+        }
+      </div>
+    }
+  }
+</section>

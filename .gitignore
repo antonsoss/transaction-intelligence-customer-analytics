@@ -22,3 +22,8 @@ models/*
 *.egg-info/
 build/
 dist/
+
+dashboard/node_modules/
+dashboard/dist/
+dashboard/.angular/
+dashboard/coverage/

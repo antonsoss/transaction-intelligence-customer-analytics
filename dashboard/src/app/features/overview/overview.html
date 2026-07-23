@@ -1,0 +1,173 @@
+<section class="page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Customer behavioral analytics</p>
+      <h1>Customer behavior at a glance.</h1>
+      <p class="page-intro">
+        A responsible view of historical banking activity, customer segments, and model
+        validation. The project describes patterns; it does not score people or claim fraud.
+        The observed period is {{ observedPeriod() }}.
+      </p>
+    </div>
+    <aside class="course-alignment" aria-label="Course topics covered by Notebook 1">
+      <strong>Notebook 1</strong>
+      <code>01_data_foundation_and_engineering.ipynb</code>
+      <span><b>Week 1</b> · Data science in practice</span>
+      <span><b>Week 3</b> · Data preparation</span>
+      <span><b>Week 4</b> · Data engineering</span>
+      <span><b>Week 5</b> · Modern data architectures</span>
+    </aside>
+  </header>
+
+  @if (loading()) {
+    <div class="card state">Loading the analytical summary…</div>
+  } @else if (error()) {
+    <div class="card state error">{{ error() }}</div>
+  } @else {
+    <div class="metric-grid">
+      @for (metric of featuredMetrics(); track metric.metric) {
+        <article class="card metric-card">
+          <p class="metric-label">{{ metric.metric }}</p>
+          <strong>{{ metric.display_value }}</strong>
+          <small>{{ metric.note }}</small>
+        </article>
+      }
+    </div>
+
+    <article class="hero-card">
+      <div class="hero-copy">
+        <p class="eyebrow">Central analytical story</p>
+        <h2>Five behavior patterns across 4,500 accounts</h2>
+        <p>
+          Activity, cash flow, balance behavior, channel mix, and service use form distinct
+          account profiles. These patterns support exploration—not permanent customer labels.
+        </p>
+        <a routerLink="/segments">Explore customer segments <span>→</span></a>
+      </div>
+      <div class="hero-stat">
+        <span>Selected solution</span>
+        <strong>5</strong>
+        <small>K-means segments</small>
+      </div>
+    </article>
+
+    <div class="overview-charts section-gap">
+      <article class="card panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Portfolio growth</p>
+            <h2>Monthly activity</h2>
+            <p>Transaction volume shown with the number of active accounts.</p>
+          </div>
+          <span class="chip">72 months</span>
+        </div>
+        <ti-chart
+          class="chart overview-activity-chart"
+          [option]="activityOption()"
+          ariaLabel="Monthly transaction count and active account count"
+        />
+      </article>
+
+      <article class="card panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Selected segmentation</p>
+            <h2>Segment population</h2>
+            <p>Account counts in the final five-segment solution.</p>
+          </div>
+        </div>
+        <ti-chart
+          class="chart overview-segment-chart"
+          [option]="segmentOption()"
+          ariaLabel="Account population by customer segment"
+        />
+      </article>
+    </div>
+
+    <section class="journey section-gap">
+      <div class="journey-heading">
+        <p class="eyebrow">From source to insight</p>
+        <h2>One traceable analytical path</h2>
+        <p>
+          Each phase below corresponds to one project notebook, from preparing the original
+          Berka data to publishing carefully validated results.
+        </p>
+      </div>
+      <div class="journey-grid">
+        <article>
+          <div class="phase-heading">
+            <span>01</span>
+            <small>Foundation</small>
+          </div>
+          <strong>Prepare and validate the data</strong>
+          <p>
+            Imports the Financial — PKDD'99 Financial Dataset (Berka), checks its tables and
+            relationships, and creates the clean analytical foundation.
+          </p>
+          <a
+            href="https://relational.fel.cvut.cz/dataset/Financial"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Open the original CTU dataset <span aria-hidden="true">↗</span>
+          </a>
+          <div class="notebook-reference">
+            <small>Notebook 1</small>
+            <code>01_data_foundation_and_engineering.ipynb</code>
+          </div>
+        </article>
+        <article>
+          <div class="phase-heading">
+            <span>02</span>
+            <small>Banking activity over time</small>
+          </div>
+          <strong>Understand banking behavior</strong>
+          <p>
+            Explores transactions over time, evaluates an aggregate forecast, studies service
+            associations, and creates customer behavior features.
+          </p>
+          <div class="notebook-reference">
+            <small>Notebook 2</small>
+            <code>02_behavioral_and_temporal_analysis.ipynb</code>
+          </div>
+        </article>
+        <article>
+          <div class="phase-heading">
+            <span>03</span>
+            <small>Customer segmentation</small>
+          </div>
+          <strong>Find and explain customer segments</strong>
+          <p>
+            Compares clustering choices, selects five interpretable segments, and examines
+            behavioral outliers without treating them as fraud.
+          </p>
+          <div class="notebook-reference">
+            <small>Notebook 3</small>
+            <code>03_customer_segmentation.ipynb</code>
+          </div>
+        </article>
+        <article>
+          <div class="phase-heading">
+            <span>04</span>
+            <small>Validation and insights</small>
+          </div>
+          <strong>Check, explain, and present the results</strong>
+          <p>
+            Validates the main findings, demonstrates supervised learning, documents limits,
+            and prepares the outputs served by FastAPI and Angular.
+          </p>
+          <div class="notebook-reference">
+            <small>Notebook 4</small>
+            <code>04_validation_and_insights.ipynb</code>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <div class="callout section-gap">
+      <strong>Responsible-use boundary:</strong>
+      no automated lending, fraud, or customer-treatment decision should be made from this
+      course project.
+    </div>
+  }
+</section>

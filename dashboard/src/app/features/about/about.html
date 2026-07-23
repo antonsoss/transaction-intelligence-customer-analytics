@@ -1,0 +1,194 @@
+<section class="page about-page">
+  <header class="page-header">
+    <div>
+      <p class="eyebrow">Project context</p>
+      <h1>About the project.</h1>
+      <p class="page-intro">
+        The course, source data, analytical purpose, technical architecture, and responsible-use
+        boundaries behind Transaction Intelligence.
+      </p>
+    </div>
+  </header>
+
+  <article class="about-hero card">
+    <p class="eyebrow">Course project</p>
+    <h2>Transaction Intelligence: Customer Segmentation and Behavioral Analytics</h2>
+
+    <dl class="project-details">
+      <div>
+        <dt>Author</dt>
+        <dd>Antonio Sosa</dd>
+      </div>
+      <div>
+        <dt>University</dt>
+        <dd>University of Ottawa</dd>
+      </div>
+      <div>
+        <dt>Course</dt>
+        <dd>MIA 5126 — Essential Concepts in Data Science</dd>
+      </div>
+      <div>
+        <dt>Professor</dt>
+        <dd>Dr. Olubisi Runsewe</dd>
+      </div>
+      <div class="repository-detail">
+        <dt>Repository</dt>
+        <dd>
+          <a
+            href="https://github.com/antonsoss/transaction-intelligence-customer-analytics"
+            target="_blank"
+            rel="noreferrer"
+          >github.com/antonsoss/transaction-intelligence-customer-analytics<span aria-hidden="true"> ↗</span></a>
+        </dd>
+      </div>
+    </dl>
+
+    <p class="project-description">
+      This project uses the
+      <a
+        href="https://relational.fel.cvut.cz/dataset/Financial"
+        target="_blank"
+        rel="noreferrer"
+      >Financial — PKDD'99 Financial Dataset (Berka)<span aria-hidden="true"> ↗</span></a>
+      to study banking behavior, changes over time, service associations, customer segments,
+      and behavioral outliers. This project includes a limited loan-repayment case study to
+      demonstrate supervised learning concepts from the course. It is intended for education
+      and analysis only, not for fraud detection or automated lending decisions.
+    </p>
+  </article>
+
+  <section class="architecture section-gap" aria-labelledby="architecture-title">
+    <div class="section-heading">
+      <p class="eyebrow">System architecture</p>
+      <h2 id="architecture-title">From public source to interactive explanation</h2>
+      <p>
+        The dashboard reads prepared analytical outputs. It does not query the external database
+        or expose raw banking records to the browser.
+      </p>
+    </div>
+
+    <div class="architecture-map" aria-label="End-to-end project architecture">
+      <section class="architecture-lane">
+        <header class="lane-heading">
+          <span>01</span>
+          <div>
+            <strong>Source and local foundation</strong>
+            <small>Collect and preserve the relational data</small>
+          </div>
+        </header>
+        <div class="pipeline-flow source-pipeline">
+          <article class="pipeline-card source-card">
+            <span class="card-kind">External source</span>
+            <h3>Financial — PKDD'99 Financial Dataset (Berka)</h3>
+            <code>relational.fel.cvut.cz</code>
+            <p>The public dataset hosted in CTU's relational MariaDB repository.</p>
+          </article>
+          <span class="pipeline-arrow" aria-hidden="true">→</span>
+          <article class="pipeline-card ingestion-card">
+            <span class="card-kind">Reproducible ingestion</span>
+            <h3>Download and database scripts</h3>
+            <code>scripts/download_berka.py</code>
+            <code>scripts/build_local_database.py</code>
+            <p>Creates the Bronze snapshot and validated local DuckDB database.</p>
+            <small class="output-label">Outputs · data/raw/ and data/interim/</small>
+          </article>
+        </div>
+      </section>
+
+      <div class="lane-connector" aria-hidden="true">
+        <span>↓</span>
+        <small>Validated local data</small>
+      </div>
+
+      <section class="architecture-lane notebook-lane">
+        <header class="lane-heading">
+          <span>02</span>
+          <div>
+            <strong>Analytical notebook pipeline</strong>
+            <small>Each notebook builds on the outputs of the previous phase</small>
+          </div>
+        </header>
+        <div class="pipeline-flow notebook-pipeline">
+          <article class="pipeline-card notebook-card">
+            <span class="card-kind">Notebook 1</span>
+            <h3>Foundation and engineering</h3>
+            <code>01_data_foundation_and_engineering.ipynb</code>
+            <p>Audits quality, relationships, preparation decisions, and data architecture.</p>
+            <small class="output-label">Outputs · Silver clean tables</small>
+          </article>
+          <span class="pipeline-arrow" aria-hidden="true">→</span>
+          <article class="pipeline-card notebook-card">
+            <span class="card-kind">Notebook 2</span>
+            <h3>Banking activity over time</h3>
+            <code>02_behavioral_and_temporal_analysis.ipynb</code>
+            <p>Creates behavioral features, monthly activity, forecasts, and service rules.</p>
+            <small class="output-label">Outputs · Gold behavior datasets</small>
+          </article>
+          <span class="pipeline-arrow" aria-hidden="true">→</span>
+          <article class="pipeline-card notebook-card">
+            <span class="card-kind">Notebook 3</span>
+            <h3>Customer segmentation</h3>
+            <code>03_customer_segmentation.ipynb</code>
+            <p>Builds PCA views, segment profiles, clustering models, and outlier cases.</p>
+            <small class="output-label">Outputs · Segments, outliers, and models</small>
+          </article>
+          <span class="pipeline-arrow" aria-hidden="true">→</span>
+          <article class="pipeline-card notebook-card">
+            <span class="card-kind">Notebook 4</span>
+            <h3>Validation and insights</h3>
+            <code>04_validation_and_insights.ipynb</code>
+            <p>Checks the findings and prepares figures and dashboard-ready Parquet files.</p>
+            <small class="output-label">Outputs · Dashboard datasets and figures</small>
+          </article>
+        </div>
+      </section>
+
+      <div class="lane-connector" aria-hidden="true">
+        <span>↓</span>
+        <small>Curated analytical outputs</small>
+      </div>
+
+      <section class="architecture-lane delivery-lane">
+        <header class="lane-heading">
+          <span>03</span>
+          <div>
+            <strong>Application and presentation</strong>
+            <small>Serve selected results without exposing raw banking records</small>
+          </div>
+        </header>
+        <div class="pipeline-flow delivery-pipeline">
+          <article class="pipeline-card api-card">
+            <span class="card-kind">Application layer</span>
+            <h3>Read-only FastAPI service</h3>
+            <code>src/transaction_intelligence/api/</code>
+            <p>
+              Reads approved Parquet files and report figures, validates responses, and replaces
+              account identifiers with anonymous case labels.
+            </p>
+            <small class="output-label">Endpoints · /api/v1/</small>
+          </article>
+          <span class="pipeline-arrow" aria-hidden="true">→</span>
+          <article class="pipeline-card angular-card">
+            <span class="card-kind">Presentation layer</span>
+            <h3>Angular dashboard</h3>
+            <code>dashboard/</code>
+            <p>
+              Calls the API and presents the overview, behavioral analysis, segments, outliers,
+              validation results, and project context with ECharts.
+            </p>
+            <small class="output-label">Browser receives curated results only</small>
+          </article>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <section class="disclosure section-gap" aria-labelledby="disclosure-title">
+    <h2 id="disclosure-title">AI assistance disclosure</h2>
+    <blockquote>
+      I used AI as an engineering productivity tool for brainstorming, troubleshooting, and
+      documentation, while remaining responsible for all technical decisions, implementation,
+      testing, validation, and conclusions.
+    </blockquote>
+  </section>
+</section>
