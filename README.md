@@ -13,6 +13,8 @@ temporal analysis, customer segmentation, behavioral-outlier workflow, supervise
 case study, data-centric validation, and final synthesis are established. A read-only FastAPI
 service and Angular dashboard present the prepared results without exposing the source tables.
 
+**Live application:** [transaction-intelligence-customer.onrender.com](https://transaction-intelligence-customer.onrender.com)
+
 ## Structure
 
 ```text
