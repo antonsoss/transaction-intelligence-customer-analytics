@@ -1,29 +1,73 @@
 # Transaction Intelligence: Customer Segmentation and Behavioral Analytics
 
-This project uses the Berka (PKDD'99) banking dataset to build customer-level
-behavioral profiles, discover meaningful customer segments, and explore unusual
-account activity. The emphasis is on exploratory data analysis, relational data
-preparation, unsupervised learning, and responsible interpretation—not fraud
-prediction.
+An MIA 5126 data science project for understanding historical banking behaviour through relational data engineering, temporal analysis, customer segmentation, and responsible interpretation.
 
-## Project status
+## Overview
 
-All four planned notebooks are complete: the reproducible data foundation, behavioral and
-temporal analysis, customer segmentation, behavioral-outlier workflow, supervised-learning
-case study, data-centric validation, and final synthesis are established. A read-only FastAPI
-service and Angular dashboard present the prepared results without exposing the source tables.
+The project uses the Czech [Berka / PKDD'99 Financial Dataset](https://relational.fel.cvut.cz/dataset/Financial) to build account-level behavioural profiles, study banking activity over time, identify service-use associations, discover customer segments, and examine unusual account behaviour. The workflow emphasizes reproducible preparation, appropriate analytical units, transparent assumptions, and careful limits—not fraud prediction or automated customer decisions.
+
+A read-only FastAPI service exposes selected analytical outputs, while an Angular dashboard presents the findings without exposing source account identifiers or arbitrary database access.
 
 **Live application:** [transaction-intelligence-customer.onrender.com](https://transaction-intelligence-customer.onrender.com)
 
-## Structure
+### Course alignment
+
+| Project component | Topics implemented | Related lecture material |
+|---|---|---|
+| `01_data_foundation_and_engineering.ipynb` | Business framing, data quality, preparation decisions, relational joins, ETL, data lineage, medallion architecture, governance, and scaling design | **MIA 5126 Week 1:** Data Science in Practice; **Week 3:** Data Preparation; **Week 4:** Data Engineering; **Week 5:** Modern Data Architectures |
+| `02_behavioral_and_temporal_analysis.ipynb` | Descriptive analysis, visualization, customer features, monthly time series, SARIMA forecasting, and service-association rules | **MIA 5126 Week 2:** Exploratory Data Analysis and Visualization; **Week 6:** Time Series Analysis and Forecasting; **Week 7:** Recommendation Systems |
+| `03_customer_segmentation.ipynb` | Feature selection, transformations, scaling, PCA, K-means, Gaussian mixtures, cluster evaluation, stability, profiles, and behavioural outliers | **MIA 5126 Week 8:** Clustering and Dimensionality Reduction |
+| `04_validation_and_insights.ipynb` | Loan-outcome case study, leakage controls, supervised models, error analysis, data quality, explainability, limitations, and final synthesis | **MIA 5126 Week 9:** Supervised Learning Techniques; **Week 10:** Data-Centric AI and Explainability |
+| FastAPI service and Angular dashboard | Frozen analytical outputs, typed HTTP/JSON endpoints, anonymous presentation data, reproducible container build, and interactive communication | **MIA 5126 final project:** Integration, interpretation, and presentation |
+
+## Current results
+
+The validated dataset contains 4,500 accounts and 1,056,320 transactions across 72 months from January 1993 through December 1998. Monthly active-account coverage increased from 96 to 4,424 accounts over that period and peaked at 4,483 in December 1997, so transaction totals are interpreted alongside changing account coverage.
+
+| Result | Value |
+|---|---:|
+| Selected customer segments | 5 |
+| Accounts meeting at least two behavioural-outlier signals | 16 |
+| Retained service-association hypotheses | 5 |
+| SARIMA 1998 holdout MAE | 2,321 transactions |
+| Last-value / seasonal-naive MAE | 3,858 / 3,942 transactions |
+| Variance explained by first two / first four principal components | 63.4% / 86.2% |
+| Completed loans in supervised case study | 234 |
+| Recorded problem loans | 31 |
+| Logistic-regression F1 / PR-AUC | 0.55 / 0.47 |
+
+The selected K-means solution contains 1,519 established household users, 1,305 pension-associated households, 838 high-activity multi-service users, 587 low-service cash users, and 251 high-volatility cash users. These names summarize historical patterns; they are not permanent customer labels. Forecasts, association rules, behavioural outliers, and the small loan case study are course-method demonstrations with documented limits.
+
+## Workflow
+
+| Component | Main output | Status |
+|---|---|:---:|
+| `01_data_foundation_and_engineering.ipynb` | Four validated Silver-layer analytical tables | Complete |
+| `02_behavioral_and_temporal_analysis.ipynb` | Customer features, monthly activity, forecast evaluation, and service rules | Complete |
+| `03_customer_segmentation.ipynb` | Segment assignments, profiles, outliers, and fitted clustering artifacts | Complete |
+| `04_validation_and_insights.ipynb` | Supervised case study, project validation, figures, and dashboard-ready tables | Complete |
+| Transaction Intelligence API (FastAPI) | Read-only analytical endpoints | Complete |
+| Transaction Intelligence dashboard (Angular) | Five interactive project views | Complete |
+| Render deployment | Containerized public application | Live |
+
+## Repository structure
 
 ```text
-data/       Raw, interim, and processed datasets
-dashboard/  Angular dashboard with four analytical views
-notebooks/  Reproducible analytical workflow
-reports/    Figures and final deliverables
-src/        Reusable Python package and FastAPI service
-tests/      Automated checks for data, feature logic, and API behavior
+├── dashboard/             # Angular dashboard and API client
+├── data/
+│   ├── raw/               # Bronze source snapshot and metadata
+│   ├── interim/           # Silver DuckDB database and clean relational tables
+│   └── processed/         # Gold analytical and dashboard-ready outputs
+├── models/                # Fitted preprocessing, PCA, and clustering artifacts
+├── notebooks/             # Four-part reproducible analytical workflow
+├── reports/               # Intended figures and final course deliverables
+├── scripts/               # Dataset download and local-database construction
+├── src/                   # Reusable Python package and FastAPI service
+├── tests/                 # Data, feature-logic, and API contract checks
+├── Dockerfile             # Combined Angular and FastAPI production image
+├── render.yaml            # Render Blueprint
+├── requirements-api.txt   # Deployment-only Python dependencies
+└── pyproject.toml         # Project metadata and analytical dependencies
 ```
 
 ## Data architecture
@@ -120,9 +164,12 @@ python scripts/build_local_database.py --overwrite
 The analytical workflow and API require Python 3.11 or newer.
 
 ```bash
+git clone https://github.com/antonsoss/transaction-intelligence-customer-analytics.git
+cd transaction-intelligence-customer-analytics
 python -m venv .venv
 source .venv/bin/activate
-pip install -e '.[dev]'
+python -m pip install --upgrade pip
+python -m pip install -e ".[dev]"
 ```
 
 The dashboard also requires a Node.js version supported by Angular 21 and pnpm 11:
@@ -134,90 +181,119 @@ pnpm install
 cd ..
 ```
 
-## Dashboard application
+## Run the analytical workflow
 
-The application has five views built from the notebook outputs and project documentation:
+After downloading the Berka snapshot and building the local DuckDB database, open JupyterLab and run the notebooks in numerical order:
+
+```bash
+jupyter lab
+```
+
+Notebook 1 creates the Silver tables used by the rest of the project. Notebook 2 creates account-level behavioural features, monthly activity, and service rules. Notebook 3 produces the selected segments and behavioural-outlier analysis. Notebook 4 validates the project, demonstrates supervised learning, and creates the small anonymous or aggregate files consumed by the application.
+
+## Run the Transaction Intelligence application
+
+The application has five views:
 
 1. **Overview** — portfolio measures, monthly activity, segment sizes, and the data journey.
 2. **Banking activity over time** — monthly series, cash movement, forecasting results, and service associations.
-3. **Customer segmentation** — segment profiles, PCA visualization, and anonymized behavioral-outlier cases.
+3. **Customer segmentation** — segment profiles, PCA visualization, and anonymous behavioural-outlier cases.
 4. **Validation and insights** — supervised-learning results, stability checks, limitations, and responsible-use guidance.
 5. **About the project** — course information, data source, system architecture, project boundaries, and AI-assistance disclosure.
 
-The API only reads the six prepared Parquet datasets needed by these views. It does not accept
-arbitrary SQL, expose raw account identifiers, or make lending or fraud decisions.
-
-### Development
-
-Run the API from the repository root:
+Start the FastAPI service from the repository root:
 
 ```bash
 source .venv/bin/activate
 uvicorn transaction_intelligence.api.main:app --reload --port 8000
 ```
 
-In a second terminal, run the Angular development server:
+In a second terminal, start Angular:
 
 ```bash
 cd dashboard
 pnpm start
 ```
 
-Open `http://localhost:4200`. The Angular development server sends `/api` requests to the local
-FastAPI service. Interactive API documentation is available at `http://localhost:8000/docs`.
+Open `http://localhost:4200`. The Angular development server forwards `/api` requests to FastAPI. Local API documentation is available at `http://localhost:8000/docs`.
 
-### Single-server build
-
-For a production-style local run, build Angular and let FastAPI serve both the frontend and API:
+For a production-style local run, build Angular and let FastAPI serve both parts of the application:
 
 ```bash
 cd dashboard
 pnpm build
 cd ..
-source .venv/bin/activate
 uvicorn transaction_intelligence.api.main:app --host 127.0.0.1 --port 8000
 ```
 
-Open `http://localhost:8000`. Run all notebooks before starting the dashboard so the required
-Gold datasets and validation figures exist.
+## Deploy on Render
 
-### Render deployment
+The repository includes a [`render.yaml`](render.yaml) Blueprint for one Docker-based web service.
 
-The repository includes a multi-stage `Dockerfile` that builds Angular and serves the compiled
-application and read-only API from one FastAPI process. The deployed image contains only six
-small dashboard-ready Parquet files and five intended report figures. Raw Berka data, the local
-DuckDB database, full account-level analytical tables, notebooks, and trained models are not
-copied into the image. `requirements-api.txt` keeps the container limited to packages needed to
-serve these results; the complete analytical environment remains defined in `pyproject.toml`.
+**Live deployment:** [transaction-intelligence-customer.onrender.com](https://transaction-intelligence-customer.onrender.com)
 
-Test the production image locally:
+| Service | Purpose | Health check |
+|---|---|---|
+| `transaction-intelligence-customer-analytics` | FastAPI API and compiled Angular dashboard | `/api/v1/health` |
+
+The multi-stage `Dockerfile` builds Angular and serves the compiled dashboard and read-only API from one FastAPI process. The image contains only six small dashboard-ready Parquet files and five intended report figures. Raw Berka files, the local DuckDB database, full analytical tables, notebooks, and trained models are not copied into the image. `requirements-api.txt` limits the runtime to API packages; the complete analytical environment remains defined in `pyproject.toml`.
+
+To deploy:
+
+1. Commit and push the repository to GitHub.
+2. In Render, select **New → Blueprint**.
+3. Connect `antonsoss/transaction-intelligence-customer-analytics`.
+4. Confirm the web service defined in `render.yaml` and apply the Blueprint.
+5. Open the [deployed Angular application](https://transaction-intelligence-customer.onrender.com) after the health check passes.
+
+The Blueprint uses a free instance. Render may spin it down after 15 minutes without inbound traffic, so the first visit can take approximately one minute to wake the service.
+
+To build and run the same container locally:
 
 ```bash
-docker build -t transaction-intelligence .
-docker run --rm -p 10000:10000 -e PORT=10000 transaction-intelligence
+docker build -t transaction-intelligence-customer .
+docker run --rm -p 10000:10000 -e PORT=10000 transaction-intelligence-customer
 ```
 
-Then open `http://localhost:10000`, verify `/api/v1/health`, and review the API documentation at
-`/docs`.
+Open `http://localhost:10000`, check `/api/v1/health`, and review `/docs`.
 
-To deploy the free service:
+### API endpoints
 
-1. Push the deployment files and the six selected dashboard outputs to GitHub.
-2. In Render, choose **New → Blueprint** and connect this repository.
-3. Render reads `render.yaml`, builds the Docker image, and checks `/api/v1/health`.
-4. Open the generated `onrender.com` URL after the deployment becomes live.
+Interactive documentation for the live API is available at [transaction-intelligence-customer.onrender.com/docs](https://transaction-intelligence-customer.onrender.com/docs).
 
-Every later commit to `main` triggers a new deployment. A free Render service sleeps after a
-period without traffic, so the first request after inactivity can take longer.
+| Method | Endpoint | Purpose |
+|---|---|---|
+| `GET` | `/api/v1/health` | Check dashboard-dataset readiness |
+| `GET` | `/api/v1/summary` | Read project and portfolio summary measures |
+| `GET` | `/api/v1/activity` | Read monthly banking activity |
+| `GET` | `/api/v1/segments` | Read the five segment profiles |
+| `GET` | `/api/v1/segments/points` | Read anonymous PCA visualization points |
+| `GET` | `/api/v1/segments/{segment_id}` | Read one segment profile |
+| `GET` | `/api/v1/outliers` | Read anonymous behavioural-outlier cases |
+| `GET` | `/api/v1/service-rules` | Read filtered service-association hypotheses |
+| `GET` | `/api/v1/validation` | Read the supervised case-study summary and limitations |
+| `GET` | `/api/v1/figures/{filename}` | Read an approved validation figure |
 
-### Verification
+The dashboard uses relative `/api/v1` paths, so any client that can send HTTP requests can use the same endpoints. The API does not expose arbitrary SQL, source account identifiers, lending decisions, or fraud classifications.
+
+## Reproducible analytical contract
+
+The numbered notebooks own data preparation, feature creation, modelling, validation, and interpretation. The application does not retrain models or query the external CTU database. It reads a fixed set of anonymous or aggregate outputs generated by the notebooks, which keeps the displayed results connected to the documented analysis.
+
+Run the project checks with:
 
 ```bash
-pytest -q
+python -m pytest -q
 cd dashboard
 pnpm test
 pnpm build
 ```
+
+Only load project-generated joblib artifacts. Joblib uses pickle internally and is unsafe for untrusted files.
+
+## Application scope
+
+The project describes historical account behaviour, portfolio-level activity, service co-occurrence, customer segments, and conservative behavioural-outlier cases. The aggregate forecast estimates transaction volume, while the service rules identify hypotheses that require further validation. The loan-outcome model exists only to demonstrate supervised-learning methods from the course. None of these outputs should be used for automated lending, fraud accusations, eligibility decisions, marketing decisions, or permanent customer labels.
 
 ## AI assistance disclosure
 
