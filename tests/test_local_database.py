@@ -2,12 +2,7 @@ import unittest
 
 import duckdb
 
-from scripts.build_local_database import (
-    create_table_sql,
-    table_order,
-    validate_relationships,
-)
-
+from scripts.build_local_database import create_table_sql, table_order, validate_relationships
 
 TABLES = {
     "parent": {
@@ -76,4 +71,3 @@ class LocalDatabaseTest(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

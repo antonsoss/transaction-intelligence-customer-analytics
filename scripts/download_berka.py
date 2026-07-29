@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Download the Berka financial database as raw CSV table snapshots."""
 
 from __future__ import annotations

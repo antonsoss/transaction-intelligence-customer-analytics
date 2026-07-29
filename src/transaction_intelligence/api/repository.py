@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from datetime import date
 from pathlib import Path
-from typing import Any
+from typing import Any, ClassVar
 
 import duckdb
 
@@ -28,7 +28,7 @@ class DashboardRepository:
         "service_association_rules.parquet",
     )
 
-    allowed_figures = {
+    allowed_figures: ClassVar[set[str]] = {
         "cluster_stability_check.png",
         "loan_logistic_confusion_matrix.png",
         "loan_model_comparison.png",

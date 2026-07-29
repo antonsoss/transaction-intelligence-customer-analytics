@@ -1,5 +1,7 @@
 # Transaction Intelligence: Customer Segmentation and Behavioral Analytics
 
+[![Tests](https://github.com/antonsoss/transaction-intelligence-customer-analytics/actions/workflows/tests.yml/badge.svg)](https://github.com/antonsoss/transaction-intelligence-customer-analytics/actions/workflows/tests.yml)
+
 An MIA 5126 data science project for understanding historical banking behaviour through relational data engineering, temporal analysis, customer segmentation, and responsible interpretation.
 
 ## Overview
@@ -8,7 +10,9 @@ The project uses the Czech [Berka / PKDD'99 Financial Dataset](https://relationa
 
 A read-only FastAPI service exposes selected analytical outputs, while an Angular dashboard presents the findings without exposing source account identifiers or arbitrary database access.
 
-**Live application:** [transaction-intelligence-customer.onrender.com](https://transaction-intelligence-customer.onrender.com)
+> [!IMPORTANT]
+> **Live application:** [transaction-intelligence-customer.onrender.com](https://transaction-intelligence-customer.onrender.com)  
+> The Render deployment uses free instances, so the first visit may take approximately one minute while each service starts.
 
 ### Course alignment
 
@@ -40,19 +44,20 @@ The selected K-means solution contains 1,519 established household users, 1,305 
 
 ## Workflow
 
-| Component | Main output | Status |
-|---|---|:---:|
-| `01_data_foundation_and_engineering.ipynb` | Four validated Silver-layer analytical tables | Complete |
-| `02_behavioral_and_temporal_analysis.ipynb` | Customer features, monthly activity, forecast evaluation, and service rules | Complete |
-| `03_customer_segmentation.ipynb` | Segment assignments, profiles, outliers, and fitted clustering artifacts | Complete |
-| `04_validation_and_insights.ipynb` | Supervised case study, project validation, figures, and dashboard-ready tables | Complete |
-| Transaction Intelligence API (FastAPI) | Read-only analytical endpoints | Complete |
-| Transaction Intelligence dashboard (Angular) | Five interactive project views | Complete |
-| Render deployment | Containerized public application | Live |
+| Component | Main output |
+|---|---|
+| `01_data_foundation_and_engineering.ipynb` | Four validated Silver-layer analytical tables |
+| `02_behavioral_and_temporal_analysis.ipynb` | Customer features, monthly activity, forecast evaluation, and service rules |
+| `03_customer_segmentation.ipynb` | Segment assignments, profiles, outliers, and fitted clustering artifacts |
+| `04_validation_and_insights.ipynb` | Supervised case study, project validation, figures, and dashboard-ready tables |
+| Transaction Intelligence API (FastAPI) | Read-only analytical endpoints |
+| Transaction Intelligence dashboard (Angular) | Five interactive project views |
+| Render deployment | Containerized public application |
 
 ## Repository structure
 
 ```text
+├── .github/workflows/     # Automated Python and Angular tests
 ├── dashboard/             # Angular dashboard and API client
 ├── data/
 │   ├── raw/               # Bronze source snapshot and metadata
@@ -64,6 +69,7 @@ The selected K-means solution contains 1,519 established household users, 1,305 
 ├── scripts/               # Dataset download and local-database construction
 ├── src/                   # Reusable Python package and FastAPI service
 ├── tests/                 # Data, feature-logic, and API contract checks
+├── .python-version        # Exact local Python runtime: 3.14.6
 ├── Dockerfile             # Combined Angular and FastAPI production image
 ├── render.yaml            # Render Blueprint
 ├── requirements-api.txt   # Deployment-only Python dependencies
@@ -161,12 +167,15 @@ python scripts/build_local_database.py --overwrite
 
 ## Setup
 
-The analytical workflow and API require Python 3.11 or newer.
+The analytical workflow, data pipelines, notebooks, tests, and API use Python 3.14.6.
+The exact version is declared in `.python-version` and `pyproject.toml`, and the
+production container uses the matching official Python image.
 
 ```bash
 git clone https://github.com/antonsoss/transaction-intelligence-customer-analytics.git
 cd transaction-intelligence-customer-analytics
-python -m venv .venv
+python3.14 --version  # Must print Python 3.14.6
+python3.14 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install -e ".[dev]"
@@ -228,25 +237,17 @@ uvicorn transaction_intelligence.api.main:app --host 127.0.0.1 --port 8000
 
 ## Deploy on Render
 
-The repository includes a [`render.yaml`](render.yaml) Blueprint for one Docker-based web service.
-
-**Live deployment:** [transaction-intelligence-customer.onrender.com](https://transaction-intelligence-customer.onrender.com)
+The repository includes a [`render.yaml`](render.yaml) Blueprint that creates one
+Docker-based web service on Render.
 
 | Service | Purpose | Health check |
 |---|---|---|
 | `transaction-intelligence-customer-analytics` | FastAPI API and compiled Angular dashboard | `/api/v1/health` |
 
-The multi-stage `Dockerfile` builds Angular and serves the compiled dashboard and read-only API from one FastAPI process. The image contains only six small dashboard-ready Parquet files and five intended report figures. Raw Berka files, the local DuckDB database, full analytical tables, notebooks, and trained models are not copied into the image. `requirements-api.txt` limits the runtime to API packages; the complete analytical environment remains defined in `pyproject.toml`.
-
-To deploy:
-
-1. Commit and push the repository to GitHub.
-2. In Render, select **New → Blueprint**.
-3. Connect `antonsoss/transaction-intelligence-customer-analytics`.
-4. Confirm the web service defined in `render.yaml` and apply the Blueprint.
-5. Open the [deployed Angular application](https://transaction-intelligence-customer.onrender.com) after the health check passes.
-
-The Blueprint uses a free instance. Render may spin it down after 15 minutes without inbound traffic, so the first visit can take approximately one minute to wake the service.
+The multi-stage `Dockerfile` builds the Angular dashboard and packages the FastAPI
+API, six dashboard-ready Parquet files, and five intended report figures. The image
+uses Python 3.14.6 and installs only the API dependencies in `requirements-api.txt`.
+FastAPI serves both the compiled dashboard and the read-only API from one process.
 
 To build and run the same container locally:
 
@@ -255,11 +256,7 @@ docker build -t transaction-intelligence-customer .
 docker run --rm -p 10000:10000 -e PORT=10000 transaction-intelligence-customer
 ```
 
-Open `http://localhost:10000`, check `/api/v1/health`, and review `/docs`.
-
 ### API endpoints
-
-Interactive documentation for the live API is available at [transaction-intelligence-customer.onrender.com/docs](https://transaction-intelligence-customer.onrender.com/docs).
 
 | Method | Endpoint | Purpose |
 |---|---|---|
@@ -274,7 +271,9 @@ Interactive documentation for the live API is available at [transaction-intellig
 | `GET` | `/api/v1/validation` | Read the supervised case-study summary and limitations |
 | `GET` | `/api/v1/figures/{filename}` | Read an approved validation figure |
 
-The dashboard uses relative `/api/v1` paths, so any client that can send HTTP requests can use the same endpoints. The API does not expose arbitrary SQL, source account identifiers, lending decisions, or fraud classifications.
+The Angular dashboard does not query the external CTU database, run notebooks, or
+load joblib artifacts. The API owns read-only access to the selected Gold datasets
+and report figures, and the same endpoints can serve any HTTP client.
 
 ## Reproducible analytical contract
 

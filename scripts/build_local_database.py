@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Build and validate a local relational DuckDB database from the raw Berka snapshot."""
 
 from __future__ import annotations
@@ -156,7 +155,7 @@ def verify_snapshot(raw_dir: Path, manifest: dict[str, Any]) -> None:
     if sha256(schema_path) != manifest["schema_sha256"]:
         raise ValueError(f"Checksum mismatch: {schema_path}")
 
-    for table, metadata in manifest["tables"].items():
+    for metadata in manifest["tables"].values():
         csv_path = raw_dir / metadata["file"]
         if not csv_path.is_file():
             raise FileNotFoundError(f"Missing raw table: {csv_path}")
@@ -300,4 +299,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-
