@@ -297,3 +297,7 @@ The project describes historical account behaviour, portfolio-level activity, se
 ## AI assistance disclosure
 
 *I used AI as an engineering productivity tool for brainstorming, troubleshooting, and documentation, while remaining responsible for all technical decisions, implementation, testing, validation, and conclusions.*
+
+## Licence
+
+This project is released under the [MIT License](LICENSE).
