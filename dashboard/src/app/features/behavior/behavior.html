@@ -4,8 +4,10 @@
       <p class="eyebrow">Banking activity over time</p>
       <h1>Banking activity over time.</h1>
       <p class="page-intro">
-        Explore monthly portfolio activity and service combinations. Totals reflect both
-        behavior and the rapid growth of observed accounts.
+        This page shows how transaction volume, active accounts, cash inflows, and cash outflows
+        changed each month from January 1993 to December 1998. It also compares a SARIMA
+        transaction forecast with two simple baselines and lists banking-service combinations
+        found with Apriori association rules.
       </p>
     </div>
     <aside class="course-alignment" aria-label="Course topics covered by Notebook 2">
@@ -27,21 +29,25 @@
         <p class="metric-label">Observed months</p>
         <strong>{{ activity().length }}</strong>
         <small>January 1993 through December 1998</small>
+        <span class="metric-method">Method: Monthly resampling</span>
       </article>
       <article class="card metric-card">
-        <p class="metric-label">Total transactions</p>
-        <strong>{{ totalTransactions() | number }}</strong>
-        <small>Across the full clean snapshot</small>
+        <p class="metric-label">Transactions per active account</p>
+        <strong>{{ latestTransactionsPerActiveAccount() | number: '1.2-2' }}</strong>
+        <small>Average during {{ latestActivityMonth() | date: 'MMMM yyyy' }}</small>
+        <span class="metric-method">Method: Transactions ÷ active accounts</span>
       </article>
       <article class="card metric-card">
         <p class="metric-label">Latest active accounts</p>
         <strong>{{ latestAccounts() | number }}</strong>
         <small>Accounts active in the final month</small>
+        <span class="metric-method">Method: Distinct account count</span>
       </article>
       <article class="card metric-card">
-        <p class="metric-label">Retained service rules</p>
+        <p class="metric-label">Service combinations</p>
         <strong>{{ rules().length }}</strong>
-        <small>Filtered recommendation hypotheses</small>
+        <small>Patterns that occurred together more often than expected</small>
+        <span class="metric-method">Method: Apriori association rules</span>
       </article>
     </div>
 
@@ -51,6 +57,9 @@
           <p class="eyebrow">Monthly series</p>
           <h2>{{ selectedMetricLabel() }}</h2>
           <p>The dashed line is a simple three-month moving average.</p>
+          <p class="method-note">
+            <strong>Method used:</strong> Monthly resampling with a three-month moving average
+          </p>
         </div>
         <div class="control">
           <label for="activity-metric">Measure</label>
@@ -75,17 +84,20 @@
       }
     </article>
 
-    <div class="grid two section-gap">
+    <div class="grid section-gap">
       <article class="card panel">
         <div class="panel-header">
           <div>
             <p class="eyebrow">Cash movement</p>
             <h2>Inflow and outflow</h2>
             <p>Monthly amounts across all observed accounts.</p>
+            <p class="method-note">
+              <strong>Method used:</strong> Monthly sum aggregation by transaction direction
+            </p>
           </div>
         </div>
         <ti-chart
-          class="chart"
+          class="chart cash-flow-chart"
           [option]="cashFlowOption()"
           ariaLabel="Monthly total inflow and outflow"
         />
@@ -94,14 +106,27 @@
       <article class="card panel forecast">
         <p class="eyebrow">Forecast exercise</p>
         <h2>SARIMA led the declared comparison</h2>
-        <div class="forecast-score">
-          <strong>2,321</strong>
-          <span>MAE in monthly transactions</span>
-        </div>
+        <p class="method-note">
+          <strong>Method used:</strong> SARIMA(1,1,1)(1,1,0,12), a chronological holdout, and
+          MAE
+        </p>
         <p>
           The model was tested on the final 12 months. It improved on both naive comparisons,
           but one test window is not enough for production model selection.
         </p>
+        <ti-chart
+          class="chart forecast-chart"
+          [option]="forecastOption()"
+          ariaLabel="Monthly transaction forecast showing training history, observed test values, seasonal-naive and SARIMA forecasts, and the SARIMA 95 percent confidence interval"
+        />
+        <p class="forecast-chart-note">
+          The shaded band is the SARIMA 95% confidence interval. A wider band means greater
+          forecast uncertainty.
+        </p>
+        <div class="forecast-score">
+          <strong>2,321</strong>
+          <span>MAE in monthly transactions</span>
+        </div>
         <div class="forecast-comparison">
           <div>
             <span>SARIMA</span>
@@ -128,6 +153,10 @@
           <p class="eyebrow">Service associations</p>
           <h2>Patterns worth investigating</h2>
           <p>Lift above 1 means the combination appears more often than independence suggests.</p>
+          <p class="method-note">
+            <strong>Method used:</strong> Apriori association-rule mining, evaluated with
+            support, confidence, and lift
+          </p>
         </div>
         <div class="control">
           <label for="minimum-lift">Minimum lift</label>

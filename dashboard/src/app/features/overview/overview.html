@@ -4,9 +4,10 @@
       <p class="eyebrow">Customer behavioral analytics</p>
       <h1>Customer behavior at a glance.</h1>
       <p class="page-intro">
-        A responsible view of historical banking activity, customer segments, and model
-        validation. The project describes patterns; it does not score people or claim fraud.
-        The observed period is {{ observedPeriod() }}.
+        This overview summarizes the Berka dataset through key account and transaction totals,
+        monthly banking activity, and active-account coverage from {{ observedPeriod() }}. It
+        also traces how the four notebooks turn the original relational data into the results
+        presented across the dashboard.
       </p>
     </div>
     <aside class="course-alignment" aria-label="Course topics covered by Notebook 1">
@@ -30,59 +31,32 @@
           <p class="metric-label">{{ metric.metric }}</p>
           <strong>{{ metric.display_value }}</strong>
           <small>{{ metric.note }}</small>
+          <span class="metric-method">Method: {{ metric.method }}</span>
         </article>
       }
     </div>
 
-    <article class="hero-card">
-      <div class="hero-copy">
-        <p class="eyebrow">Central analytical story</p>
-        <h2>Five behavior patterns across 4,500 accounts</h2>
-        <p>
-          Activity, cash flow, balance behavior, channel mix, and service use form distinct
-          account profiles. These patterns support exploration—not permanent customer labels.
-        </p>
-        <a routerLink="/segments">Explore customer segments <span>→</span></a>
+    <article class="card panel section-gap">
+      <div class="panel-header">
+        <div>
+          <p class="eyebrow">Banking activity over time</p>
+          <h2>Monthly transactions and active accounts</h2>
+          <p>
+            A portfolio-level view of transaction records and the accounts active each month.
+          </p>
+          <p class="method-note">
+            <strong>Method used:</strong> Monthly aggregation with distinct active-account
+            counts
+          </p>
+        </div>
+        <span class="chip">{{ activity().length }} months</span>
       </div>
-      <div class="hero-stat">
-        <span>Selected solution</span>
-        <strong>5</strong>
-        <small>K-means segments</small>
-      </div>
+      <ti-chart
+        class="chart overview-activity-chart"
+        [option]="activityOption()"
+        ariaLabel="Monthly transaction count and active account count"
+      />
     </article>
-
-    <div class="overview-charts section-gap">
-      <article class="card panel">
-        <div class="panel-header">
-          <div>
-            <p class="eyebrow">Portfolio growth</p>
-            <h2>Monthly activity</h2>
-            <p>Transaction volume shown with the number of active accounts.</p>
-          </div>
-          <span class="chip">72 months</span>
-        </div>
-        <ti-chart
-          class="chart overview-activity-chart"
-          [option]="activityOption()"
-          ariaLabel="Monthly transaction count and active account count"
-        />
-      </article>
-
-      <article class="card panel">
-        <div class="panel-header">
-          <div>
-            <p class="eyebrow">Selected segmentation</p>
-            <h2>Segment population</h2>
-            <p>Account counts in the final five-segment solution.</p>
-          </div>
-        </div>
-        <ti-chart
-          class="chart overview-segment-chart"
-          [option]="segmentOption()"
-          ariaLabel="Account population by customer segment"
-        />
-      </article>
-    </div>
 
     <section class="journey section-gap">
       <div class="journey-heading">
@@ -103,6 +77,9 @@
           <p>
             Imports the Financial — PKDD'99 Financial Dataset (Berka), checks its tables and
             relationships, and creates the clean analytical foundation.
+          </p>
+          <p class="method-note">
+            <strong>Methods used:</strong> DuckDB SQL, ETL, schema checks, and key validation
           </p>
           <a
             href="https://relational.fel.cvut.cz/dataset/Financial"
@@ -126,6 +103,10 @@
             Explores transactions over time, evaluates an aggregate forecast, studies service
             associations, and creates customer behavior features.
           </p>
+          <p class="method-note">
+            <strong>Methods used:</strong> EDA, monthly resampling, SARIMA, and Apriori
+          </p>
+          <a routerLink="/behavior">Explore banking activity <span>→</span></a>
           <div class="notebook-reference">
             <small>Notebook 2</small>
             <code>02_behavioral_and_temporal_analysis.ipynb</code>
@@ -141,6 +122,11 @@
             Compares clustering choices, selects five interpretable segments, and examines
             behavioral outliers without treating them as fraud.
           </p>
+          <p class="method-note">
+            <strong>Methods used:</strong> PCA, K-means, Gaussian mixture modelling, and
+            consensus outlier checks
+          </p>
+          <a routerLink="/segments">Explore customer segments <span>→</span></a>
           <div class="notebook-reference">
             <small>Notebook 3</small>
             <code>03_customer_segmentation.ipynb</code>
@@ -156,6 +142,11 @@
             Validates the main findings, demonstrates supervised learning, documents limits,
             and prepares the outputs served by FastAPI and Angular.
           </p>
+          <p class="method-note">
+            <strong>Methods used:</strong> Supervised model comparison, stability testing, and
+            error analysis
+          </p>
+          <a routerLink="/validation">Review validation results <span>→</span></a>
           <div class="notebook-reference">
             <small>Notebook 4</small>
             <code>04_validation_and_insights.ipynb</code>

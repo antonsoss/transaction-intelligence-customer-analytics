@@ -2,6 +2,10 @@
   display: block;
 }
 
+.cash-flow-chart {
+  height: 390px;
+}
+
 .chart-note {
   border-top: 1px solid #e3e5e0;
   color: #66736f;
@@ -26,6 +30,31 @@
   color: #a3b3af;
   font-size: 0.82rem;
   line-height: 1.65;
+}
+
+.forecast > p.method-note {
+  background: rgb(37 183 167 / 10%);
+  border-left-color: #42c7b7;
+  color: #a8bbb7;
+  font-size: 0.7rem;
+  line-height: 1.45;
+}
+
+.forecast > p.method-note strong {
+  color: #d8e7e4;
+}
+
+.forecast-chart {
+  height: 460px;
+  margin-top: 1.25rem;
+}
+
+.forecast > p.forecast-chart-note {
+  border-top: 1px solid #2a3d49;
+  color: #91a5a1;
+  font-size: 0.7rem;
+  margin: 0;
+  padding-top: 0.65rem;
 }
 
 .forecast-score {
@@ -107,4 +136,14 @@
   color: #176f66;
   font-weight: 800;
   padding: 0.3rem 0.5rem;
+}
+
+@media (max-width: 720px) {
+  .cash-flow-chart {
+    height: 300px;
+  }
+
+  .forecast-chart {
+    height: 340px;
+  }
 }

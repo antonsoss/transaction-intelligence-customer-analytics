@@ -3,8 +3,10 @@ import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import {
+  ClusteringEvaluation,
   HealthResponse,
   MonthlyActivity,
+  MonthlyTransactionForecast,
   OutlierCase,
   SegmentPoint,
   SegmentProfile,
@@ -30,6 +32,12 @@ export class DashboardApi {
     return this.http.get<MonthlyActivity[]>(`${this.baseUrl}/activity`);
   }
 
+  transactionForecast(): Observable<MonthlyTransactionForecast[]> {
+    return this.http.get<MonthlyTransactionForecast[]>(
+      `${this.baseUrl}/transaction-forecast`,
+    );
+  }
+
   serviceRules(minimumLift = 1): Observable<ServiceRule[]> {
     const params = new HttpParams().set('minimum_lift', minimumLift);
     return this.http.get<ServiceRule[]>(`${this.baseUrl}/service-rules`, { params });
@@ -41,6 +49,10 @@ export class DashboardApi {
 
   segmentPoints(): Observable<SegmentPoint[]> {
     return this.http.get<SegmentPoint[]>(`${this.baseUrl}/segments/points`);
+  }
+
+  clusteringEvaluation(): Observable<ClusteringEvaluation[]> {
+    return this.http.get<ClusteringEvaluation[]>(`${this.baseUrl}/segments/evaluation`);
   }
 
   outliers(minimumSignals = 2): Observable<OutlierCase[]> {

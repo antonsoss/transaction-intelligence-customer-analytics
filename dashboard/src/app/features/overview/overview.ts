@@ -11,13 +11,11 @@ import { RouterLink } from '@angular/router';
 import type { EChartsCoreOption } from 'echarts/core';
 import { forkJoin } from 'rxjs';
 
-import {
-  MonthlyActivity,
-  SegmentProfile,
-  SummaryMetric,
-} from '../../core/models/dashboard.models';
+import { MonthlyActivity, SummaryMetric } from '../../core/models/dashboard.models';
 import { DashboardApi } from '../../core/services/dashboard-api';
 import { Chart } from '../../shared/chart/chart';
+
+type OverviewMetric = SummaryMetric & { method: string };
 
 @Component({
   selector: 'ti-overview',
@@ -32,13 +30,29 @@ export class Overview implements OnInit {
   readonly error = signal('');
   readonly summary = signal<SummaryMetric[]>([]);
   readonly activity = signal<MonthlyActivity[]>([]);
-  readonly segments = signal<SegmentProfile[]>([]);
 
-  readonly featuredMetrics = computed(() => {
-    const wanted = ['Accounts', 'Transactions', 'Segments', 'Behavioral outliers'];
-    return wanted
+  readonly featuredMetrics = computed<OverviewMetric[]>(() => {
+    const sourceTables: SummaryMetric = {
+      section: 'Source',
+      metric: 'Source tables',
+      numeric_value: 8,
+      display_value: '8',
+      note: 'Original Berka relational tables',
+    };
+    const wanted = ['Accounts', 'Transactions', 'Observed months'];
+    const preparedMetrics = wanted
       .map((metric) => this.summary().find((item) => item.metric === metric))
       .filter((item): item is SummaryMetric => Boolean(item));
+    const methods: Record<string, string> = {
+      'Source tables': 'Relational schema inventory',
+      Accounts: 'Account-level row count',
+      Transactions: 'Clean transaction-row count',
+      'Observed months': 'Monthly resampling',
+    };
+    return [sourceTables, ...preparedMetrics].map((metric) => ({
+      ...metric,
+      method: methods[metric.metric],
+    }));
   });
 
   readonly activityOption = computed<EChartsCoreOption>(() => {
@@ -94,36 +108,6 @@ export class Overview implements OnInit {
     };
   });
 
-  readonly segmentOption = computed<EChartsCoreOption>(() => {
-    const rows = this.segments();
-    return {
-      aria: { enabled: true },
-      color: ['#168f83'],
-      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' } },
-      grid: { left: 18, right: 24, top: 8, bottom: 30, containLabel: true },
-      xAxis: {
-        type: 'value',
-        axisLabel: { color: '#71807d' },
-        splitLine: { lineStyle: { color: '#e7e8e4' } },
-      },
-      yAxis: {
-        type: 'category',
-        data: rows.map((row) => row.segment_name),
-        axisLabel: { color: '#465653', width: 145, overflow: 'truncate' },
-        axisLine: { show: false },
-        axisTick: { show: false },
-      },
-      series: [
-        {
-          type: 'bar',
-          data: rows.map((row) => row.population_size),
-          barWidth: 15,
-          itemStyle: { borderRadius: [0, 7, 7, 0] },
-        },
-      ],
-    };
-  });
-
   readonly observedPeriod = computed(() => {
     const rows = this.activity();
     if (!rows.length) return 'No monthly data';
@@ -134,12 +118,10 @@ export class Overview implements OnInit {
     forkJoin({
       summary: this.api.summary(),
       activity: this.api.activity(),
-      segments: this.api.segments(),
     }).subscribe({
-      next: ({ summary, activity, segments }) => {
+      next: ({ summary, activity }) => {
         this.summary.set(summary);
         this.activity.set(activity);
-        this.segments.set(segments);
         this.loading.set(false);
       },
       error: () => {

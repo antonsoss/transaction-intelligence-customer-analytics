@@ -19,8 +19,6 @@
   border-color: #273b4a;
   color: #eff7f5;
   display: grid;
-  gap: 2rem;
-  grid-template-columns: 1fr 270px;
   padding: 1.7rem;
 }
 
@@ -38,22 +36,16 @@
   line-height: 1.65;
 }
 
-.model-boundary {
-  border-left: 1px solid #2c4050;
-  display: grid;
-  gap: 0.45rem;
-  padding-left: 1.5rem;
-}
-
-.model-boundary strong {
-  color: #50d4c3;
-  font-size: 1.2rem;
-}
-
-.model-boundary span {
-  color: #8da09c;
+.model-story p.method-note {
+  background: rgb(37 183 167 / 10%);
+  border-left-color: #42c7b7;
+  color: #b7c8c4;
   font-size: 0.7rem;
   line-height: 1.5;
+}
+
+.model-story .method-note strong {
+  color: #e2f0ed;
 }
 
 .figure-grid {
@@ -70,6 +62,11 @@
 .figure-card > div > p:not(.eyebrow) {
   color: #6b7875;
   font-size: 0.75rem;
+}
+
+.figure-card > div > .method-note {
+  color: #45635d;
+  font-size: 0.7rem;
 }
 
 .figure-card img {
@@ -132,48 +129,8 @@
   width: 0.42rem;
 }
 
-.responsibility {
-  background: #dfeae5;
-  border-radius: 1rem;
-  display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(3, 1fr);
-  padding: 1.4rem;
-}
-
-.responsibility > div {
-  padding: 0.4rem 0.7rem;
-}
-
-.responsibility span {
-  color: #6b8982;
-  display: block;
-  font-size: 0.65rem;
-  font-weight: 850;
-  margin-bottom: 1rem;
-}
-
-.responsibility strong {
-  font-size: 0.82rem;
-}
-
-.responsibility p {
-  color: #61736f;
-  font-size: 0.7rem;
-  line-height: 1.5;
-  margin: 0.35rem 0 0;
-}
-
 @media (max-width: 820px) {
-  .model-story,
-  .figure-grid,
-  .responsibility {
+  .figure-grid {
     grid-template-columns: 1fr;
-  }
-
-  .model-boundary {
-    border-left: 0;
-    border-top: 1px solid #2c4050;
-    padding: 1rem 0 0;
   }
 }

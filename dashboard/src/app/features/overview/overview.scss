@@ -2,88 +2,8 @@
   display: block;
 }
 
-.hero-card {
-  background:
-    linear-gradient(120deg, rgb(37 183 167 / 14%), transparent 48%),
-    #101d2a;
-  border: 1px solid #243747;
-  border-radius: 1.1rem;
-  color: #f5faf8;
-  display: grid;
-  gap: 2rem;
-  grid-template-columns: 1fr auto;
-  min-height: 240px;
-  overflow: hidden;
-  padding: clamp(1.4rem, 3vw, 2.4rem);
-}
-
-.hero-copy {
-  align-self: center;
-  max-width: 690px;
-}
-
-.hero-copy h2 {
-  font-size: clamp(1.7rem, 3vw, 2.7rem);
-  margin-bottom: 0.75rem;
-}
-
-.hero-copy p:not(.eyebrow) {
-  color: #aebdb9;
-  line-height: 1.65;
-}
-
-.hero-copy a {
-  color: #59d7c8;
-  font-size: 0.8rem;
-  font-weight: 800;
-  text-decoration: none;
-}
-
-.hero-copy a span {
-  display: inline-block;
-  margin-left: 0.3rem;
-  transition: transform 150ms ease;
-}
-
-.hero-copy a:hover span {
-  transform: translateX(4px);
-}
-
-.hero-stat {
-  align-items: center;
-  align-self: stretch;
-  border-left: 1px solid #2b3e4d;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  min-width: 190px;
-  padding-left: 2rem;
-}
-
-.hero-stat span,
-.hero-stat small {
-  color: #839691;
-  font-size: 0.7rem;
-}
-
-.hero-stat strong {
-  color: #4dd1c0;
-  font-size: 5rem;
-  letter-spacing: -0.08em;
-  line-height: 1;
-}
-
-.overview-charts {
-  display: grid;
-  gap: 1rem;
-}
-
 .overview-activity-chart {
   height: 390px;
-}
-
-.overview-segment-chart {
-  height: 340px;
 }
 
 .journey {
@@ -152,6 +72,11 @@
   margin: 0.45rem 0 0.8rem;
 }
 
+.journey-grid > article > .method-note {
+  font-size: 0.68rem;
+  margin: 0 0 0.8rem;
+}
+
 .journey-grid a {
   color: #137c72;
   font-size: 0.72rem;
@@ -192,23 +117,11 @@
 }
 
 @media (max-width: 760px) {
-  .hero-card {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-stat {
-    align-items: start;
-    border-left: 0;
-    border-top: 1px solid #2b3e4d;
-    padding: 1.2rem 0 0;
-  }
-
   .journey-grid {
     grid-template-columns: 1fr;
   }
 
-  .overview-activity-chart,
-  .overview-segment-chart {
+  .overview-activity-chart {
     height: 300px;
   }
 }

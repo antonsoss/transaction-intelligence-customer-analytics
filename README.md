@@ -48,7 +48,7 @@ The selected K-means solution contains 1,519 established household users, 1,305 
 |---|---|
 | `01_data_foundation_and_engineering.ipynb` | Four validated Silver-layer analytical tables |
 | `02_behavioral_and_temporal_analysis.ipynb` | Customer features, monthly activity, forecast evaluation, and service rules |
-| `03_customer_segmentation.ipynb` | Segment assignments, profiles, outliers, and fitted clustering artifacts |
+| `03_customer_segmentation.ipynb` | Cluster-selection evidence, segment assignments, profiles, outliers, and fitted clustering artifacts |
 | `04_validation_and_insights.ipynb` | Supervised case study, project validation, figures, and dashboard-ready tables |
 | Transaction Intelligence API (FastAPI) | Read-only analytical endpoints |
 | Transaction Intelligence dashboard (Angular) | Five interactive project views |
@@ -95,7 +95,7 @@ flowchart LR
 | Source | External to the repository | Public CTU MariaDB database | Not applicable |
 | Bronze | `data/raw/` | Immutable source CSV files, MariaDB DDL, provenance, and checksums | CSV data ignored; schema and manifest committed |
 | Silver | `data/interim/` | Validated DuckDB database and cleaned Parquet tables | Generated data ignored |
-| Gold | `data/processed/` | Customer features, segments, outliers, forecasts, and dashboard-ready tables | Full generated data ignored; six anonymous or aggregate dashboard files committed for deployment |
+| Gold | `data/processed/` | Customer features, segments, outliers, forecasts, and dashboard-ready tables | Full generated data ignored; eight anonymous or aggregate dashboard files committed for deployment |
 | API | `src/transaction_intelligence/api/` | Read-only endpoints over selected Gold tables and report figures | Application code committed |
 | Presentation | `dashboard/` and `reports/` | Angular views, selected figures, and final course deliverables | Source and intended report figures committed; builds ignored |
 
@@ -198,15 +198,15 @@ After downloading the Berka snapshot and building the local DuckDB database, ope
 jupyter lab
 ```
 
-Notebook 1 creates the Silver tables used by the rest of the project. Notebook 2 creates account-level behavioural features, monthly activity, and service rules. Notebook 3 produces the selected segments and behavioural-outlier analysis. Notebook 4 validates the project, demonstrates supervised learning, and creates the small anonymous or aggregate files consumed by the application.
+Notebook 1 creates the Silver tables used by the rest of the project. Notebook 2 creates account-level behavioural features, monthly activity, a dashboard-ready forecast series, and service rules. Notebook 3 produces clustering-evaluation evidence, the selected segments, and behavioural-outlier analysis. Notebook 4 validates the project, demonstrates supervised learning, and creates the small anonymous or aggregate files consumed by the application.
 
 ## Run the Transaction Intelligence application
 
 The application has five views:
 
-1. **Overview** — portfolio measures, monthly activity, segment sizes, and the data journey.
+1. **Overview** — dataset coverage, monthly activity, and the data journey.
 2. **Banking activity over time** — monthly series, cash movement, forecasting results, and service associations.
-3. **Customer segmentation** — segment profiles, PCA visualization, and anonymous behavioural-outlier cases.
+3. **Customer segmentation** — K-means and GMM model-selection evidence, segment profiles, PCA visualization, and anonymous behavioural-outlier cases.
 4. **Validation and insights** — supervised-learning results, stability checks, limitations, and responsible-use guidance.
 5. **About the project** — course information, data source, system architecture, project boundaries, and AI-assistance disclosure.
 
@@ -245,7 +245,7 @@ Docker-based web service on Render.
 | `transaction-intelligence-customer-analytics` | FastAPI API and compiled Angular dashboard | `/api/v1/health` |
 
 The multi-stage `Dockerfile` builds the Angular dashboard and packages the FastAPI
-API, six dashboard-ready Parquet files, and five intended report figures. The image
+API, eight dashboard-ready Parquet files, and five intended report figures. The image
 uses Python 3.14.6 and installs only the API dependencies in `requirements-api.txt`.
 FastAPI serves both the compiled dashboard and the read-only API from one process.
 
@@ -263,8 +263,10 @@ docker run --rm -p 10000:10000 -e PORT=10000 transaction-intelligence-customer
 | `GET` | `/api/v1/health` | Check dashboard-dataset readiness |
 | `GET` | `/api/v1/summary` | Read project and portfolio summary measures |
 | `GET` | `/api/v1/activity` | Read monthly banking activity |
+| `GET` | `/api/v1/transaction-forecast` | Read the chronological SARIMA holdout series |
 | `GET` | `/api/v1/segments` | Read the five segment profiles |
 | `GET` | `/api/v1/segments/points` | Read anonymous PCA visualization points |
+| `GET` | `/api/v1/segments/evaluation` | Read K-means and GMM model-selection measures |
 | `GET` | `/api/v1/segments/{segment_id}` | Read one segment profile |
 | `GET` | `/api/v1/outliers` | Read anonymous behavioural-outlier cases |
 | `GET` | `/api/v1/service-rules` | Read filtered service-association hypotheses |

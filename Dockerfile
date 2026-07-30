@@ -29,6 +29,8 @@ COPY data/processed/dashboard_summary.parquet \
      data/processed/dashboard_outliers.parquet \
      data/processed/dashboard_segment_points.parquet \
      data/processed/monthly_banking_activity.parquet \
+     data/processed/monthly_transaction_forecast.parquet \
+     data/processed/clustering_evaluation.parquet \
      data/processed/service_association_rules.parquet \
      ./data/processed/
 

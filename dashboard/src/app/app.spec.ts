@@ -22,14 +22,43 @@ describe('App', () => {
   it('shows the project name', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
-    expect((fixture.nativeElement as HTMLElement).textContent).toContain('Transaction');
-    expect((fixture.nativeElement as HTMLElement).textContent).toContain('Intelligence');
+    const text = (fixture.nativeElement as HTMLElement).textContent ?? '';
+
+    expect(text).toContain('Transaction');
+    expect(text).toContain('Intelligence');
+    expect(text).toContain('Project sections');
+    expect(text).not.toContain('Analysis workspace');
+
+    const brand = (fixture.nativeElement as HTMLElement).querySelector('.brand');
+    expect(brand?.querySelector('.brand-mark')?.textContent?.trim()).toBe('TI');
+    expect(brand?.querySelector('strong')?.textContent?.trim()).toBe('Transaction Intelligence');
+    expect(brand?.getAttribute('aria-label')).toBe('Transaction Intelligence home');
   });
 
   it('includes the About page in the main navigation', () => {
     const fixture = TestBed.createComponent(App);
     fixture.detectChanges();
-    const aboutLink = (fixture.nativeElement as HTMLElement).querySelector('a[href="/about"]');
+    const element = fixture.nativeElement as HTMLElement;
+    const aboutLink = element.querySelector('.primary-nav a[href="/about"]');
+    const mobileAboutLink = element.querySelector('.mobile-header a[href="/about"]');
+
     expect(aboutLink?.textContent).toContain('About');
+    expect(aboutLink?.querySelector('span')?.textContent?.trim()).toBe('');
+    expect(aboutLink?.classList).toContain('about-link');
+    expect(mobileAboutLink?.textContent?.trim()).toBe('About');
+    expect(mobileAboutLink?.classList).toContain('about-link');
+  });
+
+  it('shows the author copyright in the sidebar', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    const authorLink = element.querySelector<HTMLAnchorElement>(
+      '.copyright a[href="https://www.antoniososa.ca"]',
+    );
+
+    expect(element.textContent).toContain('© 2026');
+    expect(authorLink?.textContent).toContain('Antonio Sosa');
+    expect(authorLink?.target).toBe('_blank');
   });
 });

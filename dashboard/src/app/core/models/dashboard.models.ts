@@ -28,6 +28,16 @@ export interface MonthlyActivity {
   outflow_per_active_account: number;
 }
 
+export interface MonthlyTransactionForecast {
+  month: string;
+  period: 'training' | 'test';
+  observed_transaction_count: number;
+  seasonal_naive: number | null;
+  sarima_forecast: number | null;
+  sarima_lower_95: number | null;
+  sarima_upper_95: number | null;
+}
+
 export interface ServiceRule {
   rule: string;
   antecedents: string;
@@ -71,6 +81,22 @@ export interface SegmentPoint {
   segment_name: string;
   pca_component_1: number;
   pca_component_2: number;
+}
+
+export interface ClusteringEvaluation {
+  algorithm: 'K-means' | 'GMM';
+  k: number;
+  inertia: number | null;
+  inertia_reduction_from_previous_k: number | null;
+  aic: number | null;
+  bic: number | null;
+  silhouette: number;
+  davies_bouldin: number;
+  smallest_group: number;
+  largest_group: number;
+  smallest_group_share: number;
+  is_selected_k: boolean;
+  is_selected_solution: boolean;
 }
 
 export interface OutlierCase {

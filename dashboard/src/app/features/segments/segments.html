@@ -4,8 +4,10 @@
       <p class="eyebrow">Customer segmentation</p>
       <h1>Five customer behavior segments.</h1>
       <p class="page-intro">
-        Compare the selected customer segments in their original units, then review the
-        small set of accounts that differ strongly from their segment.
+        This page explains why K-means with five segments was selected and compares it with a
+        Gaussian Mixture Model. It then shows each segment's population, typical activity,
+        service use, and position in the PCA view, plus accounts identified as unusual by at
+        least two outlier-detection methods.
       </p>
     </div>
     <aside class="course-alignment" aria-label="Course topics covered by Notebook 3">
@@ -42,19 +44,229 @@
     </div>
 
     @if (activeTab() === 'profiles') {
-      <div class="segment-picker">
-        @for (segment of segments(); track segment.segment_id) {
-          <button
-            type="button"
-            [class.active]="selectedSegmentId() === segment.segment_id"
-            (click)="chooseSegment(segment.segment_id)"
-          >
-            <i></i>
-            <span>{{ segment.segment_name }}</span>
-            <strong>{{ segment.population_share | percent: '1.0-0' }}</strong>
-          </button>
-        }
-      </div>
+      <section class="model-selection" aria-label="Clustering model-selection evidence">
+        <article class="card panel evidence-panel">
+          <div class="panel-header evidence-header">
+            <div>
+              <p class="eyebrow">K-means model selection</p>
+              <h2>Why five segments?</h2>
+              <p>
+                Compare every tested value of K. Use the buttons to view one selection measure
+                at a time.
+              </p>
+              <p class="method-note">
+                <strong>Method used:</strong> K-means was fitted for K = 2–8 after Yeo-Johnson
+                transformation and standardization. The decision considered the elbow,
+                silhouette, Davies–Bouldin, stability, group size, and interpretation.
+              </p>
+            </div>
+            <div class="selection-badge">
+              <span>Selected K</span>
+              <strong>5</strong>
+            </div>
+          </div>
+
+          <div class="metric-switcher" role="tablist" aria-label="K-means evaluation measure">
+            @for (choice of kmeansMetricChoices; track choice.key) {
+              <button
+                type="button"
+                role="tab"
+                [class.active]="kmeansMetric() === choice.key"
+                [attr.aria-selected]="kmeansMetric() === choice.key"
+                (click)="kmeansMetric.set(choice.key)"
+              >
+                {{ choice.label }}
+              </button>
+            }
+          </div>
+          <p class="metric-guidance">{{ selectedKMeansMetric().guidance }}</p>
+          <ti-chart
+            class="chart model-selection-chart"
+            [option]="kmeansEvaluationOption()"
+            [ariaLabel]="
+              'K-means ' + selectedKMeansMetric().label + ' by number of segments'
+            "
+          />
+
+          @if (selectedKMeansEvaluation(); as selected) {
+            <div class="selection-facts">
+              <div>
+                <span>Silhouette</span>
+                <strong>{{ selected.silhouette | number: '1.3-3' }}</strong>
+                <small>Highest tested</small>
+              </div>
+              <div>
+                <span>Davies–Bouldin</span>
+                <strong>{{ selected.davies_bouldin | number: '1.3-3' }}</strong>
+                <small>Lowest tested</small>
+              </div>
+              <div>
+                <span>Smallest segment</span>
+                <strong>{{ selected.smallest_group | number }}</strong>
+                <small>{{ selected.smallest_group_share | percent: '1.1-1' }} of accounts</small>
+              </div>
+              <div>
+                <span>Inertia reduction</span>
+                <strong>{{
+                  selected.inertia_reduction_from_previous_k | percent: '1.1-1'
+                }}</strong>
+                @if (nextKMeansEvaluation(); as next) {
+                  <small
+                    >Next step: {{ next.inertia_reduction_from_previous_k | percent: '1.1-1' }}</small
+                  >
+                }
+              </div>
+            </div>
+          }
+
+          <p class="selection-conclusion">
+            <strong>Decision:</strong> K = 5 achieved the strongest tested combination of
+            separation, a visible slowdown in inertia improvement, stable assignments,
+            workable segment sizes, and useful interpretation.
+          </p>
+        </article>
+
+        <article class="card panel evidence-panel">
+          <div class="panel-header evidence-header">
+            <div>
+              <p class="eyebrow">Challenger comparison</p>
+              <h2>Why K-means instead of GMM?</h2>
+              <p>
+                Gaussian Mixture Models were evaluated as a softer, probability-based
+                clustering alternative.
+              </p>
+              <p class="method-note">
+                <strong>Method used:</strong> Full-covariance GMM models with 2–8 components
+                were compared using AIC, BIC, silhouette, and Davies–Bouldin scores.
+              </p>
+            </div>
+            <span class="chip">GMM challenger</span>
+          </div>
+
+          <div class="metric-switcher" role="tablist" aria-label="GMM evaluation measure">
+            @for (choice of gmmMetricChoices; track choice.key) {
+              <button
+                type="button"
+                role="tab"
+                [class.active]="gmmMetric() === choice.key"
+                [attr.aria-selected]="gmmMetric() === choice.key"
+                (click)="gmmMetric.set(choice.key)"
+              >
+                {{ choice.label }}
+              </button>
+            }
+          </div>
+          <p class="metric-guidance">{{ selectedGmmMetric().guidance }}</p>
+          <ti-chart
+            class="chart model-selection-chart"
+            [option]="gmmEvaluationOption()"
+            [ariaLabel]="'GMM ' + selectedGmmMetric().label + ' by number of components'"
+          />
+
+          @if (selectedKMeansEvaluation(); as kmeans) {
+            @if (selectedGmmEvaluation(); as gmm) {
+              <div class="algorithm-comparison" aria-label="K-means and GMM comparison at K 5">
+                <article class="algorithm-card selected">
+                  <header>
+                    <span>Selected model</span>
+                    <h3>K-means · K = 5</h3>
+                  </header>
+                  <dl>
+                    <div>
+                      <dt>Silhouette</dt>
+                      <dd>{{ kmeans.silhouette | number: '1.3-3' }}</dd>
+                    </div>
+                    <div>
+                      <dt>Davies–Bouldin</dt>
+                      <dd>{{ kmeans.davies_bouldin | number: '1.3-3' }}</dd>
+                    </div>
+                    <div>
+                      <dt>Group-size range</dt>
+                      <dd>
+                        {{ kmeans.smallest_group | number }}–{{ kmeans.largest_group | number }}
+                      </dd>
+                    </div>
+                  </dl>
+                </article>
+                <article class="algorithm-card">
+                  <header>
+                    <span>Challenger</span>
+                    <h3>GMM · 5 components</h3>
+                  </header>
+                  <dl>
+                    <div>
+                      <dt>Silhouette</dt>
+                      <dd>{{ gmm.silhouette | number: '1.3-3' }}</dd>
+                    </div>
+                    <div>
+                      <dt>Davies–Bouldin</dt>
+                      <dd>{{ gmm.davies_bouldin | number: '1.3-3' }}</dd>
+                    </div>
+                    <div>
+                      <dt>Group-size range</dt>
+                      <dd>{{ gmm.smallest_group | number }}–{{ gmm.largest_group | number }}</dd>
+                    </div>
+                  </dl>
+                </article>
+              </div>
+            }
+          }
+
+          @if (lowestGmmBicEvaluation(); as lowestBic) {
+            <p class="selection-conclusion">
+              <strong>Decision:</strong> At five groups, K-means separated accounts more
+              clearly. GMM's lowest tested BIC occurred at K = {{ lowestBic.k }}, the edge of
+              the tested range rather than a clear compact solution. GMM was retained only as
+              a supporting membership-uncertainty signal for outlier analysis.
+            </p>
+          }
+        </article>
+      </section>
+
+      <article class="card panel segment-selector">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Segment population</p>
+            <h2>Portfolio composition</h2>
+            <p>
+              The five segments together represent all 4,500 accounts. The selected segment
+              is detailed below.
+            </p>
+            <p class="method-note">
+              <strong>Method used:</strong> Account counts and shares from the selected
+              five-segment K-means solution.
+            </p>
+          </div>
+          <span class="chip">100% of accounts</span>
+        </div>
+
+        <div class="segment-selector-layout">
+          <ti-chart
+            class="chart segment-population-donut"
+            [option]="populationDonutOption()"
+            (chartClick)="chooseSegmentFromChart($event)"
+            ariaLabel="Interactive donut chart showing the population of all five customer segments"
+          />
+
+          <div class="segment-key" aria-label="Customer segment selection">
+            @for (segment of segments(); track segment.segment_id) {
+              <button
+                type="button"
+                [class.active]="selectedSegmentId() === segment.segment_id"
+                [attr.aria-pressed]="selectedSegmentId() === segment.segment_id"
+                (click)="chooseSegment(segment.segment_id)"
+              >
+                <i aria-hidden="true"></i>
+                <span>
+                  <strong>{{ segment.segment_name }}</strong>
+                  <small>{{ segment.population_size | number }} accounts</small>
+                </span>
+                <em>{{ segment.population_share | percent: '1.1-1' }}</em>
+              </button>
+            }
+          </div>
+        </div>
+      </article>
 
       @if (selectedSegment(); as segment) {
         <article class="segment-hero card">
@@ -62,6 +274,10 @@
             <span class="segment-number">Segment {{ segment.segment_id + 1 }}</span>
             <h2>{{ segment.segment_name }}</h2>
             <p>{{ segment.defining_features }}</p>
+            <p class="method-note">
+              <strong>Method used:</strong> The defining features are the three strongest
+              K-means centre values after transformation and standardization.
+            </p>
           </div>
           <div class="segment-size">
             <strong>{{ segment.population_size | number }}</strong>
@@ -73,6 +289,10 @@
         <div class="profile-grid section-gap">
           <article class="card panel">
             <p class="eyebrow">Typical activity</p>
+            <p class="method-note">
+              <strong>Method used:</strong> Median value among the accounts assigned to this
+              segment, shown in the original units.
+            </p>
             <dl>
               <div>
                 <dt>Transactions / month</dt>
@@ -95,6 +315,10 @@
 
           <article class="card panel service-panel">
             <p class="eyebrow">Service use</p>
+            <p class="method-note">
+              <strong>Method used:</strong> Percentage of accounts in this segment that use
+              each service.
+            </p>
             <div class="rate">
               <span>Standing order</span>
               <progress
@@ -119,6 +343,10 @@
 
           <article class="card panel story-panel">
             <p class="eyebrow">Plain-language profile</p>
+            <p class="method-note">
+              <strong>Method used:</strong> Interpretation of the segment medians, service-use
+              rates, and K-means centre.
+            </p>
             <div>
               <strong>Transactions</strong>
               <p>{{ segment.transaction_patterns }}</p>
@@ -134,22 +362,13 @@
           <article class="card panel">
             <div class="panel-header">
               <div>
-                <p class="eyebrow">Segment population</p>
-                <h2>Relative size</h2>
-              </div>
-            </div>
-            <ti-chart
-              class="chart segment-population-chart"
-              [option]="populationOption()"
-              ariaLabel="Population size for each of five customer segments"
-            />
-          </article>
-          <article class="card panel">
-            <div class="panel-header">
-              <div>
                 <p class="eyebrow">PCA view</p>
                 <h2>Behavioral space</h2>
                 <p>Each point is an account; distance is descriptive, not a risk score.</p>
+                <p class="method-note">
+                  <strong>Method used:</strong> First two PCA components from the nine
+                  transformed and standardized features, coloured by K-means segment.
+                </p>
               </div>
             </div>
             <ti-chart
@@ -160,14 +379,18 @@
           </article>
         </div>
 
-        <div class="grid two section-gap">
-          <div class="callout">
-            <strong>Possible use:</strong> {{ segment.possible_business_relevance }}
+        <article class="card panel story-panel section-gap">
+          <p class="eyebrow">Interpretation</p>
+          <h2>How to read this segment</h2>
+          <div>
+            <strong>What this pattern may suggest</strong>
+            <p>{{ segment.possible_business_relevance }}</p>
           </div>
-          <div class="callout warning">
-            <strong>Important limit:</strong> {{ segment.limitations }}
+          <div>
+            <strong>Limit to keep in mind</strong>
+            <p>{{ segment.limitations }}</p>
           </div>
-        </div>
+        </article>
       }
     } @else {
       <div class="callout warning outlier-warning">
@@ -175,12 +398,22 @@
         These cases differ from their segment using at least two independent signals.
       </div>
 
+      <p class="method-note page-method">
+        <strong>Overall method:</strong> An account appears only when at least two of four
+        methods flag it: K-means centre distance, low GMM membership, robust within-segment
+        deviation, and Isolation Forest.
+      </p>
+
       <div class="outlier-layout section-gap">
         <article class="card panel outlier-list">
           <div class="panel-header">
             <div>
               <p class="eyebrow">Selected cases</p>
               <h2>{{ filteredOutliers().length }} accounts</h2>
+              <p class="method-note">
+                <strong>Method used:</strong> Two-signal consensus, ordered by the number of
+                agreeing signals and the combined outlier percentile.
+              </p>
             </div>
             <div class="control">
               <label for="outlier-segment">Segment</label>
@@ -257,6 +490,14 @@
                 <dd>{{ item.average_balance | number: '1.0-0' }}</dd>
               </div>
             </dl>
+
+            <p class="method-note">
+              <strong>Methods shown:</strong> A robust median/MAD comparison within the
+              segment; K-means centre distance ranked within the segment; and maximum
+              five-component GMM membership. Transactions per month divide the transaction
+              count by observed months, while average balance is the mean recorded transaction
+              balance. The agreeing-signal count also includes Isolation Forest.
+            </p>
 
             <p class="case-limit">
               This comparison shows why the account is unusual relative to its segment. It

@@ -59,6 +59,22 @@ class SegmentPoint(ApiModel):
     pca_component_2: float
 
 
+class ClusteringEvaluation(ApiModel):
+    algorithm: str
+    k: int
+    inertia: float | None
+    inertia_reduction_from_previous_k: float | None
+    aic: float | None
+    bic: float | None
+    silhouette: float
+    davies_bouldin: float
+    smallest_group: int
+    largest_group: int
+    smallest_group_share: float
+    is_selected_k: bool
+    is_selected_solution: bool
+
+
 class OutlierCase(ApiModel):
     case_id: str
     segment_id: int
@@ -97,6 +113,16 @@ class MonthlyActivity(ApiModel):
     withdrawals_per_active_account: float
     inflow_per_active_account: float
     outflow_per_active_account: float
+
+
+class MonthlyTransactionForecast(ApiModel):
+    month: datetime
+    period: str
+    observed_transaction_count: int
+    seasonal_naive: float | None
+    sarima_forecast: float | None
+    sarima_lower_95: float | None
+    sarima_upper_95: float | None
 
 
 class ServiceRule(ApiModel):

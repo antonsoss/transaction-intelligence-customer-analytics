@@ -24,7 +24,9 @@ class DashboardRepository:
         "dashboard_segments.parquet",
         "dashboard_outliers.parquet",
         "monthly_banking_activity.parquet",
+        "monthly_transaction_forecast.parquet",
         "dashboard_segment_points.parquet",
+        "clustering_evaluation.parquet",
         "service_association_rules.parquet",
     )
 
@@ -151,6 +153,31 @@ class DashboardRepository:
             """,
         )
 
+    def clustering_evaluation(self) -> list[dict[str, Any]]:
+        return self._records(
+            "clustering_evaluation.parquet",
+            """
+            SELECT
+                algorithm,
+                k,
+                inertia,
+                inertia_reduction_from_previous_k,
+                aic,
+                bic,
+                silhouette,
+                davies_bouldin,
+                smallest_group,
+                largest_group,
+                smallest_group_share,
+                is_selected_k,
+                is_selected_solution
+            FROM {source}
+            ORDER BY
+                CASE algorithm WHEN 'K-means' THEN 0 ELSE 1 END,
+                k
+            """,
+        )
+
     def outliers(
         self,
         segment_id: int | None = None,
@@ -229,6 +256,23 @@ class DashboardRepository:
             ORDER BY month
             """,
             tuple(parameters),
+        )
+
+    def transaction_forecast(self) -> list[dict[str, Any]]:
+        return self._records(
+            "monthly_transaction_forecast.parquet",
+            """
+            SELECT
+                month,
+                period,
+                observed_transaction_count,
+                seasonal_naive,
+                sarima_forecast,
+                sarima_lower_95,
+                sarima_upper_95
+            FROM {source}
+            ORDER BY month
+            """,
         )
 
     def service_rules(

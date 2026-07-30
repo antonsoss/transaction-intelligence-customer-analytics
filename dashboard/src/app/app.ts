@@ -18,7 +18,7 @@ export class App implements OnInit {
     { number: '02', label: 'Banking activity over time', path: '/behavior' },
     { number: '03', label: 'Customer segmentation', path: '/segments' },
     { number: '04', label: 'Validation and insights', path: '/validation' },
-    { number: '05', label: 'About the project', path: '/about' },
+    { number: null, label: 'About the project', path: '/about' },
   ];
   readonly apiStatus = signal<'checking' | 'online' | 'partial'>('checking');
 

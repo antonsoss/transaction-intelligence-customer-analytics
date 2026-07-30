@@ -44,19 +44,12 @@
   width: 2.55rem;
 }
 
-.brand strong,
-.brand small {
-  display: block;
-}
-
 .brand strong {
-  font-size: 1rem;
+  display: block;
+  font-size: 0.82rem;
   letter-spacing: -0.02em;
-}
-
-.brand small {
-  color: #8da19e;
-  margin-top: 0.1rem;
+  line-height: 1.15;
+  white-space: nowrap;
 }
 
 .nav-eyebrow {
@@ -91,6 +84,7 @@
   color: #5f7470;
   font-size: 0.68rem;
   letter-spacing: 0.08em;
+  min-width: 1.15rem;
 }
 
 .primary-nav a:hover,
@@ -102,6 +96,15 @@
 
 .primary-nav a.active span {
   color: #42cfbe;
+}
+
+.primary-nav a.about-link {
+  color: #f0b84b;
+}
+
+.primary-nav a.about-link:hover,
+.primary-nav a.about-link.active {
+  color: #ffd37a;
 }
 
 .sidebar-note {
@@ -157,6 +160,22 @@
   margin: 0.35rem 0 0;
 }
 
+.sidebar-footer .copyright {
+  color: #8b9d99;
+  margin-top: 0.8rem;
+}
+
+.sidebar-footer .copyright a {
+  color: inherit;
+  text-decoration-color: rgb(139 157 153 / 55%);
+  text-underline-offset: 0.18em;
+}
+
+.sidebar-footer .copyright a:hover,
+.sidebar-footer .copyright a:focus-visible {
+  color: #d2dfdc;
+}
+
 .main-content {
   margin-left: 264px;
   min-height: 100vh;
@@ -208,5 +227,13 @@
   .mobile-header nav a.active {
     background: #1d3142;
     color: #ffffff;
+  }
+
+  .mobile-header nav a.about-link {
+    color: #f0b84b;
+  }
+
+  .mobile-header nav a.about-link.active {
+    color: #ffd37a;
   }
 }

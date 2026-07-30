@@ -2,19 +2,17 @@
   <aside class="sidebar">
     <a class="brand" routerLink="/overview" aria-label="Transaction Intelligence home">
       <span class="brand-mark">TI</span>
-      <span>
-        <strong>Transaction</strong>
-        <small>Intelligence</small>
-      </span>
+      <strong>Transaction Intelligence</strong>
     </a>
 
-    <p class="nav-eyebrow">Analysis workspace</p>
+    <p class="nav-eyebrow">Project sections</p>
     <nav class="primary-nav" aria-label="Main navigation">
       @for (item of navigation; track item.path) {
         <a
           [routerLink]="item.path"
           routerLinkActive="active"
           ariaCurrentWhenActive="page"
+          [class.about-link]="item.number === null"
         >
           <span>{{ item.number }}</span>
           {{ item.label }}
@@ -39,6 +37,12 @@
     <div class="sidebar-footer">
       <span>MIA 5126</span>
       <p>Financial — PKDD'99 Financial Dataset (Berka)</p>
+      <p class="copyright">
+        &copy; 2026
+        <a href="https://www.antoniososa.ca" target="_blank" rel="noopener noreferrer"
+          >Antonio Sosa</a
+        >
+      </p>
     </div>
   </aside>
 
@@ -51,9 +55,10 @@
             [routerLink]="item.path"
             routerLinkActive="active"
             ariaCurrentWhenActive="page"
+            [class.about-link]="item.number === null"
             [attr.aria-label]="item.label"
             [attr.title]="item.label"
-          >{{ item.number }}</a>
+          >{{ item.number || 'About' }}</a>
         }
       </nav>
     </header>

@@ -10,8 +10,10 @@ from transaction_intelligence.api.repository import (
     DashboardRepository,
 )
 from transaction_intelligence.api.schemas import (
+    ClusteringEvaluation,
     HealthResponse,
     MonthlyActivity,
+    MonthlyTransactionForecast,
     OutlierCase,
     SegmentPoint,
     SegmentProfile,
@@ -52,6 +54,16 @@ def create_dashboard_router(repository: DashboardRepository) -> APIRouter:
         except DashboardDataUnavailable as error:
             raise unavailable(error) from error
 
+    @router.get(
+        "/segments/evaluation",
+        response_model=list[ClusteringEvaluation],
+    )
+    def clustering_evaluation() -> list[dict]:
+        try:
+            return repository.clustering_evaluation()
+        except DashboardDataUnavailable as error:
+            raise unavailable(error) from error
+
     @router.get("/segments/{segment_id}", response_model=SegmentProfile)
     def segment(segment_id: int) -> dict:
         try:
@@ -83,6 +95,16 @@ def create_dashboard_router(repository: DashboardRepository) -> APIRouter:
             raise HTTPException(status_code=422, detail="start must be before end")
         try:
             return repository.activity(start, end)
+        except DashboardDataUnavailable as error:
+            raise unavailable(error) from error
+
+    @router.get(
+        "/transaction-forecast",
+        response_model=list[MonthlyTransactionForecast],
+    )
+    def transaction_forecast() -> list[dict]:
+        try:
+            return repository.transaction_forecast()
         except DashboardDataUnavailable as error:
             raise unavailable(error) from error
 
