@@ -215,7 +215,7 @@ The application has five views:
 The Angular interface follows the
 [Antonio Sosa Brand System](https://github.com/antonsoss/antonsoss-brand-system)
 as synchronized from commit
-[`bb70cc8`](https://github.com/antonsoss/antonsoss-brand-system/commit/bb70cc80ac222a256e3f5ba875c5c5bad2c2c63d).
+[`a51e282`](https://github.com/antonsoss/antonsoss-brand-system/commit/a51e282dbf2f3cc32b6a506074ca84c350a74863).
 The implementation uses its canonical semantic colour tokens, Inter and JetBrains
 Mono typography, compact AS Shell logo, spacing, focus treatment, and 6 px corner
 radius. Light and dark themes both cover the application shell, content, controls,
