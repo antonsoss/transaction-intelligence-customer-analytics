@@ -22,9 +22,6 @@ dependencies = [
     "statsmodels>=0.14",
 ]
 
-[project.urls]
-live_application = "https://transaction-intelligence-customer.onrender.com"
-
 [project.optional-dependencies]
 dev = [
     "httpx>=0.27",
