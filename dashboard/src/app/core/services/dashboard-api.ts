@@ -33,9 +33,7 @@ export class DashboardApi {
   }
 
   transactionForecast(): Observable<MonthlyTransactionForecast[]> {
-    return this.http.get<MonthlyTransactionForecast[]>(
-      `${this.baseUrl}/transaction-forecast`,
-    );
+    return this.http.get<MonthlyTransactionForecast[]>(`${this.baseUrl}/transaction-forecast`);
   }
 
   serviceRules(minimumLift = 1): Observable<ServiceRule[]> {

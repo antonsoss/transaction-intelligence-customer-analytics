@@ -104,9 +104,7 @@ describe('Behavior', () => {
     expect(api.transactionForecast).toHaveBeenCalledOnce();
     expect(chart).not.toBeNull();
     expect(score).not.toBeNull();
-    expect(chart?.compareDocumentPosition(score as Node)).toBe(
-      Node.DOCUMENT_POSITION_FOLLOWING,
-    );
+    expect(chart?.compareDocumentPosition(score as Node)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
   });
 
   it('builds the training, test, baseline, SARIMA, and confidence-band series', () => {
@@ -126,11 +124,6 @@ describe('Behavior', () => {
     expect(series.get('Observed test period')).toEqual([null, null, 130, 125]);
     expect(series.get('Seasonal naive')).toEqual([null, null, 110, 112]);
     expect(series.get('SARIMA')).toEqual([null, null, 125, 128]);
-    expect(series.get('SARIMA 95% confidence interval')).toEqual([
-      null,
-      null,
-      20,
-      30,
-    ]);
+    expect(series.get('SARIMA 95% confidence interval')).toEqual([null, null, 20, 30]);
   });
 });

@@ -230,7 +230,11 @@ describe('Segments', () => {
       { value: [4, 0.291206], itemStyle: {}, symbolSize: 9 },
       {
         value: [5, 0.304458],
-        itemStyle: { color: '#e26450', borderColor: '#ffffff', borderWidth: 2 },
+        itemStyle: {
+          color: expect.any(String),
+          borderColor: expect.any(String),
+          borderWidth: 2,
+        },
         symbolSize: 13,
       },
       { value: [6, 0.264367], itemStyle: {}, symbolSize: 9 },

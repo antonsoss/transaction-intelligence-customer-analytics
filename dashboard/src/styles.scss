@@ -1,19 +1,40 @@
 :root {
-  color-scheme: light;
-  font-family:
-    Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   font-synthesis: none;
-  --ink: #12202d;
-  --muted: #63716f;
-  --paper: #f3f1eb;
-  --surface: #fffefa;
-  --line: #dcded8;
-  --teal: #168f83;
-  --teal-bright: #25b7a7;
-  --navy: #0c1724;
-  --coral: #e56652;
-  --gold: #d8a73e;
-  --shadow: 0 12px 34px rgb(21 38 49 / 7%);
+
+  /* Project aliases built from the canonical Antonio Sosa brand tokens. */
+  --ink: var(--as-text);
+  --muted: var(--as-text-muted);
+  --paper: var(--as-background);
+  --surface: var(--as-surface);
+  --surface-soft: var(--as-surface-soft);
+  --line: var(--as-border);
+  --primary: var(--as-primary);
+  --on-primary: var(--as-on-primary);
+  --link: var(--as-link);
+  --code: var(--as-code);
+  --warning: var(--as-warning);
+  --danger: var(--as-danger);
+
+  /* App-specific interaction and data-visualization roles. */
+  --app-subtle: color-mix(in srgb, var(--surface-soft) 52%, var(--surface));
+  --app-hover: color-mix(in srgb, var(--link) 8%, var(--surface));
+  --app-selected: color-mix(in srgb, var(--primary) 13%, var(--surface));
+  --app-warning-soft: color-mix(in srgb, var(--warning) 12%, var(--surface));
+  --app-inverse-surface: var(--surface);
+  --app-inverse-text: var(--ink);
+  --app-inverse-muted: var(--muted);
+  --app-inverse-border: var(--line);
+  --app-figure-background: #ffffff;
+  --app-shadow: 0 4px 16px rgb(31 35 40 / 8%);
+  --segment-1: var(--primary);
+  --segment-2: var(--link);
+  --segment-3: var(--warning);
+  --segment-4: var(--muted);
+  --segment-5: var(--code);
+}
+
+[data-theme='dark'] {
+  --app-shadow: 0 4px 18px rgb(0 0 0 / 24%);
 }
 
 * {
@@ -21,7 +42,7 @@
 }
 
 ::selection {
-  background: rgb(37 183 167 / 22%);
+  background: color-mix(in srgb, var(--primary) 24%, transparent);
 }
 
 html {
@@ -29,12 +50,14 @@ html {
 }
 
 body {
-  background:
-    radial-gradient(circle at 95% 0%, rgb(37 183 167 / 8%), transparent 28rem),
-    var(--paper);
+  background: var(--paper);
   color: var(--ink);
+  font-size: 1rem;
   margin: 0;
   min-width: 320px;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease;
 }
 
 button,
@@ -49,34 +72,34 @@ select {
   -webkit-tap-highlight-color: transparent;
 }
 
-button:focus-visible,
-a:focus-visible,
-select:focus-visible {
-  outline: 3px solid rgb(37 183 167 / 35%);
-  outline-offset: 2px;
-}
-
 .page {
   margin: 0 auto;
   max-width: 1500px;
-  padding: 2.4rem clamp(1rem, 3vw, 3.3rem) 4rem;
+  padding: var(--as-space-8) clamp(var(--as-space-4), 3vw, 3.3rem) 4rem;
 }
 
 .page-header {
   align-items: end;
   display: flex;
-  gap: 2rem;
+  gap: var(--as-space-8);
   justify-content: space-between;
-  margin-bottom: 1.8rem;
+  margin-bottom: var(--as-space-8);
 }
 
 .eyebrow {
-  color: var(--teal);
-  font-size: 0.7rem;
-  font-weight: 850;
-  letter-spacing: 0.15em;
+  color: var(--primary);
+  font-family: var(--as-font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
   margin: 0 0 0.55rem;
   text-transform: uppercase;
+}
+
+h1,
+h2,
+h3 {
+  font-weight: 500;
 }
 
 h1,
@@ -111,10 +134,10 @@ h3 {
 }
 
 .course-alignment {
-  background: #e4eee9;
-  border: 1px solid #cadbd4;
-  border-radius: 1rem;
-  color: #41625b;
+  background: var(--app-subtle);
+  border: 1px solid var(--line);
+  border-radius: var(--as-radius);
+  color: var(--muted);
   display: grid;
   flex: 0 1 420px;
   gap: 0.35rem;
@@ -123,15 +146,15 @@ h3 {
 }
 
 .course-alignment > strong {
-  color: #1f5149;
+  color: var(--ink);
   font-size: 0.72rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .course-alignment code {
-  border-bottom: 1px solid rgb(65 98 91 / 18%);
-  color: #244f48;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
   font-size: 0.68rem;
   margin-bottom: 0.2rem;
   overflow-wrap: anywhere;
@@ -139,19 +162,19 @@ h3 {
 }
 
 .course-alignment span {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   line-height: 1.4;
 }
 
 .course-alignment b {
-  color: #274e47;
+  color: var(--ink);
 }
 
 .card {
-  background: rgb(255 254 250 / 92%);
+  background: var(--surface);
   border: 1px solid var(--line);
-  border-radius: 1.05rem;
-  box-shadow: var(--shadow);
+  border-radius: var(--as-radius);
+  box-shadow: var(--app-shadow);
 }
 
 @media (hover: hover) {
@@ -159,28 +182,26 @@ h3 {
   .panel {
     transition:
       border-color 160ms ease,
-      box-shadow 160ms ease,
-      transform 160ms ease;
+      box-shadow 160ms ease;
   }
 
   .metric-card:hover,
   .panel:hover {
-    border-color: #c9d3ce;
-    box-shadow: 0 16px 38px rgb(21 38 49 / 10%);
-    transform: translateY(-1px);
+    border-color: var(--line);
+    box-shadow: var(--app-shadow);
   }
 }
 
 .panel {
-  padding: 1.35rem;
+  padding: var(--as-space-6);
 }
 
 .panel-header {
   align-items: start;
   display: flex;
-  gap: 1rem;
+  gap: var(--as-space-4);
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: var(--as-space-4);
 }
 
 .panel-header h2,
@@ -190,14 +211,14 @@ h3 {
 
 .panel-header p {
   color: var(--muted);
-  font-size: 0.82rem;
+  font-size: 1rem;
   line-height: 1.5;
   margin-bottom: 0;
 }
 
 .grid {
   display: grid;
-  gap: 1rem;
+  gap: var(--as-space-4);
 }
 
 .grid.two {
@@ -210,9 +231,9 @@ h3 {
 
 .metric-grid {
   display: grid;
-  gap: 0.8rem;
+  gap: var(--as-space-3);
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin-bottom: 1rem;
+  margin-bottom: var(--as-space-4);
 }
 
 .metric-card {
@@ -223,7 +244,7 @@ h3 {
 .metric-card .metric-label {
   color: var(--muted);
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: 500;
   margin: 0;
 }
 
@@ -235,38 +256,38 @@ h3 {
 }
 
 .metric-card small {
-  color: #7c8987;
-  font-size: 0.69rem;
+  color: var(--muted);
+  font-size: 0.8rem;
 }
 
 .metric-method {
-  border-top: 1px solid #e6e8e3;
-  color: #4f716a;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
   display: block;
-  font-size: 0.62rem;
-  font-weight: 750;
+  font-size: 0.75rem;
+  font-weight: 500;
   line-height: 1.4;
   margin-top: 0.7rem;
   padding-top: 0.55rem;
 }
 
 .method-note {
-  background: #edf4f1;
-  border-left: 3px solid #25a999;
-  border-radius: 0.35rem;
-  color: #45635d;
-  font-size: 0.7rem;
+  background: var(--app-subtle);
+  border-left: 3px solid var(--primary);
+  border-radius: var(--as-radius);
+  color: var(--muted);
+  font-size: 0.8rem;
   line-height: 1.45;
   margin: 0.7rem 0 0;
   padding: 0.5rem 0.65rem;
 }
 
 .method-note strong {
-  color: #26554d;
+  color: var(--ink);
 }
 
 .panel-header .method-note {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   margin: 0.7rem 0 0;
 }
 
@@ -285,28 +306,29 @@ h3 {
 }
 
 .callout {
-  background: #e5f1ed;
-  border: 1px solid #c5ddd5;
-  border-radius: 0.85rem;
-  color: #31554e;
-  font-size: 0.82rem;
+  background: var(--app-subtle);
+  border: 1px solid var(--line);
+  border-radius: var(--as-radius);
+  color: var(--muted);
+  font-size: 1rem;
   line-height: 1.55;
   padding: 0.9rem 1rem;
 }
 
 .callout.warning {
-  background: #fff1df;
-  border-color: #efd5ad;
-  color: #6a4d23;
+  background: var(--app-warning-soft);
+  border-color: var(--line);
+  border-left: 3px solid var(--warning);
+  color: var(--ink);
 }
 
 .chip {
-  background: #edf0eb;
-  border-radius: 99px;
-  color: #52605e;
+  background: var(--app-subtle);
+  border-radius: var(--as-radius);
+  color: var(--muted);
   display: inline-flex;
   font-size: 0.68rem;
-  font-weight: 750;
+  font-weight: 500;
   padding: 0.38rem 0.6rem;
 }
 
@@ -318,13 +340,13 @@ h3 {
 .control label {
   color: var(--muted);
   font-size: 0.68rem;
-  font-weight: 750;
+  font-weight: 500;
 }
 
 .control select {
   background: var(--surface);
-  border: 1px solid #cfd5d1;
-  border-radius: 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: var(--as-radius);
   color: var(--ink);
   min-width: 210px;
   padding: 0.65rem 2.2rem 0.65rem 0.75rem;
@@ -336,9 +358,9 @@ h3 {
 }
 
 .data-table th {
-  color: #6f7c79;
+  color: var(--muted);
   font-size: 0.65rem;
-  font-weight: 800;
+  font-weight: 500;
   letter-spacing: 0.08em;
   padding: 0.75rem;
   text-align: left;
@@ -346,8 +368,8 @@ h3 {
 }
 
 .data-table td {
-  border-top: 1px solid #e3e5e0;
-  font-size: 0.78rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.875rem;
   padding: 0.85rem 0.75rem;
   vertical-align: top;
 }
@@ -366,7 +388,7 @@ h3 {
 }
 
 .state.error {
-  color: #8f493e;
+  color: var(--danger);
 }
 
 .section-gap {
@@ -389,9 +411,9 @@ h3 {
 
 .selection-badge {
   align-items: center;
-  background: #112431;
-  border-radius: 0.85rem;
-  color: #96aaa5;
+  background: var(--surface-soft);
+  border-radius: var(--as-radius);
+  color: var(--muted);
   display: grid;
   min-width: 116px;
   padding: 0.8rem 1rem;
@@ -400,11 +422,11 @@ h3 {
 
 .selection-badge span {
   font-size: 0.65rem;
-  font-weight: 750;
+  font-weight: 500;
 }
 
 .selection-badge strong {
-  color: #4cd0bf;
+  color: var(--primary);
   font-size: 2.35rem;
   letter-spacing: -0.06em;
   line-height: 1;
@@ -412,9 +434,9 @@ h3 {
 }
 
 .metric-switcher {
-  background: #edf0eb;
-  border: 1px solid #dce1db;
-  border-radius: 0.7rem;
+  background: var(--app-subtle);
+  border: 1px solid var(--line);
+  border-radius: var(--as-radius);
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
@@ -425,28 +447,23 @@ h3 {
 .metric-switcher button {
   background: transparent;
   border: 0;
-  border-radius: 0.5rem;
-  color: #65736f;
+  border-radius: var(--as-radius);
+  color: var(--muted);
   cursor: pointer;
   font-size: 0.68rem;
-  font-weight: 750;
+  font-weight: 500;
   padding: 0.55rem 0.75rem;
 }
 
 .metric-switcher button.active {
-  background: #ffffff;
-  box-shadow: 0 2px 8px rgb(22 45 51 / 9%);
-  color: #136f66;
-}
-
-.metric-switcher button:focus-visible {
-  outline: 2px solid #168f83;
-  outline-offset: 2px;
+  background: var(--surface);
+  box-shadow: var(--app-shadow);
+  color: var(--primary);
 }
 
 .metric-guidance {
-  color: #687572;
-  font-size: 0.7rem;
+  color: var(--muted);
+  font-size: 0.875rem;
   line-height: 1.45;
   margin: 0.65rem 0 0;
 }
@@ -459,9 +476,9 @@ h3 {
 }
 
 .selection-facts > div {
-  background: #f2f4ef;
-  border: 1px solid #e1e4df;
-  border-radius: 0.7rem;
+  background: var(--app-subtle);
+  border: 1px solid var(--line);
+  border-radius: var(--as-radius);
   display: grid;
   min-height: 104px;
   padding: 0.8rem;
@@ -469,22 +486,22 @@ h3 {
 
 .selection-facts span,
 .selection-facts small {
-  color: #71807d;
+  color: var(--muted);
   font-size: 0.64rem;
 }
 
 .selection-facts strong {
-  color: #172923;
+  color: var(--ink);
   font-size: 1.25rem;
   margin: 0.35rem 0;
 }
 
 .selection-conclusion {
-  background: #e5f1ed;
-  border: 1px solid #c5ddd5;
-  border-radius: 0.75rem;
-  color: #31554e;
-  font-size: 0.75rem;
+  background: var(--app-subtle);
+  border: 1px solid var(--line);
+  border-radius: var(--as-radius);
+  color: var(--muted);
+  font-size: 1rem;
   line-height: 1.55;
   margin: 0.8rem 0 0;
   padding: 0.8rem 0.9rem;
@@ -498,27 +515,27 @@ h3 {
 }
 
 .algorithm-card {
-  background: #f5f5f1;
-  border: 1px solid #dfe3dd;
-  border-radius: 0.8rem;
+  background: var(--app-subtle);
+  border: 1px solid var(--line);
+  border-radius: var(--as-radius);
   padding: 1rem;
 }
 
 .algorithm-card.selected {
-  background: #edf7f3;
-  border-color: #8fc7bc;
+  background: var(--app-subtle);
+  border-color: var(--line);
 }
 
 .algorithm-card header span {
-  color: #71807d;
+  color: var(--muted);
   font-size: 0.62rem;
-  font-weight: 800;
+  font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .algorithm-card h3 {
-  color: #172923;
+  color: var(--ink);
   font-size: 1rem;
   margin: 0.35rem 0 0.5rem;
 }
@@ -528,7 +545,98 @@ h3 {
 }
 
 .mono {
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-family: var(--as-font-mono);
+}
+
+.course-alignment code,
+.eyebrow,
+.nav-eyebrow,
+.metric-card .metric-label,
+.metric-method,
+.method-note,
+.chip,
+.control label,
+.data-table th,
+.selection-badge span,
+.metric-switcher button,
+.metric-guidance,
+.algorithm-card header span,
+.phase-heading,
+.notebook-reference,
+.project-details dt,
+.card-kind,
+.lane-connector small,
+.tab-bar button,
+.segment-number {
+  font-family: var(--as-font-mono);
+}
+
+.metric-card strong,
+.data-table td,
+.selection-facts strong {
+  font-variant-numeric: tabular-nums;
+}
+
+button:disabled,
+select:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.segments-page dl {
+  margin: 0;
+}
+
+.segments-page dl div {
+  align-items: baseline;
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  padding: 0.68rem 0;
+}
+
+.segments-page dt {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.segments-page dd {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.segments-page .rate {
+  align-items: center;
+  display: grid;
+  font-size: 0.68rem;
+  gap: 0.5rem;
+  grid-template-columns: 90px 1fr 38px;
+  margin: 0.75rem 0;
+}
+
+.segments-page .rate progress {
+  appearance: none;
+  background: var(--app-subtle);
+  border: 0;
+  border-radius: var(--as-radius);
+  height: 0.45rem;
+  overflow: hidden;
+  width: 100%;
+}
+
+.segments-page .rate progress::-webkit-progress-bar {
+  background: var(--app-subtle);
+}
+
+.segments-page .rate progress::-webkit-progress-value {
+  background: var(--primary);
+  border-radius: var(--as-radius);
+}
+
+.segments-page .rate progress::-moz-progress-bar {
+  background: var(--primary);
+  border-radius: var(--as-radius);
 }
 
 @media (max-width: 1120px) {

@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit, inject, signal } from '@ang
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
 import { DashboardApi } from './core/services/dashboard-api';
+import { ThemeService } from './core/services/theme';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ import { DashboardApi } from './core/services/dashboard-api';
 })
 export class App implements OnInit {
   private readonly api = inject(DashboardApi);
+  readonly theme = inject(ThemeService);
 
   readonly navigation = [
     { number: '01', label: 'Overview', path: '/overview' },

@@ -30,9 +30,25 @@ describe('App', () => {
     expect(text).not.toContain('Analysis workspace');
 
     const brand = (fixture.nativeElement as HTMLElement).querySelector('.brand');
-    expect(brand?.querySelector('.brand-mark')?.textContent?.trim()).toBe('TI');
+    const logo = brand?.querySelector<HTMLImageElement>('.brand-logo');
+    expect(logo?.getAttribute('src')).toContain('brand/as-shell-compact-');
+    expect(logo?.getAttribute('alt')).toBe('');
     expect(brand?.querySelector('strong')?.textContent?.trim()).toBe('Transaction Intelligence');
     expect(brand?.getAttribute('aria-label')).toBe('Transaction Intelligence home');
+  });
+
+  it('provides accessible desktop and mobile theme controls', () => {
+    const fixture = TestBed.createComponent(App);
+    fixture.detectChanges();
+    const buttons = Array.from(
+      (fixture.nativeElement as HTMLElement).querySelectorAll<HTMLButtonElement>('.theme-toggle'),
+    );
+
+    expect(buttons).toHaveLength(2);
+    for (const button of buttons) {
+      expect(button.type).toBe('button');
+      expect(button.getAttribute('aria-label')).toMatch(/^Switch to (light|dark) theme$/);
+    }
   });
 
   it('includes the About page in the main navigation', () => {

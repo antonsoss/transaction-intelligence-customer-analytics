@@ -13,6 +13,7 @@ import { forkJoin } from 'rxjs';
 
 import { MonthlyActivity, SummaryMetric } from '../../core/models/dashboard.models';
 import { DashboardApi } from '../../core/services/dashboard-api';
+import { ThemeService } from '../../core/services/theme';
 import { Chart } from '../../shared/chart/chart';
 
 type OverviewMetric = SummaryMetric & { method: string };
@@ -26,6 +27,7 @@ type OverviewMetric = SummaryMetric & { method: string };
 })
 export class Overview implements OnInit {
   private readonly api = inject(DashboardApi);
+  private readonly theme = inject(ThemeService);
   readonly loading = signal(true);
   readonly error = signal('');
   readonly summary = signal<SummaryMetric[]>([]);
@@ -57,31 +59,37 @@ export class Overview implements OnInit {
 
   readonly activityOption = computed<EChartsCoreOption>(() => {
     const rows = this.activity();
+    const palette = this.theme.chartPalette();
     return {
       aria: { enabled: true },
-      color: ['#25b7a7', '#d8a73e'],
-      tooltip: { trigger: 'axis' },
-      legend: { bottom: 0, textStyle: { color: '#63716f' } },
+      color: [palette.primary, palette.link],
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: palette.surface,
+        borderColor: palette.border,
+        textStyle: { color: palette.text },
+      },
+      legend: { bottom: 0, textStyle: { color: palette.muted } },
       grid: { left: 48, right: 24, top: 20, bottom: 54 },
       xAxis: {
         type: 'category',
         data: rows.map((row) => row.month.slice(0, 7)),
-        axisLabel: { color: '#71807d', hideOverlap: true },
-        axisLine: { lineStyle: { color: '#d7dcd7' } },
+        axisLabel: { color: palette.muted, hideOverlap: true },
+        axisLine: { lineStyle: { color: palette.border } },
       },
       yAxis: [
         {
           type: 'value',
           name: 'Transactions',
-          nameTextStyle: { color: '#71807d' },
-          axisLabel: { color: '#71807d' },
-          splitLine: { lineStyle: { color: '#e7e8e4' } },
+          nameTextStyle: { color: palette.muted },
+          axisLabel: { color: palette.muted },
+          splitLine: { lineStyle: { color: palette.grid } },
         },
         {
           type: 'value',
           name: 'Accounts',
-          nameTextStyle: { color: '#71807d' },
-          axisLabel: { color: '#71807d' },
+          nameTextStyle: { color: palette.muted },
+          axisLabel: { color: palette.muted },
           splitLine: { show: false },
         },
       ],

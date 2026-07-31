@@ -1,9 +1,38 @@
 <div class="app-shell">
   <aside class="sidebar">
-    <a class="brand" routerLink="/overview" aria-label="Transaction Intelligence home">
-      <span class="brand-mark">TI</span>
-      <strong>Transaction Intelligence</strong>
-    </a>
+    <div class="sidebar-header">
+      <a class="brand" routerLink="/overview" aria-label="Transaction Intelligence home">
+        <img class="brand-logo" [src]="theme.logoPath()" alt="" width="32" height="32" />
+        <strong>Transaction Intelligence</strong>
+      </a>
+      <button
+        class="theme-toggle"
+        type="button"
+        (click)="theme.toggle()"
+        [attr.aria-label]="
+          'Switch to ' + (theme.resolved() === 'dark' ? 'light' : 'dark') + ' theme'
+        "
+        [attr.title]="'Switch to ' + (theme.resolved() === 'dark' ? 'light' : 'dark') + ' theme'"
+      >
+        <span class="theme-icon" aria-hidden="true">
+          @if (theme.resolved() === 'dark') {
+            <svg viewBox="0 0 24 24" focusable="false">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"
+              ></path>
+            </svg>
+          } @else {
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"></path>
+            </svg>
+          }
+        </span>
+        <span class="theme-label">
+          {{ theme.resolved() === 'dark' ? 'Light' : 'Dark' }}
+        </span>
+      </button>
+    </div>
 
     <p class="nav-eyebrow">Project sections</p>
     <nav class="primary-nav" aria-label="Main navigation">
@@ -25,9 +54,15 @@
       <div>
         <strong>
           @switch (apiStatus()) {
-            @case ('online') { API connected }
-            @case ('partial') { Data unavailable }
-            @default { Checking API }
+            @case ('online') {
+              API connected
+            }
+            @case ('partial') {
+              Data unavailable
+            }
+            @default {
+              Checking API
+            }
           }
         </strong>
         <small>Read-only analytical data</small>
@@ -48,7 +83,9 @@
 
   <main class="main-content">
     <header class="mobile-header">
-      <a class="mobile-brand" routerLink="/overview">TI</a>
+      <a class="mobile-brand" routerLink="/overview" aria-label="Transaction Intelligence home">
+        <img class="mobile-logo" [src]="theme.logoPath()" alt="" width="32" height="32" />
+      </a>
       <nav aria-label="Mobile navigation">
         @for (item of navigation; track item.path) {
           <a
@@ -58,9 +95,34 @@
             [class.about-link]="item.number === null"
             [attr.aria-label]="item.label"
             [attr.title]="item.label"
-          >{{ item.number || 'About' }}</a>
+            >{{ item.number || 'About' }}</a
+          >
         }
       </nav>
+      <button
+        class="theme-toggle mobile-theme-toggle"
+        type="button"
+        (click)="theme.toggle()"
+        [attr.aria-label]="
+          'Switch to ' + (theme.resolved() === 'dark' ? 'light' : 'dark') + ' theme'
+        "
+        [attr.title]="'Switch to ' + (theme.resolved() === 'dark' ? 'light' : 'dark') + ' theme'"
+      >
+        <span class="theme-icon" aria-hidden="true">
+          @if (theme.resolved() === 'dark') {
+            <svg viewBox="0 0 24 24" focusable="false">
+              <circle cx="12" cy="12" r="4"></circle>
+              <path
+                d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41"
+              ></path>
+            </svg>
+          } @else {
+            <svg viewBox="0 0 24 24" focusable="false">
+              <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z"></path>
+            </svg>
+          }
+        </span>
+      </button>
     </header>
     <router-outlet />
   </main>

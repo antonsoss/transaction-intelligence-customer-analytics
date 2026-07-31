@@ -8,10 +8,7 @@ import {
   signal,
 } from '@angular/core';
 
-import {
-  ValidationFigure,
-  ValidationOverview,
-} from '../../core/models/dashboard.models';
+import { ValidationFigure, ValidationOverview } from '../../core/models/dashboard.models';
 import { DashboardApi } from '../../core/services/dashboard-api';
 
 type ValidationFigureWithMethod = ValidationFigure & { method: string };

@@ -17,6 +17,7 @@ import {
   SegmentProfile,
 } from '../../core/models/dashboard.models';
 import { DashboardApi } from '../../core/services/dashboard-api';
+import { ThemeService } from '../../core/services/theme';
 import { Chart, ChartClickEvent } from '../../shared/chart/chart';
 
 type KMeansEvaluationMetric = 'inertia' | 'silhouette' | 'davies_bouldin';
@@ -37,7 +38,8 @@ interface EvaluationMetricChoice<TMetric extends string> {
 })
 export class Segments implements OnInit {
   private readonly api = inject(DashboardApi);
-  readonly colors = ['#2aa99a', '#577590', '#d6a438', '#e26450', '#8d6cab'];
+  private readonly theme = inject(ThemeService);
+  readonly colors = computed(() => [...this.theme.chartPalette().series]);
 
   readonly loading = signal(true);
   readonly error = signal('');
@@ -148,7 +150,7 @@ export class Segments implements OnInit {
       'K-means',
       this.kmeansMetric(),
       this.selectedKMeansMetric().label,
-      '#168f83',
+      this.theme.chartPalette().primary,
       'Selected K = 5',
     ),
   );
@@ -158,116 +160,135 @@ export class Segments implements OnInit {
       'GMM',
       this.gmmMetric(),
       this.selectedGmmMetric().label,
-      '#e26450',
+      this.theme.chartPalette().code,
       'Matched K = 5',
     ),
   );
 
-  readonly populationDonutOption = computed<EChartsCoreOption>(() => ({
-    aria: {
-      enabled: true,
-      description:
-        'Customer segment shares. Together, the five segments represent all observed accounts.',
-    },
-    color: this.colors,
-    title: {
-      text: Intl.NumberFormat('en-CA').format(this.totalAccounts()),
-      subtext: 'accounts',
-      left: '54%',
-      top: '40%',
-      textAlign: 'center',
-      textStyle: {
-        color: '#132331',
-        fontSize: 28,
-        fontWeight: 800,
+  readonly populationDonutOption = computed<EChartsCoreOption>(() => {
+    const palette = this.theme.chartPalette();
+    const colors = this.colors();
+    return {
+      aria: {
+        enabled: true,
+        description:
+          'Customer segment shares. Together, the five segments represent all observed accounts.',
       },
-      subtextStyle: {
-        color: '#71807d',
-        fontSize: 12,
-        fontWeight: 600,
-      },
-    },
-    tooltip: {
-      trigger: 'item',
-      formatter: '{b}<br/>{c} accounts ({d}%)',
-    },
-    series: [
-      {
-        name: 'Customer segments',
-        type: 'pie',
-        radius: ['50%', '70%'],
-        center: ['54%', '50%'],
-        selectedMode: 'single',
-        selectedOffset: 10,
-        minAngle: 4,
-        percentPrecision: 1,
-        avoidLabelOverlap: true,
-        label: {
-          color: '#465653',
-          fontSize: 11,
-          fontWeight: 750,
-          formatter: '{d}%',
+      color: colors,
+      title: {
+        text: Intl.NumberFormat('en-CA').format(this.totalAccounts()),
+        subtext: 'accounts',
+        left: '54%',
+        top: '40%',
+        textAlign: 'center',
+        textStyle: {
+          color: palette.text,
+          fontSize: 28,
+          fontWeight: 500,
         },
-        labelLine: {
-          length: 10,
-          length2: 5,
-          lineStyle: { color: '#aeb8b4' },
+        subtextStyle: {
+          color: palette.muted,
+          fontSize: 12,
+          fontWeight: 500,
         },
-        data: this.segments().map((segment, index) => ({
-          value: segment.population_size,
-          name: segment.segment_name,
-          selected: segment.segment_id === this.selectedSegmentId(),
-          itemStyle: {
-            color: this.colors[index],
-            borderColor: '#fffefa',
-            borderWidth: 4,
-            borderRadius: 6,
-          },
-          emphasis: {
-            scale: true,
-            scaleSize: 8,
-          },
-        })),
       },
-    ],
-  }));
+      tooltip: {
+        trigger: 'item',
+        formatter: '{b}<br/>{c} accounts ({d}%)',
+        backgroundColor: palette.surface,
+        borderColor: palette.border,
+        textStyle: { color: palette.text },
+      },
+      series: [
+        {
+          name: 'Customer segments',
+          type: 'pie',
+          radius: ['50%', '70%'],
+          center: ['54%', '50%'],
+          selectedMode: 'single',
+          selectedOffset: 10,
+          minAngle: 4,
+          percentPrecision: 1,
+          avoidLabelOverlap: true,
+          label: {
+            color: palette.text,
+            fontSize: 11,
+            fontWeight: 500,
+            formatter: '{d}%',
+          },
+          labelLine: {
+            length: 10,
+            length2: 5,
+            lineStyle: { color: palette.border },
+          },
+          data: this.segments().map((segment, index) => ({
+            value: segment.population_size,
+            name: segment.segment_name,
+            selected: segment.segment_id === this.selectedSegmentId(),
+            itemStyle: {
+              color: colors[index],
+              borderColor: palette.surface,
+              borderWidth: 4,
+              borderRadius: 6,
+            },
+            emphasis: {
+              scale: true,
+              scaleSize: 8,
+            },
+          })),
+        },
+      ],
+    };
+  });
 
-  readonly scatterOption = computed<EChartsCoreOption>(() => ({
-    aria: { enabled: true },
-    color: this.colors,
-    tooltip: { trigger: 'item' },
-    legend: {
-      bottom: 0,
-      type: 'scroll',
-      textStyle: { color: '#63716f', fontSize: 10 },
-    },
-    grid: { left: 54, right: 24, top: 20, bottom: 78 },
-    xAxis: {
-      type: 'value',
-      name: 'PCA component 1',
-      nameLocation: 'middle',
-      nameGap: 30,
-      axisLabel: { color: '#71807d' },
-      splitLine: { lineStyle: { color: '#e7e8e4' } },
-    },
-    yAxis: {
-      type: 'value',
-      name: 'PCA component 2',
-      nameLocation: 'middle',
-      nameGap: 38,
-      axisLabel: { color: '#71807d' },
-      splitLine: { lineStyle: { color: '#e7e8e4' } },
-    },
-    series: this.segments().map((segment) => ({
-      name: segment.segment_name,
-      type: 'scatter',
-      symbolSize: 6,
-      data: this.points()
-        .filter((point) => point.segment_id === segment.segment_id)
-        .map((point) => [point.pca_component_1, point.pca_component_2]),
-      emphasis: { focus: 'series' },
-    })),
-  }));
+  readonly scatterOption = computed<EChartsCoreOption>(() => {
+    const palette = this.theme.chartPalette();
+    return {
+      aria: { enabled: true },
+      color: this.colors(),
+      tooltip: {
+        trigger: 'item',
+        backgroundColor: palette.surface,
+        borderColor: palette.border,
+        textStyle: { color: palette.text },
+      },
+      legend: {
+        bottom: 0,
+        type: 'scroll',
+        textStyle: { color: palette.muted, fontSize: 10 },
+      },
+      grid: { left: 54, right: 24, top: 20, bottom: 78 },
+      xAxis: {
+        type: 'value',
+        name: 'PCA component 1',
+        nameLocation: 'middle',
+        nameGap: 30,
+        nameTextStyle: { color: palette.muted },
+        axisLabel: { color: palette.muted },
+        axisLine: { lineStyle: { color: palette.border } },
+        splitLine: { lineStyle: { color: palette.grid } },
+      },
+      yAxis: {
+        type: 'value',
+        name: 'PCA component 2',
+        nameLocation: 'middle',
+        nameGap: 38,
+        nameTextStyle: { color: palette.muted },
+        axisLabel: { color: palette.muted },
+        axisLine: { lineStyle: { color: palette.border } },
+        splitLine: { lineStyle: { color: palette.grid } },
+      },
+      series: this.segments().map((segment) => ({
+        name: segment.segment_name,
+        type: 'scatter',
+        symbolSize: 6,
+        data: this.points()
+          .filter((point) => point.segment_id === segment.segment_id)
+          .map((point) => [point.pca_component_1, point.pca_component_2]),
+        emphasis: { focus: 'series' },
+      })),
+    };
+  });
 
   private evaluationOption(
     algorithm: ClusteringEvaluation['algorithm'],
@@ -276,6 +297,7 @@ export class Segments implements OnInit {
     color: string,
     selectedLabel: string,
   ): EChartsCoreOption {
+    const palette = this.theme.chartPalette();
     const rows = this.evaluation()
       .filter((row) => row.algorithm === algorithm && row[metric] !== null)
       .sort((left, right) => left.k - right.k);
@@ -286,32 +308,41 @@ export class Segments implements OnInit {
         description: `${metricLabel} values for ${algorithm} models with two through eight groups.`,
       },
       color: [color],
-      tooltip: { trigger: 'axis' },
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: palette.surface,
+        borderColor: palette.border,
+        textStyle: { color: palette.text },
+      },
       grid: { left: 28, right: 34, top: 30, bottom: 54, containLabel: true },
       xAxis: {
         type: 'value',
         name: algorithm === 'K-means' ? 'Number of segments (K)' : 'Number of components',
         nameLocation: 'middle',
         nameGap: 34,
+        nameTextStyle: { color: palette.muted },
         min: 2,
         max: 8,
         interval: 1,
-        axisLabel: { color: '#71807d' },
-        splitLine: { lineStyle: { color: '#e7e8e4' } },
+        axisLabel: { color: palette.muted },
+        axisLine: { lineStyle: { color: palette.border } },
+        splitLine: { lineStyle: { color: palette.grid } },
       },
       yAxis: {
         type: 'value',
         name: metricLabel,
         nameGap: 22,
+        nameTextStyle: { color: palette.muted },
         scale: true,
         axisLabel: {
-          color: '#71807d',
+          color: palette.muted,
           formatter: (value: number) =>
             Math.abs(value) >= 1000
               ? Intl.NumberFormat('en-CA', { maximumFractionDigits: 0 }).format(value)
               : value.toFixed(2),
         },
-        splitLine: { lineStyle: { color: '#e7e8e4' } },
+        axisLine: { lineStyle: { color: palette.border } },
+        splitLine: { lineStyle: { color: palette.grid } },
       },
       series: [
         {
@@ -322,18 +353,21 @@ export class Segments implements OnInit {
           lineStyle: { color, width: 3 },
           data: rows.map((row) => ({
             value: [row.k, row[metric]],
-            itemStyle: row.k === 5 ? { color: '#e26450', borderColor: '#ffffff', borderWidth: 2 } : {},
+            itemStyle:
+              row.k === 5
+                ? { color: palette.primary, borderColor: palette.surface, borderWidth: 2 }
+                : {},
             symbolSize: row.k === 5 ? 13 : 9,
           })),
           markLine: {
             silent: true,
             symbol: ['none', 'none'],
             label: {
-              color: '#8f493e',
+              color: palette.primary,
               formatter: selectedLabel,
               position: 'insideEndTop',
             },
-            lineStyle: { color: '#e26450', type: 'dashed', width: 2 },
+            lineStyle: { color: palette.primary, type: 'dashed', width: 2 },
             data: [{ xAxis: 5 }],
           },
         },

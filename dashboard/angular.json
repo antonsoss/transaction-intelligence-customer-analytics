@@ -31,6 +31,11 @@
               }
             ],
             "styles": [
+              "node_modules/@fontsource/inter/latin-400.css",
+              "node_modules/@fontsource/inter/latin-500.css",
+              "node_modules/@fontsource/jetbrains-mono/latin-400.css",
+              "node_modules/@fontsource/jetbrains-mono/latin-500.css",
+              "src/brand/brand.css",
               "src/styles.scss"
             ]
           },

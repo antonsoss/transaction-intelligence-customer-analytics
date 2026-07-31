@@ -61,14 +61,14 @@ export class Chart implements AfterViewInit, OnDestroy {
   constructor() {
     effect(() => {
       const option = this.option();
-      this.chart?.setOption(option, true);
+      this.chart?.setOption(this.withBrandTypography(option), true);
     });
   }
 
   ngAfterViewInit(): void {
     const host = this.chartHost().nativeElement;
     this.chart = echarts.init(host, undefined, { renderer: 'canvas' });
-    this.chart.setOption(this.option());
+    this.chart.setOption(this.withBrandTypography(this.option()));
     this.chart.on('click', (event: ECElementEvent) => {
       if (event.componentType === 'series') {
         this.chartClick.emit({ name: event.name, dataIndex: event.dataIndex });
@@ -84,5 +84,15 @@ export class Chart implements AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.resizeObserver?.disconnect();
     this.chart?.dispose();
+  }
+
+  private withBrandTypography(option: EChartsCoreOption): EChartsCoreOption {
+    return {
+      textStyle: {
+        fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        fontWeight: 400,
+      },
+      ...option,
+    };
   }
 }

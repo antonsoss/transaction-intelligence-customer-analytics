@@ -16,14 +16,11 @@ import {
   ServiceRule,
 } from '../../core/models/dashboard.models';
 import { DashboardApi } from '../../core/services/dashboard-api';
+import { ThemeService } from '../../core/services/theme';
 import { Chart } from '../../shared/chart/chart';
 
 type ActivityMetric =
-  | 'transaction_count'
-  | 'active_account_count'
-  | 'total_inflow'
-  | 'total_outflow'
-  | 'net_cash_flow';
+  'transaction_count' | 'active_account_count' | 'total_inflow' | 'total_outflow' | 'net_cash_flow';
 
 @Component({
   selector: 'ti-behavior',
@@ -34,6 +31,7 @@ type ActivityMetric =
 })
 export class Behavior implements OnInit {
   private readonly api = inject(DashboardApi);
+  private readonly theme = inject(ThemeService);
   readonly loading = signal(true);
   readonly error = signal('');
   readonly activity = signal<MonthlyActivity[]>([]);
@@ -63,6 +61,7 @@ export class Behavior implements OnInit {
   readonly activityOption = computed<EChartsCoreOption>(() => {
     const rows = this.activity();
     const metric = this.selectedMetric();
+    const palette = this.theme.chartPalette();
     const values = rows.map((row) => row[metric]);
     const rolling = values.map((_, index) => {
       const window = values.slice(Math.max(0, index - 2), index + 1);
@@ -70,23 +69,28 @@ export class Behavior implements OnInit {
     });
     return {
       aria: { enabled: true },
-      color: ['#168f83', '#d8a73e'],
-      tooltip: { trigger: 'axis' },
-      legend: { bottom: 0, textStyle: { color: '#63716f' } },
+      color: [palette.primary, palette.code],
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: palette.surface,
+        borderColor: palette.border,
+        textStyle: { color: palette.text },
+      },
+      legend: { bottom: 0, textStyle: { color: palette.muted } },
       grid: { left: 60, right: 22, top: 24, bottom: 55 },
       xAxis: {
         type: 'category',
         data: rows.map((row) => row.month.slice(0, 7)),
-        axisLabel: { color: '#71807d', hideOverlap: true },
-        axisLine: { lineStyle: { color: '#d7dcd7' } },
+        axisLabel: { color: palette.muted, hideOverlap: true },
+        axisLine: { lineStyle: { color: palette.border } },
       },
       yAxis: {
         type: 'value',
         axisLabel: {
-          color: '#71807d',
+          color: palette.muted,
           formatter: (value: number) => `${value / 1_000_000}M`,
         },
-        splitLine: { lineStyle: { color: '#e7e8e4' } },
+        splitLine: { lineStyle: { color: palette.grid } },
       },
       series: [
         {
@@ -112,21 +116,28 @@ export class Behavior implements OnInit {
 
   readonly cashFlowOption = computed<EChartsCoreOption>(() => {
     const rows = this.activity();
+    const palette = this.theme.chartPalette();
     return {
       aria: { enabled: true },
-      color: ['#25b7a7', '#e56652'],
-      tooltip: { trigger: 'axis' },
-      legend: { bottom: 0, textStyle: { color: '#63716f' } },
+      color: [palette.primary, palette.link],
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: palette.surface,
+        borderColor: palette.border,
+        textStyle: { color: palette.text },
+      },
+      legend: { bottom: 0, textStyle: { color: palette.muted } },
       grid: { left: 66, right: 20, top: 20, bottom: 55 },
       xAxis: {
         type: 'category',
         data: rows.map((row) => row.month.slice(0, 7)),
-        axisLabel: { color: '#71807d', hideOverlap: true },
+        axisLabel: { color: palette.muted, hideOverlap: true },
+        axisLine: { lineStyle: { color: palette.border } },
       },
       yAxis: {
         type: 'value',
-        axisLabel: { color: '#71807d' },
-        splitLine: { lineStyle: { color: '#e7e8e4' } },
+        axisLabel: { color: palette.muted },
+        splitLine: { lineStyle: { color: palette.grid } },
       },
       series: [
         {
@@ -149,6 +160,7 @@ export class Behavior implements OnInit {
 
   readonly forecastOption = computed<EChartsCoreOption>(() => {
     const rows = this.forecast();
+    const palette = this.theme.chartPalette();
     const firstTestMonth = rows.find((row) => row.period === 'test')?.month.slice(0, 7);
     const labels = rows.map((row) => row.month.slice(0, 7));
     const confidenceLower = rows.map((row) => row.sarima_lower_95);
@@ -160,7 +172,12 @@ export class Behavior implements OnInit {
 
     return {
       aria: { enabled: true },
-      tooltip: { trigger: 'axis' },
+      tooltip: {
+        trigger: 'axis',
+        backgroundColor: palette.surface,
+        borderColor: palette.border,
+        textStyle: { color: palette.text },
+      },
       legend: {
         bottom: 0,
         data: [
@@ -170,25 +187,25 @@ export class Behavior implements OnInit {
           'SARIMA',
           'SARIMA 95% confidence interval',
         ],
-        textStyle: { color: '#a9b7b4' },
+        textStyle: { color: palette.muted },
       },
       grid: { left: 66, right: 26, top: 28, bottom: 74 },
       xAxis: {
         type: 'category',
         boundaryGap: false,
         data: labels,
-        axisLabel: { color: '#9cadab', hideOverlap: true },
-        axisLine: { lineStyle: { color: '#4b5d69' } },
+        axisLabel: { color: palette.muted, hideOverlap: true },
+        axisLine: { lineStyle: { color: palette.border } },
       },
       yAxis: {
         type: 'value',
         name: 'Transactions',
-        nameTextStyle: { color: '#9cadab', padding: [0, 0, 0, 8] },
+        nameTextStyle: { color: palette.muted, padding: [0, 0, 0, 8] },
         axisLabel: {
-          color: '#9cadab',
+          color: palette.muted,
           formatter: (value: number) => `${Math.round(value / 1_000)}K`,
         },
-        splitLine: { lineStyle: { color: '#293e4b' } },
+        splitLine: { lineStyle: { color: palette.grid } },
       },
       series: [
         {
@@ -211,7 +228,7 @@ export class Behavior implements OnInit {
           symbol: 'none',
           silent: true,
           lineStyle: { opacity: 0 },
-          areaStyle: { color: '#e56652', opacity: 0.2 },
+          areaStyle: { color: palette.code, opacity: 0.2 },
           tooltip: { show: false },
           z: 1,
         },
@@ -222,29 +239,27 @@ export class Behavior implements OnInit {
             row.period === 'training' ? row.observed_transaction_count : null,
           ),
           symbol: 'none',
-          lineStyle: { color: '#72a7e8', width: 2 },
-          itemStyle: { color: '#72a7e8' },
+          lineStyle: { color: palette.link, width: 2 },
+          itemStyle: { color: palette.link },
           z: 3,
         },
         {
           name: 'Observed test period',
           type: 'line',
-          data: rows.map((row) =>
-            row.period === 'test' ? row.observed_transaction_count : null,
-          ),
+          data: rows.map((row) => (row.period === 'test' ? row.observed_transaction_count : null)),
           symbol: 'none',
-          lineStyle: { color: '#f4f7f6', width: 2.6 },
-          itemStyle: { color: '#f4f7f6' },
+          lineStyle: { color: palette.text, width: 2.6 },
+          itemStyle: { color: palette.text },
           markLine: firstTestMonth
             ? {
                 symbol: 'none',
                 silent: true,
                 label: {
-                  color: '#a9b7b4',
+                  color: palette.muted,
                   formatter: 'Test period',
                   position: 'insideEndTop',
                 },
-                lineStyle: { color: '#83928f', type: 'dotted', width: 1.5 },
+                lineStyle: { color: palette.border, type: 'dotted', width: 1.5 },
                 data: [{ xAxis: firstTestMonth }],
               }
             : undefined,
@@ -255,8 +270,8 @@ export class Behavior implements OnInit {
           type: 'line',
           data: rows.map((row) => row.seasonal_naive),
           symbol: 'none',
-          lineStyle: { color: '#e0ad42', type: 'dashed', width: 2 },
-          itemStyle: { color: '#e0ad42' },
+          lineStyle: { color: palette.warning, type: 'dashed', width: 2 },
+          itemStyle: { color: palette.warning },
           z: 3,
         },
         {
@@ -264,8 +279,8 @@ export class Behavior implements OnInit {
           type: 'line',
           data: rows.map((row) => row.sarima_forecast),
           symbol: 'none',
-          lineStyle: { color: '#f27667', type: 'dashed', width: 2.2 },
-          itemStyle: { color: '#f27667' },
+          lineStyle: { color: palette.code, type: 'dashed', width: 2.2 },
+          itemStyle: { color: palette.code },
           z: 4,
         },
       ],

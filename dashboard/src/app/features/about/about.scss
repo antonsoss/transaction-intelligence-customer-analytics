@@ -4,10 +4,14 @@
 
 .about-hero {
   background:
-    radial-gradient(circle at 94% 0%, rgb(37 183 167 / 20%), transparent 25rem),
-    #101d2a;
-  border-color: #273b4a;
-  color: #eff7f5;
+    radial-gradient(
+      circle at 94% 0%,
+      color-mix(in srgb, var(--primary) 20%, transparent),
+      transparent 25rem
+    ),
+    var(--app-inverse-surface);
+  border-color: var(--app-inverse-border);
+  color: var(--app-inverse-text);
   padding: clamp(1.5rem, 3vw, 2.5rem);
 }
 
@@ -28,7 +32,7 @@
 .project-details div {
   align-items: start;
   border-bottom: 0;
-  border-left: 1px solid #304655;
+  border-left: 1px solid var(--app-inverse-border);
   display: grid;
   gap: 0.35rem;
   justify-content: start;
@@ -41,36 +45,36 @@
 }
 
 .project-details dt {
-  color: #819692;
+  color: var(--app-inverse-muted);
   font-size: 0.65rem;
-  font-weight: 800;
+  font-weight: 500;
   letter-spacing: 0.09em;
   text-transform: uppercase;
 }
 
 .project-details dd {
-  color: #f0f7f5;
-  font-size: 0.8rem;
+  color: var(--app-inverse-text);
+  font-size: 1rem;
   line-height: 1.45;
 }
 
 .project-details .repository-detail {
   border-left: 0;
-  border-top: 1px solid #304655;
+  border-top: 1px solid var(--app-inverse-border);
   grid-column: 1 / -1;
   padding: 1rem 0 0;
 }
 
 .repository-detail a {
-  color: #55d4c4;
+  color: var(--link);
   overflow-wrap: anywhere;
   text-underline-offset: 0.2rem;
 }
 
 .project-description {
-  border-top: 1px solid #304655;
-  color: #abbab7;
-  font-size: 0.82rem;
+  border-top: 1px solid var(--app-inverse-border);
+  color: var(--app-inverse-muted);
+  font-size: 1rem;
   line-height: 1.75;
   margin: 2rem 0 0;
   max-width: 1220px;
@@ -78,30 +82,30 @@
 }
 
 .project-description a {
-  color: #55d4c4;
-  font-weight: 750;
+  color: var(--link);
+  font-weight: 500;
   text-underline-offset: 0.2rem;
 }
 
 .section-heading > p:last-child {
-  color: #63716f;
-  font-size: 0.82rem;
+  color: var(--muted);
+  font-size: 1rem;
   line-height: 1.6;
   max-width: 760px;
 }
 
 .architecture-map {
-  background: #dfeae6;
-  border: 1px solid #cbdad5;
-  border-radius: 1rem;
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--as-radius);
   margin-top: 1rem;
   padding: 1rem;
 }
 
 .architecture-lane {
-  background: rgb(255 255 255 / 45%);
-  border: 1px solid rgb(79 111 103 / 14%);
-  border-radius: 0.9rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--as-radius);
   padding: 1rem;
 }
 
@@ -114,13 +118,13 @@
 
 .lane-heading > span {
   align-items: center;
-  background: #163b43;
+  background: var(--primary);
   border-radius: 50%;
-  color: #66d6c8;
+  color: var(--on-primary);
   display: flex;
   flex: 0 0 2rem;
   font-size: 0.62rem;
-  font-weight: 850;
+  font-weight: 500;
   height: 2rem;
   justify-content: center;
 }
@@ -131,12 +135,12 @@
 }
 
 .lane-heading strong {
-  color: #18312e;
+  color: var(--ink);
   font-size: 0.82rem;
 }
 
 .lane-heading small {
-  color: #687b76;
+  color: var(--muted);
   font-size: 0.66rem;
 }
 
@@ -147,10 +151,10 @@
 }
 
 .pipeline-card {
-  background: #fffefa;
-  border: 1px solid #d6ddd8;
-  border-top: 4px solid var(--stage-color, #168f83);
-  border-radius: 0.8rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-top: 4px solid var(--stage-color, var(--primary));
+  border-radius: var(--as-radius);
   display: flex;
   flex: 1 1 0;
   flex-direction: column;
@@ -159,9 +163,9 @@
 }
 
 .card-kind {
-  color: var(--stage-color, #168f83);
+  color: var(--stage-color, var(--primary));
   font-size: 0.61rem;
-  font-weight: 850;
+  font-weight: 500;
   letter-spacing: 0.09em;
   margin-bottom: 0.75rem;
   text-transform: uppercase;
@@ -173,7 +177,7 @@
 }
 
 .pipeline-card code {
-  color: #49635d;
+  color: var(--code);
   display: block;
   font-size: 0.61rem;
   margin-bottom: 0.25rem;
@@ -181,17 +185,17 @@
 }
 
 .pipeline-card p {
-  color: #687773;
-  font-size: 0.69rem;
+  color: var(--muted);
+  font-size: 0.875rem;
   line-height: 1.5;
   margin: 0.65rem 0 0;
 }
 
 .output-label {
-  background: #edf2ef;
-  border-radius: 0.45rem;
-  color: #49635d;
-  font-size: 0.6rem;
+  background: var(--surface-soft);
+  border-radius: var(--as-radius);
+  color: var(--code);
+  font-size: 0.75rem;
   line-height: 1.4;
   margin-top: auto;
   padding: 0.45rem 0.5rem;
@@ -199,15 +203,15 @@
 
 .pipeline-arrow {
   align-self: center;
-  color: #168f83;
+  color: var(--primary);
   flex: 0 0 auto;
   font-size: 1.1rem;
-  font-weight: 900;
+  font-weight: 500;
 }
 
 .lane-connector {
   align-items: center;
-  color: #168f83;
+  color: var(--primary);
   display: flex;
   flex-direction: column;
   gap: 0.1rem;
@@ -217,62 +221,62 @@
 
 .lane-connector span {
   font-size: 1.25rem;
-  font-weight: 900;
+  font-weight: 500;
   line-height: 1;
 }
 
 .lane-connector small {
-  color: #56716b;
+  color: var(--muted);
   font-size: 0.6rem;
-  font-weight: 750;
+  font-weight: 500;
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 .source-card {
-  --stage-color: #577590;
+  --stage-color: var(--link);
 }
 
 .ingestion-card {
-  --stage-color: #ad794e;
+  --stage-color: var(--warning);
 }
 
 .notebook-card {
-  --stage-color: #d2a02f;
+  --stage-color: var(--warning);
   min-height: 240px;
 }
 
 .api-card {
-  --stage-color: #29c1ae;
-  background: #132a39;
-  border-color: #294353;
+  --stage-color: var(--primary);
+  background: var(--app-inverse-surface);
+  border-color: var(--app-inverse-border);
 }
 
 .api-card h3 {
-  color: #eff8f5;
+  color: var(--app-inverse-text);
 }
 
 .api-card code,
 .api-card p {
-  color: #a9bbb6;
+  color: var(--app-inverse-muted);
 }
 
 .api-card .card-kind {
-  color: #59d6c7;
+  color: var(--primary);
 }
 
 .api-card .output-label {
-  background: #1e3a49;
-  color: #71dace;
+  background: var(--app-inverse-border);
+  color: var(--app-inverse-text);
 }
 
 .angular-card {
-  --stage-color: #e26450;
+  --stage-color: var(--link);
 }
 
 .disclosure {
-  background: #dcebe7;
-  border-radius: 1rem;
+  background: var(--surface-soft);
+  border-radius: var(--as-radius);
   padding: 1.4rem;
 }
 
@@ -281,11 +285,11 @@
 }
 
 .disclosure blockquote {
-  background: #153044;
-  border-left: 4px solid #35bdac;
-  border-radius: 0.75rem;
-  color: #75ded2;
-  font-size: 0.85rem;
+  background: var(--app-inverse-surface);
+  border-left: 4px solid var(--primary);
+  border-radius: var(--as-radius);
+  color: var(--app-inverse-text);
+  font-size: 1rem;
   line-height: 1.75;
   margin: 0;
   padding: 1.2rem 1.3rem;
@@ -319,7 +323,7 @@
   .project-details div,
   .project-details div:nth-child(3) {
     border-left: 0;
-    border-top: 1px solid #304655;
+    border-top: 1px solid var(--app-inverse-border);
     padding: 0.8rem 0 0;
   }
 

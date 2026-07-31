@@ -1,13 +1,13 @@
-<section class="page">
+<section class="page segments-page">
   <header class="page-header">
     <div>
       <p class="eyebrow">Customer segmentation</p>
       <h1>Five customer behavior segments.</h1>
       <p class="page-intro">
         This page explains why K-means with five segments was selected and compares it with a
-        Gaussian Mixture Model. It then shows each segment's population, typical activity,
-        service use, and position in the PCA view, plus accounts identified as unusual by at
-        least two outlier-detection methods.
+        Gaussian Mixture Model. It then shows each segment's population, typical activity, service
+        use, and position in the PCA view, plus accounts identified as unusual by at least two
+        outlier-detection methods.
       </p>
     </div>
     <aside class="course-alignment" aria-label="Course topics covered by Notebook 3">
@@ -51,13 +51,13 @@
               <p class="eyebrow">K-means model selection</p>
               <h2>Why five segments?</h2>
               <p>
-                Compare every tested value of K. Use the buttons to view one selection measure
-                at a time.
+                Compare every tested value of K. Use the buttons to view one selection measure at a
+                time.
               </p>
               <p class="method-note">
                 <strong>Method used:</strong> K-means was fitted for K = 2–8 after Yeo-Johnson
-                transformation and standardization. The decision considered the elbow,
-                silhouette, Davies–Bouldin, stability, group size, and interpretation.
+                transformation and standardization. The decision considered the elbow, silhouette,
+                Davies–Bouldin, stability, group size, and interpretation.
               </p>
             </div>
             <div class="selection-badge">
@@ -83,9 +83,7 @@
           <ti-chart
             class="chart model-selection-chart"
             [option]="kmeansEvaluationOption()"
-            [ariaLabel]="
-              'K-means ' + selectedKMeansMetric().label + ' by number of segments'
-            "
+            [ariaLabel]="'K-means ' + selectedKMeansMetric().label + ' by number of segments'"
           />
 
           @if (selectedKMeansEvaluation(); as selected) {
@@ -107,12 +105,11 @@
               </div>
               <div>
                 <span>Inertia reduction</span>
-                <strong>{{
-                  selected.inertia_reduction_from_previous_k | percent: '1.1-1'
-                }}</strong>
+                <strong>{{ selected.inertia_reduction_from_previous_k | percent: '1.1-1' }}</strong>
                 @if (nextKMeansEvaluation(); as next) {
                   <small
-                    >Next step: {{ next.inertia_reduction_from_previous_k | percent: '1.1-1' }}</small
+                    >Next step:
+                    {{ next.inertia_reduction_from_previous_k | percent: '1.1-1' }}</small
                   >
                 }
               </div>
@@ -121,8 +118,8 @@
 
           <p class="selection-conclusion">
             <strong>Decision:</strong> K = 5 achieved the strongest tested combination of
-            separation, a visible slowdown in inertia improvement, stable assignments,
-            workable segment sizes, and useful interpretation.
+            separation, a visible slowdown in inertia improvement, stable assignments, workable
+            segment sizes, and useful interpretation.
           </p>
         </article>
 
@@ -132,12 +129,12 @@
               <p class="eyebrow">Challenger comparison</p>
               <h2>Why K-means instead of GMM?</h2>
               <p>
-                Gaussian Mixture Models were evaluated as a softer, probability-based
-                clustering alternative.
+                Gaussian Mixture Models were evaluated as a softer, probability-based clustering
+                alternative.
               </p>
               <p class="method-note">
-                <strong>Method used:</strong> Full-covariance GMM models with 2–8 components
-                were compared using AIC, BIC, silhouette, and Davies–Bouldin scores.
+                <strong>Method used:</strong> Full-covariance GMM models with 2–8 components were
+                compared using AIC, BIC, silhouette, and Davies–Bouldin scores.
               </p>
             </div>
             <span class="chip">GMM challenger</span>
@@ -214,10 +211,10 @@
 
           @if (lowestGmmBicEvaluation(); as lowestBic) {
             <p class="selection-conclusion">
-              <strong>Decision:</strong> At five groups, K-means separated accounts more
-              clearly. GMM's lowest tested BIC occurred at K = {{ lowestBic.k }}, the edge of
-              the tested range rather than a clear compact solution. GMM was retained only as
-              a supporting membership-uncertainty signal for outlier analysis.
+              <strong>Decision:</strong> At five groups, K-means separated accounts more clearly.
+              GMM's lowest tested BIC occurred at K = {{ lowestBic.k }}, the edge of the tested
+              range rather than a clear compact solution. GMM was retained only as a supporting
+              membership-uncertainty signal for outlier analysis.
             </p>
           }
         </article>
@@ -229,12 +226,12 @@
             <p class="eyebrow">Segment population</p>
             <h2>Portfolio composition</h2>
             <p>
-              The five segments together represent all 4,500 accounts. The selected segment
-              is detailed below.
+              The five segments together represent all 4,500 accounts. The selected segment is
+              detailed below.
             </p>
             <p class="method-note">
-              <strong>Method used:</strong> Account counts and shares from the selected
-              five-segment K-means solution.
+              <strong>Method used:</strong> Account counts and shares from the selected five-segment
+              K-means solution.
             </p>
           </div>
           <span class="chip">100% of accounts</span>
@@ -275,8 +272,8 @@
             <h2>{{ segment.segment_name }}</h2>
             <p>{{ segment.defining_features }}</p>
             <p class="method-note">
-              <strong>Method used:</strong> The defining features are the three strongest
-              K-means centre values after transformation and standardization.
+              <strong>Method used:</strong> The defining features are the three strongest K-means
+              centre values after transformation and standardization.
             </p>
           </div>
           <div class="segment-size">
@@ -316,8 +313,8 @@
           <article class="card panel service-panel">
             <p class="eyebrow">Service use</p>
             <p class="method-note">
-              <strong>Method used:</strong> Percentage of accounts in this segment that use
-              each service.
+              <strong>Method used:</strong> Percentage of accounts in this segment that use each
+              service.
             </p>
             <div class="rate">
               <span>Standing order</span>
@@ -366,8 +363,8 @@
                 <h2>Behavioral space</h2>
                 <p>Each point is an account; distance is descriptive, not a risk score.</p>
                 <p class="method-note">
-                  <strong>Method used:</strong> First two PCA components from the nine
-                  transformed and standardized features, coloured by K-means segment.
+                  <strong>Method used:</strong> First two PCA components from the nine transformed
+                  and standardized features, coloured by K-means segment.
                 </p>
               </div>
             </div>
@@ -399,9 +396,9 @@
       </div>
 
       <p class="method-note page-method">
-        <strong>Overall method:</strong> An account appears only when at least two of four
-        methods flag it: K-means centre distance, low GMM membership, robust within-segment
-        deviation, and Isolation Forest.
+        <strong>Overall method:</strong> An account appears only when at least two of four methods
+        flag it: K-means centre distance, low GMM membership, robust within-segment deviation, and
+        Isolation Forest.
       </p>
 
       <div class="outlier-layout section-gap">
@@ -492,16 +489,16 @@
             </dl>
 
             <p class="method-note">
-              <strong>Methods shown:</strong> A robust median/MAD comparison within the
-              segment; K-means centre distance ranked within the segment; and maximum
-              five-component GMM membership. Transactions per month divide the transaction
-              count by observed months, while average balance is the mean recorded transaction
-              balance. The agreeing-signal count also includes Isolation Forest.
+              <strong>Methods shown:</strong> A robust median/MAD comparison within the segment;
+              K-means centre distance ranked within the segment; and maximum five-component GMM
+              membership. Transactions per month divide the transaction count by observed months,
+              while average balance is the mean recorded transaction balance. The agreeing-signal
+              count also includes Isolation Forest.
             </p>
 
             <p class="case-limit">
-              This comparison shows why the account is unusual relative to its segment. It
-              does not establish the reason and should not trigger automatic treatment.
+              This comparison shows why the account is unusual relative to its segment. It does not
+              establish the reason and should not trigger automatic treatment.
             </p>
           </article>
         }

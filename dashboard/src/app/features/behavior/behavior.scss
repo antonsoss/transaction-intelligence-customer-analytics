@@ -1,5 +1,12 @@
 :host {
+  color: var(--ink);
   display: block;
+  font-weight: 400;
+}
+
+:host strong,
+:host b {
+  font-weight: 500;
 }
 
 .cash-flow-chart {
@@ -7,19 +14,18 @@
 }
 
 .chart-note {
-  border-top: 1px solid #e3e5e0;
-  color: #66736f;
-  font-size: 0.75rem;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 1rem;
   margin: 0.4rem 0 0;
   padding-top: 0.9rem;
 }
 
 .forecast {
   background:
-    linear-gradient(145deg, rgb(37 183 167 / 12%), transparent 60%),
-    #111e2b;
-  border-color: #293d4d;
-  color: #eef5f3;
+    linear-gradient(145deg, var(--app-selected), transparent 60%), var(--app-inverse-surface);
+  border-color: var(--app-inverse-border);
+  color: var(--app-inverse-text);
 }
 
 .forecast h2 {
@@ -27,21 +33,21 @@
 }
 
 .forecast > p:not(.eyebrow) {
-  color: #a3b3af;
-  font-size: 0.82rem;
+  color: var(--app-inverse-muted);
+  font-size: 1rem;
   line-height: 1.65;
 }
 
 .forecast > p.method-note {
-  background: rgb(37 183 167 / 10%);
-  border-left-color: #42c7b7;
-  color: #a8bbb7;
-  font-size: 0.7rem;
+  background: var(--app-inverse-border);
+  border-left-color: var(--primary);
+  color: var(--app-inverse-muted);
+  font-size: 0.8rem;
   line-height: 1.45;
 }
 
 .forecast > p.method-note strong {
-  color: #d8e7e4;
+  color: var(--app-inverse-text);
 }
 
 .forecast-chart {
@@ -50,9 +56,9 @@
 }
 
 .forecast > p.forecast-chart-note {
-  border-top: 1px solid #2a3d49;
-  color: #91a5a1;
-  font-size: 0.7rem;
+  border-top: 1px solid var(--app-inverse-border);
+  color: var(--app-inverse-muted);
+  font-size: 0.875rem;
   margin: 0;
   padding-top: 0.65rem;
 }
@@ -65,14 +71,14 @@
 }
 
 .forecast-score strong {
-  color: #50d4c3;
+  color: var(--primary);
   font-size: 3.2rem;
   letter-spacing: -0.06em;
 }
 
 .forecast-score span {
-  color: #849995;
-  font-size: 0.7rem;
+  color: var(--app-inverse-muted);
+  font-size: 0.8rem;
   max-width: 100px;
 }
 
@@ -91,50 +97,51 @@
 
 .forecast-comparison span,
 .forecast-comparison strong {
-  color: #a9b7b4;
-  font-size: 0.7rem;
+  color: var(--app-inverse-muted);
+  font-size: 0.8rem;
 }
 
 .forecast-comparison strong {
-  color: #dce8e5;
+  color: var(--app-inverse-text);
   text-align: right;
 }
 
 .forecast-comparison progress {
   appearance: none;
-  background: #263947;
+  background: var(--app-inverse-border);
   border: 0;
-  border-radius: 99px;
+  border-radius: var(--as-radius);
+  color: var(--primary);
   height: 0.4rem;
   overflow: hidden;
   width: 100%;
 }
 
 .forecast-comparison progress::-webkit-progress-bar {
-  background: #263947;
+  background: var(--app-inverse-border);
 }
 
 .forecast-comparison progress::-webkit-progress-value {
-  background: #28ae9f;
-  border-radius: 99px;
+  background: var(--primary);
+  border-radius: var(--as-radius);
 }
 
 .forecast-comparison progress::-moz-progress-bar {
-  background: #28ae9f;
-  border-radius: 99px;
+  background: var(--primary);
+  border-radius: var(--as-radius);
 }
 
 .rule-arrow {
-  color: #17998c;
-  font-weight: 900;
+  color: var(--link);
+  font-weight: 500;
   margin: 0 0.35rem;
 }
 
 .lift {
-  background: #e2f1ec;
-  border-radius: 99px;
-  color: #176f66;
-  font-weight: 800;
+  background: var(--app-selected);
+  border-radius: var(--as-radius);
+  color: var(--primary);
+  font-weight: 500;
   padding: 0.3rem 0.5rem;
 }
 

@@ -4,10 +4,10 @@
       <p class="eyebrow">Validation and insights</p>
       <h1>Model results, data checks, and limitations.</h1>
       <p class="page-intro">
-        This page uses logistic regression to predict whether a completed loan ended with or
-        without a recorded repayment problem, using only information available when the loan
-        began. It evaluates those predictions on held-out historical loans and also reviews data
-        coverage, model errors, cluster stability, and the limits of the findings.
+        This page uses logistic regression to predict whether a completed loan ended with or without
+        a recorded repayment problem, using only information available when the loan began. It
+        evaluates those predictions on held-out historical loans and also reviews data coverage,
+        model errors, cluster stability, and the limits of the findings.
       </p>
     </div>
     <aside class="course-alignment" aria-label="Course topics covered by Notebook 4">
@@ -29,17 +29,20 @@
         <strong>{{ result.completed_loans }}</strong>
         <small>Loans with a known final status</small>
         <span class="metric-method">
-          <b>Method used:</b> Count of cleaned loan records with a known final outcome. Active
-          loans were excluded.
+          <b>Method used:</b> Count of cleaned loan records with a known final outcome. Active loans
+          were excluded.
         </span>
       </article>
       <article class="card metric-card">
         <p class="metric-label">Recorded problem loans</p>
         <strong>{{ result.recorded_problem_loans }}</strong>
-        <small>{{ result.recorded_problem_loans / result.completed_loans | percent: '1.1-1' }} of cohort</small>
+        <small
+          >{{ result.recorded_problem_loans / result.completed_loans | percent: '1.1-1' }} of
+          cohort</small
+        >
         <span class="metric-method">
-          <b>Method used:</b> Count of completed loans marked with a recorded repayment
-          problem; the percentage uses all completed loans as the denominator.
+          <b>Method used:</b> Count of completed loans marked with a recorded repayment problem; the
+          percentage uses all completed loans as the denominator.
         </span>
       </article>
       <article class="card metric-card accent">
@@ -47,8 +50,8 @@
         <strong>{{ result.f1 | number: '1.2-2' }}</strong>
         <small>Balances precision and recall</small>
         <span class="metric-method">
-          <b>Method used:</b> F1 from class-balanced logistic-regression predictions on the
-          fixed stratified 30% test set.
+          <b>Method used:</b> F1 from class-balanced logistic-regression predictions on the fixed
+          stratified 30% test set.
         </span>
       </article>
       <article class="card metric-card accent">
@@ -56,8 +59,8 @@
         <strong>{{ result.pr_auc | number: '1.2-2' }}</strong>
         <small>Useful with an uncommon target</small>
         <span class="metric-method">
-          <b>Method used:</b> Average precision from logistic-regression scores across
-          possible cutoffs on the same held-out test set.
+          <b>Method used:</b> Average precision from logistic-regression scores across possible
+          cutoffs on the same held-out test set.
         </span>
       </article>
     </div>
@@ -67,15 +70,13 @@
         <p class="eyebrow">Course-method demonstration</p>
         <h2>{{ result.selected_model }} was kept for clarity</h2>
         <p>
-          The model uses only information available before each loan began. It is easier to
-          explain than the challengers and achieved the best overall balance in the fixed test
-          comparison.
+          The model uses only information available before each loan began. It is easier to explain
+          than the challengers and achieved the best overall balance in the fixed test comparison.
         </p>
         <p class="method-note">
           <strong>Method used:</strong> A class-balanced logistic regression used loan terms,
-          statement frequency, and account activity recorded before the loan began. Missing
-          numeric values, scaling, and category encoding were learned from the 70% training
-          data only.
+          statement frequency, and account activity recorded before the loan began. Missing numeric
+          values, scaling, and category encoding were learned from the 70% training data only.
         </p>
       </div>
     </article>
@@ -87,9 +88,7 @@
             <p class="eyebrow">Validation view</p>
             <h2>{{ figure.title }}</h2>
             <p>{{ figure.description }}</p>
-            <p class="method-note">
-              <strong>Method used:</strong> {{ figure.method }}
-            </p>
+            <p class="method-note"><strong>Method used:</strong> {{ figure.method }}</p>
           </div>
           <img [src]="figure.url" [alt]="figure.title" loading="lazy" />
         </article>
@@ -119,8 +118,7 @@
           <div>
             <dt>ROC-AUC</dt>
             <dd>
-              How well the model ranks recorded-problem loans above other loans across many
-              cutoffs.
+              How well the model ranks recorded-problem loans above other loans across many cutoffs.
             </dd>
           </div>
         </dl>
@@ -135,6 +133,5 @@
         </ul>
       </article>
     </div>
-
   }
 </section>

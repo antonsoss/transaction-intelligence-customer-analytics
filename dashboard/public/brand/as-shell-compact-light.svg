@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" role="img" aria-labelledby="title desc">
+  <title id="title">AS Shell compact logo — light</title>
+  <desc id="desc">Compact Antonio Sosa AS prompt mark for light backgrounds</desc>
+  <rect x="1" y="2" width="30" height="28" rx="5" fill="#FFFFFF" stroke="#C7CFD8" stroke-width="2"/>
+  <path d="M46 0 235 730H366L554 0H453L407 190H193L147 0ZM212 272H387L334 490Q320 550 311.0 592.0Q302 634 300 649Q298 634 289.0 592.0Q280 550 266 491Z" fill="#146C2E" transform="translate(4.0000 21.0000) scale(0.0110000 -0.0110000)"/>
+  <path d="M304 -10Q196 -10 132.0 46.5Q68 103 68 202H167Q167 144 204.0 111.0Q241 78 304 78Q364 78 399.5 111.5Q435 145 435 201Q435 243 412.0 274.5Q389 306 347 317L239 346Q168 366 126.5 418.5Q85 471 85 543Q85 602 111.5 646.5Q138 691 186.0 715.5Q234 740 297 740Q361 740 409.5 715.5Q458 691 485.0 647.0Q512 603 512 545H414Q414 593 381.5 623.0Q349 653 297 653Q245 653 213.5 623.0Q182 593 182 545Q182 506 203.0 479.5Q224 453 262 442L373 412Q448 392 490.0 335.5Q532 279 532 201Q532 137 504.0 89.5Q476 42 424.5 16.0Q373 -10 304 -10Z" fill="#146C2E" transform="translate(10.6000 21.0000) scale(0.0110000 -0.0110000)"/>
+  <path d="m19 11 4 5-4 5" fill="none" stroke="#0969DA" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M25 23.5h4" stroke="#6639BA" stroke-width="2.5" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" role="img" aria-labelledby="title desc">
+  <title id="title">AS Shell favicon</title>
+  <desc id="desc">Adaptive blue prompt and purple cursor favicon</desc>
+  <style>
+    .favicon-surface { fill: #FFFFFF; }
+    .favicon-frame { stroke: #C7CFD8; }
+    .favicon-prompt { stroke: #0969DA; }
+    .favicon-cursor { stroke: #6639BA; }
+    @media (prefers-color-scheme: dark) {
+      .favicon-surface { fill: #161B22; }
+      .favicon-frame { stroke: #3D444D; }
+      .favicon-prompt { stroke: #79C0FF; }
+      .favicon-cursor { stroke: #BC8CFF; }
+    }
+  </style>
+  <rect class="favicon-surface favicon-frame" x=".75" y=".75" width="14.5" height="14.5" rx="3" stroke-width="1.5"/>
+  <path class="favicon-prompt" d="m4 4.25 3.5 3.5-3.5 3.5" fill="none" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
+  <path class="favicon-cursor" d="M9.25 11.75h3.5" fill="none" stroke-width="2.25" stroke-linecap="round"/>
+</svg>

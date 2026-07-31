@@ -16,43 +16,43 @@ A read-only FastAPI service exposes selected analytical outputs, while an Angula
 
 ### Course alignment
 
-| Project component | Topics implemented | Related lecture material |
-|---|---|---|
-| `01_data_foundation_and_engineering.ipynb` | Business framing, data quality, preparation decisions, relational joins, ETL, data lineage, medallion architecture, governance, and scaling design | **MIA 5126 Week 1:** Data Science in Practice; **Week 3:** Data Preparation; **Week 4:** Data Engineering; **Week 5:** Modern Data Architectures |
-| `02_behavioral_and_temporal_analysis.ipynb` | Descriptive analysis, visualization, customer features, monthly time series, SARIMA forecasting, and service-association rules | **MIA 5126 Week 2:** Exploratory Data Analysis and Visualization; **Week 6:** Time Series Analysis and Forecasting; **Week 7:** Recommendation Systems |
-| `03_customer_segmentation.ipynb` | Feature selection, transformations, scaling, PCA, K-means, Gaussian mixtures, cluster evaluation, stability, profiles, and behavioural outliers | **MIA 5126 Week 8:** Clustering and Dimensionality Reduction |
-| `04_validation_and_insights.ipynb` | Loan-outcome case study, leakage controls, supervised models, error analysis, data quality, explainability, limitations, and final synthesis | **MIA 5126 Week 9:** Supervised Learning Techniques; **Week 10:** Data-Centric AI and Explainability |
-| FastAPI service and Angular dashboard | Frozen analytical outputs, typed HTTP/JSON endpoints, anonymous presentation data, reproducible container build, and interactive communication | **MIA 5126 final project:** Integration, interpretation, and presentation |
+| Project component                           | Topics implemented                                                                                                                                 | Related lecture material                                                                                                                               |
+| ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `01_data_foundation_and_engineering.ipynb`  | Business framing, data quality, preparation decisions, relational joins, ETL, data lineage, medallion architecture, governance, and scaling design | **MIA 5126 Week 1:** Data Science in Practice; **Week 3:** Data Preparation; **Week 4:** Data Engineering; **Week 5:** Modern Data Architectures       |
+| `02_behavioral_and_temporal_analysis.ipynb` | Descriptive analysis, visualization, customer features, monthly time series, SARIMA forecasting, and service-association rules                     | **MIA 5126 Week 2:** Exploratory Data Analysis and Visualization; **Week 6:** Time Series Analysis and Forecasting; **Week 7:** Recommendation Systems |
+| `03_customer_segmentation.ipynb`            | Feature selection, transformations, scaling, PCA, K-means, Gaussian mixtures, cluster evaluation, stability, profiles, and behavioural outliers    | **MIA 5126 Week 8:** Clustering and Dimensionality Reduction                                                                                           |
+| `04_validation_and_insights.ipynb`          | Loan-outcome case study, leakage controls, supervised models, error analysis, data quality, explainability, limitations, and final synthesis       | **MIA 5126 Week 9:** Supervised Learning Techniques; **Week 10:** Data-Centric AI and Explainability                                                   |
+| FastAPI service and Angular dashboard       | Frozen analytical outputs, typed HTTP/JSON endpoints, anonymous presentation data, reproducible container build, and interactive communication     | **MIA 5126 final project:** Integration, interpretation, and presentation                                                                              |
 
 ## Current results
 
 The validated dataset contains 4,500 accounts and 1,056,320 transactions across 72 months from January 1993 through December 1998. Monthly active-account coverage increased from 96 to 4,424 accounts over that period and peaked at 4,483 in December 1997, so transaction totals are interpreted alongside changing account coverage.
 
-| Result | Value |
-|---|---:|
-| Selected customer segments | 5 |
-| Accounts meeting at least two behavioural-outlier signals | 16 |
-| Retained service-association hypotheses | 5 |
-| SARIMA 1998 holdout MAE | 2,321 transactions |
-| Last-value / seasonal-naive MAE | 3,858 / 3,942 transactions |
-| Variance explained by first two / first four principal components | 63.4% / 86.2% |
-| Completed loans in supervised case study | 234 |
-| Recorded problem loans | 31 |
-| Logistic-regression F1 / PR-AUC | 0.55 / 0.47 |
+| Result                                                            |                      Value |
+| ----------------------------------------------------------------- | -------------------------: |
+| Selected customer segments                                        |                          5 |
+| Accounts meeting at least two behavioural-outlier signals         |                         16 |
+| Retained service-association hypotheses                           |                          5 |
+| SARIMA 1998 holdout MAE                                           |         2,321 transactions |
+| Last-value / seasonal-naive MAE                                   | 3,858 / 3,942 transactions |
+| Variance explained by first two / first four principal components |              63.4% / 86.2% |
+| Completed loans in supervised case study                          |                        234 |
+| Recorded problem loans                                            |                         31 |
+| Logistic-regression F1 / PR-AUC                                   |                0.55 / 0.47 |
 
 The selected K-means solution contains 1,519 established household users, 1,305 pension-associated households, 838 high-activity multi-service users, 587 low-service cash users, and 251 high-volatility cash users. These names summarize historical patterns; they are not permanent customer labels. Forecasts, association rules, behavioural outliers, and the small loan case study are course-method demonstrations with documented limits.
 
 ## Workflow
 
-| Component | Main output |
-|---|---|
-| `01_data_foundation_and_engineering.ipynb` | Four validated Silver-layer analytical tables |
-| `02_behavioral_and_temporal_analysis.ipynb` | Customer features, monthly activity, forecast evaluation, and service rules |
-| `03_customer_segmentation.ipynb` | Cluster-selection evidence, segment assignments, profiles, outliers, and fitted clustering artifacts |
-| `04_validation_and_insights.ipynb` | Supervised case study, project validation, figures, and dashboard-ready tables |
-| Transaction Intelligence API (FastAPI) | Read-only analytical endpoints |
-| Transaction Intelligence dashboard (Angular) | Five interactive project views |
-| Render deployment | Containerized public application |
+| Component                                    | Main output                                                                                          |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
+| `01_data_foundation_and_engineering.ipynb`   | Four validated Silver-layer analytical tables                                                        |
+| `02_behavioral_and_temporal_analysis.ipynb`  | Customer features, monthly activity, forecast evaluation, and service rules                          |
+| `03_customer_segmentation.ipynb`             | Cluster-selection evidence, segment assignments, profiles, outliers, and fitted clustering artifacts |
+| `04_validation_and_insights.ipynb`           | Supervised case study, project validation, figures, and dashboard-ready tables                       |
+| Transaction Intelligence API (FastAPI)       | Read-only analytical endpoints                                                                       |
+| Transaction Intelligence dashboard (Angular) | Five interactive project views                                                                       |
+| Render deployment                            | Containerized public application                                                                     |
 
 ## Repository structure
 
@@ -90,14 +90,14 @@ flowchart LR
     A --> B --> C --> D --> E --> F
 ```
 
-| Layer | Repository location | Contents | Git policy |
-|---|---|---|---|
-| Source | External to the repository | Public CTU MariaDB database | Not applicable |
-| Bronze | `data/raw/` | Immutable source CSV files, MariaDB DDL, provenance, and checksums | CSV data ignored; schema and manifest committed |
-| Silver | `data/interim/` | Validated DuckDB database and cleaned Parquet tables | Generated data ignored |
-| Gold | `data/processed/` | Customer features, segments, outliers, forecasts, and dashboard-ready tables | Full generated data ignored; eight anonymous or aggregate dashboard files committed for deployment |
-| API | `src/transaction_intelligence/api/` | Read-only endpoints over selected Gold tables and report figures | Application code committed |
-| Presentation | `dashboard/` and `reports/` | Angular views, selected figures, and final course deliverables | Source and intended report figures committed; builds ignored |
+| Layer        | Repository location                 | Contents                                                                     | Git policy                                                                                         |
+| ------------ | ----------------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Source       | External to the repository          | Public CTU MariaDB database                                                  | Not applicable                                                                                     |
+| Bronze       | `data/raw/`                         | Immutable source CSV files, MariaDB DDL, provenance, and checksums           | CSV data ignored; schema and manifest committed                                                    |
+| Silver       | `data/interim/`                     | Validated DuckDB database and cleaned Parquet tables                         | Generated data ignored                                                                             |
+| Gold         | `data/processed/`                   | Customer features, segments, outliers, forecasts, and dashboard-ready tables | Full generated data ignored; eight anonymous or aggregate dashboard files committed for deployment |
+| API          | `src/transaction_intelligence/api/` | Read-only endpoints over selected Gold tables and report figures             | Application code committed                                                                         |
+| Presentation | `dashboard/` and `reports/`         | Angular views, selected figures, and final course deliverables               | Source and intended report figures committed; builds ignored                                       |
 
 ## Data
 
@@ -210,6 +210,19 @@ The application has five views:
 4. **Validation and insights** — supervised-learning results, stability checks, limitations, and responsible-use guidance.
 5. **About the project** — course information, data source, system architecture, project boundaries, and AI-assistance disclosure.
 
+### Interface design system
+
+The Angular interface follows the
+[Antonio Sosa Brand System](https://github.com/antonsoss/antonsoss-brand-system)
+as synchronized from commit
+[`bb70cc8`](https://github.com/antonsoss/antonsoss-brand-system/commit/bb70cc80ac222a256e3f5ba875c5c5bad2c2c63d).
+The implementation uses its canonical semantic colour tokens, Inter and JetBrains
+Mono typography, compact AS Shell logo, spacing, focus treatment, and 6 px corner
+radius. Light and dark themes both cover the application shell, content, controls,
+tables, status states, and ECharts visualizations. The first visit follows the
+operating-system preference, while the accessible theme control saves an explicit
+choice for future visits.
+
 Start the FastAPI service from the repository root:
 
 ```bash
@@ -240,8 +253,8 @@ uvicorn transaction_intelligence.api.main:app --host 127.0.0.1 --port 8000
 The repository includes a [`render.yaml`](render.yaml) Blueprint that creates one
 Docker-based web service on Render.
 
-| Service | Purpose | Health check |
-|---|---|---|
+| Service                                       | Purpose                                    | Health check     |
+| --------------------------------------------- | ------------------------------------------ | ---------------- |
 | `transaction-intelligence-customer-analytics` | FastAPI API and compiled Angular dashboard | `/api/v1/health` |
 
 The multi-stage `Dockerfile` builds the Angular dashboard and packages the FastAPI
@@ -258,20 +271,20 @@ docker run --rm -p 10000:10000 -e PORT=10000 transaction-intelligence-customer
 
 ### API endpoints
 
-| Method | Endpoint | Purpose |
-|---|---|---|
-| `GET` | `/api/v1/health` | Check dashboard-dataset readiness |
-| `GET` | `/api/v1/summary` | Read project and portfolio summary measures |
-| `GET` | `/api/v1/activity` | Read monthly banking activity |
-| `GET` | `/api/v1/transaction-forecast` | Read the chronological SARIMA holdout series |
-| `GET` | `/api/v1/segments` | Read the five segment profiles |
-| `GET` | `/api/v1/segments/points` | Read anonymous PCA visualization points |
-| `GET` | `/api/v1/segments/evaluation` | Read K-means and GMM model-selection measures |
-| `GET` | `/api/v1/segments/{segment_id}` | Read one segment profile |
-| `GET` | `/api/v1/outliers` | Read anonymous behavioural-outlier cases |
-| `GET` | `/api/v1/service-rules` | Read filtered service-association hypotheses |
-| `GET` | `/api/v1/validation` | Read the supervised case-study summary and limitations |
-| `GET` | `/api/v1/figures/{filename}` | Read an approved validation figure |
+| Method | Endpoint                        | Purpose                                                |
+| ------ | ------------------------------- | ------------------------------------------------------ |
+| `GET`  | `/api/v1/health`                | Check dashboard-dataset readiness                      |
+| `GET`  | `/api/v1/summary`               | Read project and portfolio summary measures            |
+| `GET`  | `/api/v1/activity`              | Read monthly banking activity                          |
+| `GET`  | `/api/v1/transaction-forecast`  | Read the chronological SARIMA holdout series           |
+| `GET`  | `/api/v1/segments`              | Read the five segment profiles                         |
+| `GET`  | `/api/v1/segments/points`       | Read anonymous PCA visualization points                |
+| `GET`  | `/api/v1/segments/evaluation`   | Read K-means and GMM model-selection measures          |
+| `GET`  | `/api/v1/segments/{segment_id}` | Read one segment profile                               |
+| `GET`  | `/api/v1/outliers`              | Read anonymous behavioural-outlier cases               |
+| `GET`  | `/api/v1/service-rules`         | Read filtered service-association hypotheses           |
+| `GET`  | `/api/v1/validation`            | Read the supervised case-study summary and limitations |
+| `GET`  | `/api/v1/figures/{filename}`    | Read an approved validation figure                     |
 
 The Angular dashboard does not query the external CTU database, run notebooks, or
 load joblib artifacts. The API owns read-only access to the selected Gold datasets
@@ -298,7 +311,7 @@ The project describes historical account behaviour, portfolio-level activity, se
 
 ## AI assistance disclosure
 
-*I used AI as an engineering productivity tool for brainstorming, troubleshooting, and documentation, while remaining responsible for all technical decisions, implementation, testing, validation, and conclusions.*
+_I used AI as an engineering productivity tool for brainstorming, troubleshooting, and documentation, while remaining responsible for all technical decisions, implementation, testing, validation, and conclusions._
 
 ## Licence
 

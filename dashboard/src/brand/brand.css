@@ -1,0 +1,156 @@
+/*
+ * Antonio Sosa Brand System — Primer Developer
+ * Version 1.0.0
+ */
+
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  --as-background: #f6f8fa;
+  --as-surface: #ffffff;
+  --as-surface-soft: #eaf5ed;
+  --as-text: #1f2328;
+  --as-text-muted: #4b5560;
+  --as-border: #c7cfd8;
+
+  --as-primary: #146c2e;
+  --as-on-primary: #ffffff;
+  --as-link: #0969da;
+  --as-code: #6639ba;
+  --as-warning: #9a6700;
+  --as-danger: #cf222e;
+
+  --as-font-sans: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --as-font-mono: "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
+
+  --as-space-1: 0.25rem;
+  --as-space-2: 0.5rem;
+  --as-space-3: 0.75rem;
+  --as-space-4: 1rem;
+  --as-space-6: 1.5rem;
+  --as-space-8: 2rem;
+
+  --as-radius: 0.375rem;
+  --as-focus-ring: 0 0 0 3px rgb(9 105 218 / 30%);
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --as-background: #0d1117;
+  --as-surface: #161b22;
+  --as-surface-soft: #172d20;
+  --as-text: #f0f6fc;
+  --as-text-muted: #aab4be;
+  --as-border: #3d444d;
+
+  --as-primary: #56d364;
+  --as-on-primary: #0d1117;
+  --as-link: #79c0ff;
+  --as-code: #bc8cff;
+  --as-warning: #d29922;
+  --as-danger: #ff7b72;
+
+  --as-focus-ring: 0 0 0 3px rgb(121 192 255 / 35%);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --as-background: #0d1117;
+    --as-surface: #161b22;
+    --as-surface-soft: #172d20;
+    --as-text: #f0f6fc;
+    --as-text-muted: #aab4be;
+    --as-border: #3d444d;
+
+    --as-primary: #56d364;
+    --as-on-primary: #0d1117;
+    --as-link: #79c0ff;
+    --as-code: #bc8cff;
+    --as-warning: #d29922;
+    --as-danger: #ff7b72;
+
+    --as-focus-ring: 0 0 0 3px rgb(121 192 255 / 35%);
+  }
+}
+
+body {
+  margin: 0;
+  color: var(--as-text);
+  background: var(--as-background);
+  font-family: var(--as-font-sans);
+  line-height: 1.55;
+}
+
+a {
+  color: var(--as-link);
+  text-underline-offset: 0.16em;
+}
+
+code,
+pre {
+  font-family: var(--as-font-mono);
+}
+
+code {
+  color: var(--as-code);
+}
+
+:focus-visible {
+  outline: 2px solid var(--as-link);
+  outline-offset: 2px;
+  box-shadow: var(--as-focus-ring);
+}
+
+.as-shell {
+  max-width: 72rem;
+  margin-inline: auto;
+  padding: clamp(1rem, 4vw, 3rem);
+}
+
+.as-surface {
+  color: var(--as-text);
+  background: var(--as-surface);
+  border: 1px solid var(--as-border);
+  border-radius: var(--as-radius);
+}
+
+.as-eyebrow,
+.as-technical {
+  font-family: var(--as-font-mono);
+  letter-spacing: 0.04em;
+}
+
+.as-eyebrow,
+.as-brand-text {
+  color: var(--as-primary);
+}
+
+.as-muted {
+  color: var(--as-text-muted);
+}
+
+.as-button {
+  display: inline-block;
+  padding: 0.55rem 0.85rem;
+  color: var(--as-on-primary);
+  background: var(--as-primary);
+  border: 1px solid var(--as-primary);
+  border-radius: var(--as-radius);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.as-tag {
+  display: inline-block;
+  padding: 0.18rem 0.4rem;
+  color: var(--as-text);
+  background: var(--as-surface-soft);
+  border: 1px solid var(--as-border);
+  border-radius: var(--as-radius);
+  font-family: var(--as-font-mono);
+}
+

@@ -1,5 +1,7 @@
 :host {
+  color: var(--ink);
   display: block;
+  font-weight: 400;
 }
 
 .overview-activity-chart {
@@ -7,9 +9,15 @@
 }
 
 .journey {
-  background: #dde9e4;
-  border-radius: 1rem;
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--as-radius);
   padding: 1.5rem;
+}
+
+.journey strong,
+.journey b {
+  font-weight: 500;
 }
 
 .journey-heading h2 {
@@ -17,8 +25,8 @@
 }
 
 .journey-heading > p:last-child {
-  color: #62736f;
-  font-size: 0.8rem;
+  color: var(--muted);
+  font-size: 1rem;
   line-height: 1.55;
   margin-bottom: 1.2rem;
   max-width: 760px;
@@ -31,9 +39,9 @@
 }
 
 .journey-grid article {
-  background: rgb(255 255 255 / 58%);
-  border: 1px solid rgb(72 113 104 / 16%);
-  border-radius: 0.8rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--as-radius);
   display: flex;
   flex-direction: column;
   min-height: 255px;
@@ -48,15 +56,15 @@
 }
 
 .phase-heading span {
-  color: #6b8a83;
+  color: var(--primary);
   font-size: 0.65rem;
-  font-weight: 850;
+  font-weight: 500;
 }
 
 .phase-heading small {
-  color: #52716a;
+  color: var(--muted);
   font-size: 0.62rem;
-  font-weight: 800;
+  font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -66,21 +74,21 @@
 }
 
 .journey-grid > article > p {
-  color: #62736f;
-  font-size: 0.76rem;
+  color: var(--muted);
+  font-size: 1rem;
   line-height: 1.55;
   margin: 0.45rem 0 0.8rem;
 }
 
 .journey-grid > article > .method-note {
-  font-size: 0.68rem;
+  font-size: 0.8rem;
   margin: 0 0 0.8rem;
 }
 
 .journey-grid a {
-  color: #137c72;
-  font-size: 0.72rem;
-  font-weight: 800;
+  color: var(--link);
+  font-size: 0.875rem;
+  font-weight: 500;
   margin-bottom: 0.8rem;
   text-decoration: none;
 }
@@ -95,7 +103,7 @@
 }
 
 .notebook-reference {
-  border-top: 1px solid rgb(72 113 104 / 16%);
+  border-top: 1px solid var(--line);
   display: grid;
   gap: 0.25rem;
   margin-top: auto;
@@ -103,16 +111,16 @@
 }
 
 .notebook-reference small {
-  color: #6b7e79;
+  color: var(--muted);
   font-size: 0.62rem;
-  font-weight: 800;
+  font-weight: 500;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .notebook-reference code {
-  color: #234740;
-  font-size: 0.7rem;
+  color: var(--code);
+  font-size: 0.8rem;
   overflow-wrap: anywhere;
 }
 

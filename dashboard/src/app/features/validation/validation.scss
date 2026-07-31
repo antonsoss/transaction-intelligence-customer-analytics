@@ -3,21 +3,21 @@
 }
 
 .metric-card.accent {
-  background: #e6f1ed;
-  border-color: #c9ddd6;
+  background: var(--app-selected);
+  border-color: var(--primary);
 }
 
 .metric-card.accent strong {
-  color: #137a70;
+  color: var(--primary);
 }
 
 .model-story {
   align-items: center;
   background:
-    linear-gradient(120deg, rgb(37 183 167 / 15%), transparent 52%),
-    #101d2a;
-  border-color: #273b4a;
-  color: #eff7f5;
+    linear-gradient(120deg, color-mix(in srgb, var(--primary) 15%, transparent), transparent 52%),
+    var(--app-inverse-surface);
+  border-color: var(--app-inverse-border);
+  color: var(--app-inverse-text);
   display: grid;
   padding: 1.7rem;
 }
@@ -31,21 +31,21 @@
 }
 
 .model-story p:not(.eyebrow) {
-  color: #a7b7b3;
-  font-size: 0.82rem;
+  color: var(--app-inverse-muted);
+  font-size: 1rem;
   line-height: 1.65;
 }
 
 .model-story p.method-note {
-  background: rgb(37 183 167 / 10%);
-  border-left-color: #42c7b7;
-  color: #b7c8c4;
-  font-size: 0.7rem;
+  background: color-mix(in srgb, var(--primary) 10%, transparent);
+  border-left-color: var(--primary);
+  color: var(--app-inverse-muted);
+  font-size: 0.8rem;
   line-height: 1.5;
 }
 
 .model-story .method-note strong {
-  color: #e2f0ed;
+  color: var(--app-inverse-text);
 }
 
 .figure-grid {
@@ -60,19 +60,19 @@
 }
 
 .figure-card > div > p:not(.eyebrow) {
-  color: #6b7875;
-  font-size: 0.75rem;
+  color: var(--muted);
+  font-size: 1rem;
 }
 
 .figure-card > div > .method-note {
-  color: #45635d;
-  font-size: 0.7rem;
+  color: var(--code);
+  font-size: 0.8rem;
 }
 
 .figure-card img {
-  background: white;
-  border: 1px solid #e2e4df;
-  border-radius: 0.6rem;
+  background: var(--app-figure-background);
+  border: 1px solid var(--line);
+  border-radius: var(--as-radius);
   display: block;
   margin-top: 1rem;
   width: 100%;
@@ -83,7 +83,7 @@
 }
 
 .definitions dl div {
-  border-bottom: 1px solid #e3e5e0;
+  border-bottom: 1px solid var(--line);
   display: grid;
   gap: 0.6rem;
   grid-template-columns: 90px 1fr;
@@ -91,13 +91,13 @@
 }
 
 .definitions dt {
-  font-size: 0.72rem;
-  font-weight: 850;
+  font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .definitions dd {
-  color: #65726f;
-  font-size: 0.72rem;
+  color: var(--muted);
+  font-size: 1rem;
   line-height: 1.45;
   margin: 0;
 }
@@ -111,17 +111,17 @@
 }
 
 .limitations li {
-  color: #65726f;
-  font-size: 0.75rem;
+  color: var(--muted);
+  font-size: 1rem;
   line-height: 1.5;
   padding-left: 1.2rem;
   position: relative;
 }
 
 .limitations li::before {
-  background: #e56652;
+  background: var(--danger);
   border-radius: 50%;
-  content: "";
+  content: '';
   height: 0.42rem;
   left: 0;
   position: absolute;

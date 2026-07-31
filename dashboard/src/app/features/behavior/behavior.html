@@ -5,9 +5,9 @@
       <h1>Banking activity over time.</h1>
       <p class="page-intro">
         This page shows how transaction volume, active accounts, cash inflows, and cash outflows
-        changed each month from January 1993 to December 1998. It also compares a SARIMA
-        transaction forecast with two simple baselines and lists banking-service combinations
-        found with Apriori association rules.
+        changed each month from January 1993 to December 1998. It also compares a SARIMA transaction
+        forecast with two simple baselines and lists banking-service combinations found with Apriori
+        association rules.
       </p>
     </div>
     <aside class="course-alignment" aria-label="Course topics covered by Notebook 2">
@@ -78,8 +78,8 @@
       @if (peakMonth(); as peak) {
         <p class="chart-note">
           Highest observed {{ selectedMetricLabel().toLowerCase() }}:
-          <strong>{{ peak.month | date: 'MMMM yyyy' }}</strong>.
-          This is a description, not an explanation of cause.
+          <strong>{{ peak.month | date: 'MMMM yyyy' }}</strong
+          >. This is a description, not an explanation of cause.
         </p>
       }
     </article>
@@ -107,12 +107,11 @@
         <p class="eyebrow">Forecast exercise</p>
         <h2>SARIMA led the declared comparison</h2>
         <p class="method-note">
-          <strong>Method used:</strong> SARIMA(1,1,1)(1,1,0,12), a chronological holdout, and
-          MAE
+          <strong>Method used:</strong> SARIMA(1,1,1)(1,1,0,12), a chronological holdout, and MAE
         </p>
         <p>
-          The model was tested on the final 12 months. It improved on both naive comparisons,
-          but one test window is not enough for production model selection.
+          The model was tested on the final 12 months. It improved on both naive comparisons, but
+          one test window is not enough for production model selection.
         </p>
         <ti-chart
           class="chart forecast-chart"
@@ -120,8 +119,8 @@
           ariaLabel="Monthly transaction forecast showing training history, observed test values, seasonal-naive and SARIMA forecasts, and the SARIMA 95 percent confidence interval"
         />
         <p class="forecast-chart-note">
-          The shaded band is the SARIMA 95% confidence interval. A wider band means greater
-          forecast uncertainty.
+          The shaded band is the SARIMA 95% confidence interval. A wider band means greater forecast
+          uncertainty.
         </p>
         <div class="forecast-score">
           <strong>2,321</strong>
@@ -154,8 +153,8 @@
           <h2>Patterns worth investigating</h2>
           <p>Lift above 1 means the combination appears more often than independence suggests.</p>
           <p class="method-note">
-            <strong>Method used:</strong> Apriori association-rule mining, evaluated with
-            support, confidence, and lift
+            <strong>Method used:</strong> Apriori association-rule mining, evaluated with support,
+            confidence, and lift
           </p>
         </div>
         <div class="control">
@@ -189,10 +188,14 @@
                 </td>
                 <td>{{ rule.support | percent: '1.1-1' }}</td>
                 <td>{{ rule.confidence | percent: '1.1-1' }}</td>
-                <td><span class="lift">{{ rule.lift | number: '1.2-2' }}×</span></td>
+                <td>
+                  <span class="lift">{{ rule.lift | number: '1.2-2' }}×</span>
+                </td>
               </tr>
             } @empty {
-              <tr><td colspan="4">No rules meet this lift threshold.</td></tr>
+              <tr>
+                <td colspan="4">No rules meet this lift threshold.</td>
+              </tr>
             }
           </tbody>
         </table>
@@ -200,8 +203,8 @@
     </article>
 
     <div class="callout warning section-gap">
-      These service patterns are hypotheses, not personalized recommendations. They do not
-      establish suitability, interest, or cause.
+      These service patterns are hypotheses, not personalized recommendations. They do not establish
+      suitability, interest, or cause.
     </div>
   }
 </section>
