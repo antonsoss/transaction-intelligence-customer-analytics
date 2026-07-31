@@ -1,0 +1,32 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{antonio-brand}[2026/07/30 Antonio Sosa Primer Developer brand]
+
+\RequirePackage{xcolor}
+\RequirePackage{hyperref}
+
+\definecolor{BrandBackground}{HTML}{F6F8FA}
+\definecolor{BrandSurface}{HTML}{FFFFFF}
+\definecolor{BrandText}{HTML}{1F2328}
+\definecolor{BrandMuted}{HTML}{4B5560}
+\definecolor{BrandBorder}{HTML}{C7CFD8}
+\definecolor{BrandPrimary}{HTML}{146C2E}
+\definecolor{BrandLink}{HTML}{0969DA}
+\definecolor{BrandCode}{HTML}{6639BA}
+\definecolor{BrandWarning}{HTML}{9A6700}
+\definecolor{BrandDanger}{HTML}{CF222E}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=BrandLink,
+  urlcolor=BrandLink,
+  citecolor=BrandPrimary
+}
+
+\newcommand{\BrandName}{Antonio Sosa}
+\newcommand{\BrandPositioning}{Software Engineer transitioning into AI Engineering}
+\newcommand{\BrandPrimaryText}[1]{\textcolor{BrandPrimary}{#1}}
+\newcommand{\BrandMutedText}[1]{\textcolor{BrandMuted}{#1}}
+\newcommand{\BrandCodeText}[1]{\textcolor{BrandCode}{\texttt{#1}}}
+\newcommand{\BrandRule}{\par\noindent\textcolor{BrandPrimary}{\rule{\linewidth}{1.2pt}}\par}
+
+\endinput
