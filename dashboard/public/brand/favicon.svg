@@ -1,19 +1,23 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" role="img" aria-labelledby="title desc">
-  <title id="title">AS Shell favicon</title>
-  <desc id="desc">Adaptive blue prompt and purple cursor favicon</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 72 72" role="img" aria-labelledby="title desc">
+  <title id="title">AS Shell adaptive favicon</title>
+  <desc id="desc">Adaptive full Antonio Sosa AS prompt mark</desc>
   <style>
     .favicon-surface { fill: #FFFFFF; }
     .favicon-frame { stroke: #C7CFD8; }
+    .favicon-initials { fill: #146C2E; }
     .favicon-prompt { stroke: #0969DA; }
     .favicon-cursor { stroke: #6639BA; }
     @media (prefers-color-scheme: dark) {
       .favicon-surface { fill: #161B22; }
       .favicon-frame { stroke: #3D444D; }
+      .favicon-initials { fill: #56D364; }
       .favicon-prompt { stroke: #79C0FF; }
       .favicon-cursor { stroke: #BC8CFF; }
     }
   </style>
-  <rect class="favicon-surface favicon-frame" x=".75" y=".75" width="14.5" height="14.5" rx="3" stroke-width="1.5"/>
-  <path class="favicon-prompt" d="m4 4.25 3.5 3.5-3.5 3.5" fill="none" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"/>
-  <path class="favicon-cursor" d="M9.25 11.75h3.5" fill="none" stroke-width="2.25" stroke-linecap="round"/>
+  <rect x="2.25" y="4.5" width="67.5" height="63" rx="11.25" class="favicon-surface favicon-frame" stroke-width="4.5"/>
+  <path d="M46 0 235 730H366L554 0H453L407 190H193L147 0ZM212 272H387L334 490Q320 550 311.0 592.0Q302 634 300 649Q298 634 289.0 592.0Q280 550 266 491Z" class="favicon-initials" transform="translate(8.1000 48.3750) scale(0.0281250 -0.0281250)"/>
+  <path d="M304 -10Q196 -10 132.0 46.5Q68 103 68 202H167Q167 144 204.0 111.0Q241 78 304 78Q364 78 399.5 111.5Q435 145 435 201Q435 243 412.0 274.5Q389 306 347 317L239 346Q168 366 126.5 418.5Q85 471 85 543Q85 602 111.5 646.5Q138 691 186.0 715.5Q234 740 297 740Q361 740 409.5 715.5Q458 691 485.0 647.0Q512 603 512 545H414Q414 593 381.5 623.0Q349 653 297 653Q245 653 213.5 623.0Q182 593 182 545Q182 506 203.0 479.5Q224 453 262 442L373 412Q448 392 490.0 335.5Q532 279 532 201Q532 137 504.0 89.5Q476 42 424.5 16.0Q373 -10 304 -10Z" class="favicon-initials" transform="translate(24.6375 48.3750) scale(0.0281250 -0.0281250)"/>
+  <path d="m42.75 24.75 9 11.25-9 11.25" fill="none" class="favicon-prompt" stroke-width="5.625" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M56.25 52.875h9" class="favicon-cursor" stroke-width="5.625" stroke-linecap="round"/>
 </svg>
