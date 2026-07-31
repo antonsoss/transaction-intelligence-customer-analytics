@@ -4,9 +4,12 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.conf.json",
+    "prebuild": "pnpm validate:brand",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
+    "pretest": "pnpm validate:brand",
     "test": "ng test --watch=false",
+    "validate:brand": "node scripts/validate-brand-assets.mjs",
     "format": "prettier --write \"src/**/*.{ts,html,scss}\" \"*.{json,md}\"",
     "format:check": "prettier --check \"src/**/*.{ts,html,scss}\" \"*.{json,md}\""
   },
