@@ -33,6 +33,8 @@ describe('App', () => {
     const logo = brand?.querySelector<HTMLImageElement>('.brand-logo');
     expect(logo?.getAttribute('src')).toContain('brand/as-shell-compact-');
     expect(logo?.getAttribute('alt')).toBe('');
+    expect(logo?.getAttribute('width')).toBe('48');
+    expect(logo?.getAttribute('height')).toBe('48');
     expect(brand?.querySelector('strong')?.textContent?.trim()).toBe('Transaction Intelligence');
     expect(brand?.getAttribute('aria-label')).toBe('Transaction Intelligence home');
   });

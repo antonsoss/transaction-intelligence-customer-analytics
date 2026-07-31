@@ -25,7 +25,7 @@
   padding: var(--as-space-8) var(--as-space-6) var(--as-space-6);
   position: fixed;
   top: 0;
-  width: 264px;
+  width: 300px;
   z-index: 10;
 }
 
@@ -41,7 +41,7 @@
   color: inherit;
   display: flex;
   flex: 1 1 auto;
-  gap: var(--as-space-4);
+  gap: var(--as-space-6);
   min-width: 0;
   text-decoration: none;
 }
@@ -49,18 +49,18 @@
 .brand-logo {
   display: block;
   flex: 0 0 auto;
-  height: 2rem;
+  height: 3rem;
   object-fit: contain;
-  width: 2rem;
+  width: 3rem;
 }
 
 .brand strong {
   display: block;
-  font-size: 0.82rem;
+  font-size: 0.88rem;
   font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.15;
-  max-width: 5.2rem;
+  max-width: 5.8rem;
 }
 
 .theme-toggle {
@@ -183,10 +183,15 @@
   color: var(--link);
 }
 
-.primary-nav a.about-link,
+.primary-nav a.about-link {
+  color: var(--primary);
+}
+
 .primary-nav a.about-link:hover,
 .primary-nav a.about-link.active {
-  color: var(--code);
+  background: var(--app-selected);
+  border-color: var(--primary);
+  color: var(--primary);
 }
 
 .sidebar-note {
@@ -261,7 +266,7 @@
 
 .main-content {
   background: var(--paper);
-  margin-left: 264px;
+  margin-left: 300px;
   min-height: 100vh;
 }
 
@@ -352,10 +357,15 @@
     color: var(--ink);
   }
 
-  .mobile-header nav a.about-link,
+  .mobile-header nav a.about-link {
+    color: var(--primary);
+  }
+
   .mobile-header nav a.about-link:hover,
   .mobile-header nav a.about-link.active {
-    color: var(--code);
+    background: var(--app-selected);
+    border-color: var(--primary);
+    color: var(--primary);
   }
 
   .mobile-theme-toggle {
